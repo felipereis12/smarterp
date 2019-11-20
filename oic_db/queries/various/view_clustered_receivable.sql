@@ -1,0 +1,1 @@
+select * from vw_clustered_receivable where transaction_type = 'credit_card_recurring'

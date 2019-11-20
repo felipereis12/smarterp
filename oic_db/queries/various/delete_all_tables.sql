@@ -1,0 +1,15 @@
+delete from refund_items;
+delete from refund;
+delete from invoice_customer;
+delete from invoice_items;
+delete from invoice;
+delete from clustered_receivable;
+delete from chargeback;
+delete from receivable;
+delete from clustered_chargeback;
+delete from conciliated_payed_receivable;
+delete from order_to_cash;
+-- delete from product_from_to_version;
+-- delete from product_from_to;
+-- delete from organization_from_to_version;
+-- delete from organization_from_to;
