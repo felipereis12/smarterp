@@ -18,7 +18,7 @@ where order_to_cash.country = 'Brazil' -- Integração em paralalo por operaçã
 and order_to_cash.erp_subsidiary = 'BR020001' -- Neste caso como haverá uma integração separada para os movimentos Smartfin esse filtro deverá ser fixo para tais movimentos
 and order_to_cash.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and order_to_cash.operation = 'person_plan' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
-and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_created' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
+and order_to_cash.erp_receipt_status_transaction = 'clustered_receivable_created' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and order_to_cash.to_generate_receivable = 'yes'
 and receivable.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
 and receivable.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
