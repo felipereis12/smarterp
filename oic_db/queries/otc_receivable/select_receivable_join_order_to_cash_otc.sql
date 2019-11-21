@@ -22,6 +22,7 @@ select
     ,rec.administration_tax_value
     ,rec.billing_date
     ,rec.credit_date
+    ,rec.converted_smartfin
 from receivable rec
 
 inner join order_to_cash otc
