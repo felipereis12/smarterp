@@ -68,9 +68,28 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 									  inner join organization_from_to_version oftv
 									  on oftv.erp_legal_entity = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 
-
-    set done = 0;
+    
+	select 
+		 @v_unity_identification := oftv.organization_from_to_unity_identification 
+		,@v_erp_business_unit := oftv.erp_business_unit 
+		,@v_erp_legal_entity := oftv.erp_legal_entity
+		,@v_erp_subsidiary := oftv.erp_subsidiary
+		,@v_acronym := oftv.acronym
+		,@v_erp_customer_id := crc.erp_customer_id
+		,@v_erp_clustered_receivable_customer_id := crc.erp_customer_id
+		,@v_erp_receivable_customer_identification := crc.identification_financial_responsible
+	from clustered_receivable_customer crc
 	
+	inner join organization_from_to_version oftv
+	on oftv.erp_legal_entity = crc.identification_financial_responsible 
+	and oftv.created_at = ( select 
+								max(oftv2.created_at) 
+							from organization_from_to_version oftv2 
+							where oftv2.organization_from_to_unity_identification = oftv.organization_from_to_unity_identification 
+							)
+	where crc.is_smartfin = 'yes';
+	
+    set done = 0;
     open cur1;
     
     SmartfinOperationLoop: loop
@@ -80,41 +99,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 		if done = 1 then leave SmartfinOperationLoop; end if;
 
 		start transaction;
-		
-		select 
-			 @v_unity_identification := oftv.organization_from_to_unity_identification 
-			,@v_erp_business_unit := oftv.erp_business_unit 
-			,@v_erp_legal_entity := oftv.erp_legal_entity
-			,@v_erp_subsidiary := oftv.erp_subsidiary
-			,@v_acronym := oftv.acronym
-			,@v_erp_customer_id := crc.erp_customer_id
-			,@v_erp_clustered_receivable_customer_id := crc.erp_customer_id
-			,@v_erp_receivable_customer_identification := crc.identification_financial_responsible
-		from clustered_receivable_customer crc
-		
-		inner join organization_from_to_version oftv
-		on oftv.erp_legal_entity = crc.identification_financial_responsible 
-		and oftv.created_at = ( select 
-									max(oftv2.created_at) 
-								from organization_from_to_version oftv2 
-								where oftv2.organization_from_to_unity_identification = oftv.organization_from_to_unity_identification 
-								)
-		where crc.is_smartfin = 'yes';
 
-		/*
-		select @v_conciliator_id := receivable.conciliator_id from receivable where receivable.id = v_id_receivable;
-		
-		update receivable 
-		
-		inner join order_to_cash 
-		on order_to_cash.id = receivable.order_to_cash_id 
-		
-		set receivable.conciliator_id = null 
-		,order_to_cash.conciliator_id = null
-		
-		where receivable.id = v_id_receivable;
-		*/
-        
 		insert into order_to_cash
 			(id,
 			created_at,
@@ -164,7 +149,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 				order_to_cash.origin_system,
 				order_to_cash.operation,
 				order_to_cash.minifactu_id*-1,
-				order_to_cash.conciliator_id/*@v_conciliator_id*/,
+				order_to_cash.conciliator_id,
 				order_to_cash.fin_id,
 				order_to_cash.front_id,
 				null,
@@ -201,6 +186,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 		erp_clustered_receivable_customer_id,
 		conciliator_id,
 		is_smartfin,
+        type_smartfin,
 		transaction_type,
 		contract_number,
 		credit_card_brand,
@@ -235,8 +221,9 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 			receivable.erp_receivable_customer_id,
 			null,
 			receivable.erp_clustered_receivable_customer_id,
-			receivable.conciliator_id/*@v_conciliator_id*/,
+			receivable.conciliator_id,
 			'no',
+            'own',
 			receivable.transaction_type,
 			receivable.contract_number,
 			receivable.credit_card_brand,
@@ -275,7 +262,8 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 		set receivable.erp_clustered_receivable_customer_id = @v_erp_clustered_receivable_customer_id
 		,receivable.erp_receivable_customer_id = @v_erp_customer_id     
 		,receivable.is_smartfin = 'no'
-        ,receivable.smartfin_converted = 'yes'
+        ,receivable.converted_smartfin = 'yes'
+        ,receivable.type_smartfin = 'own'
 		,order_to_cash.erp_receivable_customer_identification = @v_erp_receivable_customer_identification    
 		
 		where receivable.id = v_id_receivable ;
