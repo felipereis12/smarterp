@@ -5,6 +5,7 @@ delete from invoice_items;
 delete from invoice;
 delete from clustered_receivable;
 delete from chargeback;
+delete from payable;
 delete from receivable;
 delete from clustered_chargeback;
 delete from conciliated_payed_receivable;
