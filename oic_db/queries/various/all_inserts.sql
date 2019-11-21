@@ -30,7 +30,11 @@ insert into `oic_db`.`order_to_cash`
 `erp_invoice_send_to_erp_at`,
 `erp_invoice_returned_from_erp_at`,
 `erp_invoice_status_transaction`,
-`erp_invoice_log`)
+`erp_invoice_log`,
+`erp_receipt_send_to_erp_at`,
+`erp_receipt_returned_from_erp_at`,
+`erp_receipt_status_transaction`,
+`erp_receipt_log`)
 values
 ('Brazil', -- country
 '1', -- unity_identification
@@ -58,7 +62,11 @@ null, -- erp_receivable_log
 null, -- erp_invoice_send_to_erp_at
 null, -- erp_invoice_returned_from_erp_at
 'waiting_to_be_process', -- erp_invoice_status_transaction
-null); -- erp_invoice_log 
+null, -- erp_invoice_log
+null, -- erp_receipt_send_to_erp_at
+null, -- erp_receipt_returned_from_erp_at
+'waiting_to_be_process', -- erp_receipt_status_transaction
+null); -- erp_receipt_log 
 
 -- saves the auto increment id from order_to_cash table
 set @order_to_cash_id = last_insert_id();
@@ -423,7 +431,11 @@ insert into `oic_db`.`order_to_cash`
 `erp_invoice_send_to_erp_at`,
 `erp_invoice_returned_from_erp_at`,
 `erp_invoice_status_transaction`,
-`erp_invoice_log`)
+`erp_invoice_log`,
+`erp_receipt_send_to_erp_at`,
+`erp_receipt_returned_from_erp_at`,
+`erp_receipt_status_transaction`,
+`erp_receipt_log`)
 values
 ('Brazil', -- country
 '1', -- unity_identification
@@ -451,7 +463,11 @@ null, -- erp_receivable_log
 null, -- erp_invoice_send_to_erp_at
 null, -- erp_invoice_returned_from_erp_at
 'waiting_to_be_process', -- erp_invoice_status_transaction
-null); -- erp_invoice_log
+null, -- erp_invoice_log
+null, -- erp_receipt_send_to_erp_at
+null, -- erp_receipt_returned_from_erp_at
+'waiting_to_be_process', -- erp_receipt_status_transaction
+null); -- erp_receipt_log 
 
 -- saves the auto increment id from order_to_cash table
 set @order_to_cash_id = last_insert_id();
@@ -816,7 +832,11 @@ insert into `oic_db`.`order_to_cash`
 `erp_invoice_send_to_erp_at`,
 `erp_invoice_returned_from_erp_at`,
 `erp_invoice_status_transaction`,
-`erp_invoice_log`)
+`erp_invoice_log`,
+`erp_receipt_send_to_erp_at`,
+`erp_receipt_returned_from_erp_at`,
+`erp_receipt_status_transaction`,
+`erp_receipt_log`)
 values
 ('Brazil', -- country
 '1', -- unity_identification
@@ -844,7 +864,11 @@ null, -- erp_receivable_log
 null, -- erp_invoice_send_to_erp_at
 null, -- erp_invoice_returned_from_erp_at
 'waiting_to_be_process', -- erp_invoice_status_transaction
-null); -- erp_invoice_log
+null, -- erp_invoice_log
+null, -- erp_receipt_send_to_erp_at
+null, -- erp_receipt_returned_from_erp_at
+'waiting_to_be_process', -- erp_receipt_status_transaction
+null); -- erp_receipt_log 
 
 -- saves the auto increment id from order_to_cash table
 set @order_to_cash_id = last_insert_id();
@@ -1210,7 +1234,11 @@ insert into `oic_db`.`order_to_cash`
 `erp_invoice_send_to_erp_at`,
 `erp_invoice_returned_from_erp_at`,
 `erp_invoice_status_transaction`,
-`erp_invoice_log`)
+`erp_invoice_log`,
+`erp_receipt_send_to_erp_at`,
+`erp_receipt_returned_from_erp_at`,
+`erp_receipt_status_transaction`,
+`erp_receipt_log`)
 values
 ('Brazil', -- country
 '1', -- unity_identification
@@ -1238,7 +1266,11 @@ null, -- erp_receivable_log
 null, -- erp_invoice_send_to_erp_at
 null, -- erp_invoice_returned_from_erp_at
 'waiting_to_be_process', -- erp_invoice_status_transaction
-null); -- erp_invoice_log
+null, -- erp_invoice_log
+null, -- erp_receipt_send_to_erp_at
+null, -- erp_receipt_returned_from_erp_at
+'waiting_to_be_process', -- erp_receipt_status_transaction
+null); -- erp_receipt_log 
 
 -- saves the auto increment id from order_to_cash table
 set @order_to_cash_id = last_insert_id();
@@ -1603,7 +1635,11 @@ insert into `oic_db`.`order_to_cash`
 `erp_invoice_send_to_erp_at`,
 `erp_invoice_returned_from_erp_at`,
 `erp_invoice_status_transaction`,
-`erp_invoice_log`)
+`erp_invoice_log`,
+`erp_receipt_send_to_erp_at`,
+`erp_receipt_returned_from_erp_at`,
+`erp_receipt_status_transaction`,
+`erp_receipt_log`)
 values
 ('Brazil', -- country
 '1', -- unity_identification
@@ -1631,7 +1667,11 @@ null, -- erp_receivable_log
 null, -- erp_invoice_send_to_erp_at
 null, -- erp_invoice_returned_from_erp_at
 'waiting_to_be_process', -- erp_invoice_status_transaction
-null); -- erp_invoice_log
+null, -- erp_invoice_log
+null, -- erp_receipt_send_to_erp_at
+null, -- erp_receipt_returned_from_erp_at
+'waiting_to_be_process', -- erp_receipt_status_transaction
+null); -- erp_receipt_log 
 
 -- saves the auto increment id from order_to_cash table
 set @order_to_cash_id = last_insert_id();
@@ -1996,7 +2036,11 @@ insert into `oic_db`.`order_to_cash`
 `erp_invoice_send_to_erp_at`,
 `erp_invoice_returned_from_erp_at`,
 `erp_invoice_status_transaction`,
-`erp_invoice_log`)
+`erp_invoice_log`,
+`erp_receipt_send_to_erp_at`,
+`erp_receipt_returned_from_erp_at`,
+`erp_receipt_status_transaction`,
+`erp_receipt_log`)
 values
 ('Brazil', -- country
 '1', -- unity_identification
@@ -2024,7 +2068,11 @@ null, -- erp_receivable_log
 null, -- erp_invoice_send_to_erp_at
 null, -- erp_invoice_returned_from_erp_at
 'waiting_to_be_process', -- erp_invoice_status_transaction
-null); -- erp_invoice_log
+null, -- erp_invoice_log
+null, -- erp_receipt_send_to_erp_at
+null, -- erp_receipt_returned_from_erp_at
+'waiting_to_be_process', -- erp_receipt_status_transaction
+null); -- erp_receipt_log 
 
 -- saves the auto increment id from order_to_cash table
 set @order_to_cash_id = last_insert_id();
