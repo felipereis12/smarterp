@@ -54,8 +54,8 @@ and otc.origin_system = 'smartsystem' -- Integração em paralelo por origem (Sm
 and otc.operation = 'person_plan' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_invoice = 'yes'
 and otc.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar as transações cuja invoice ainda não foi integrada com o erp e está aguardando processamento;
--- and otc.erp_receivable_status_transaction = 'created_at_erp' -- Filtrar as transações cujos receivables que já foram integrados no erp
--- and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados
--- and ivc.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
+and otc.erp_receivable_status_transaction = 'created_at_erp' -- Filtrar as transações cujos receivables que já foram integrados no erp
+and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados
+and ivc.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
 and ivc.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
 and day(current_date()) <= oftv.cutoff_limit_day -- Regra de cutoff
