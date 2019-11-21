@@ -51,8 +51,6 @@ end;
 
 if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type)),1) = 1 then 
 	
-    -- do sleep(5000);
-    
     set done = 0;
     open cur1;
     
@@ -76,27 +74,7 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
                         ,v_is_smarftin;
                         
 		if done = 1 then leave ClusteredChargebackLoop; end if;
-		
-        /*
-		select v_country
-						,v_unity_identification
-                        ,v_origin_system
-						,v_erp_business_unit
-                        ,v_erp_legal_entity
-                        ,v_erp_subsidiary
-                        ,v_operation
-                        ,v_erp_customer_id
-                        ,v_fullname
-                        ,v_transaction_type
-                        ,v_credit_card_brand
-                        ,v_contract_number
-                        ,v_administration_tax_percentage
-                        ,v_antecipation_tax_percentage
-                        ,v_billing_date
-                        ,v_credit_date
-                        ,v_is_smarftin;
-		*/
-        
+
         start transaction;
 	
 		update chargeback
@@ -125,9 +103,10 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and order_to_cash.erp_legal_entity = v_erp_legal_entity
         and order_to_cash.erp_subsidiary = v_erp_subsidiary
         and order_to_cash.country = v_country
-        and chargeback.erp_receipt_status_transaction = 'waiting_to_be_process';    
+        and chargeback.erp_receipt_status_transaction = 'waiting_to_be_process'
+        and receivable.converted_smartfin <> 'yes' ;    
   
-        
+        set @resultset := exists (
 		select 	
 			 @v_gross_value := sum(receivable.gross_value) as gross_value
 			,@v_price_list_value := sum(receivable.price_list_value) as price_list_value
@@ -160,19 +139,8 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
         and receivable.is_smartfin = v_is_smarftin 
-        and chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created' ;
+        and chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created' );
 
-		/*
-		select 
-			 @v_gross_value
-			,@v_price_list_value
-			,@v_net_value
-			,@v_interest_value
-			,@v_administration_tax_value
-			,@v_antecipation_tax_value
-            ,@v_qtd_of_receivable ;
-		*/
-			
         insert into `oic_db`.`clustered_chargeback`
 							(`country`,
 							`unity_identification`,
@@ -215,11 +183,7 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
                             @v_qtd_of_receivable);
 
         set @clustered_chargeback_id = last_insert_id();
-        
-        /*
-        select @clustered_chargeback_id;
-		*/
-        
+
         update chargeback
 
         inner join receivable
