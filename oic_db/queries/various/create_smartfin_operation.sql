@@ -1,6 +1,6 @@
-DROP PROCEDURE IF EXISTS sp_create_smartfin_operation; 
+DROP PROCEDURE IF EXISTS sp_create_smartfin_receivables; 
 DELIMITER //
-CREATE PROCEDURE sp_create_smartfin_operation ( IN p_id_receivable integer )
+CREATE PROCEDURE sp_create_smartfin_receivables ( IN p_id_receivable integer )
 
 BEGIN
 
