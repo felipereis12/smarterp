@@ -92,27 +92,7 @@ if get_lock(@v_keycontrol,1) = 1 then
                         ,v_is_smarftin;
                         
 		if done = 1 then leave ClusteredReceivableLoop; end if;
-		
-        /*
-		select v_country
-						,v_unity_identification
-                        ,v_origin_system
-						,v_erp_business_unit
-                        ,v_erp_legal_entity
-                        ,v_erp_subsidiary
-                        ,v_operation
-                        ,v_erp_customer_id
-                        ,v_fullname
-                        ,v_transaction_type
-                        ,v_credit_card_brand
-                        ,v_contract_number
-                        ,v_administration_tax_percentage
-                        ,v_antecipation_tax_percentage
-                        ,v_billing_date
-                        ,v_credit_date
-                        ,v_is_smarftin;
-        */
-        
+	      
         start transaction;
 		
         insert into control_clustered_receivable
@@ -168,41 +148,8 @@ if get_lock(@v_keycontrol,1) = 1 then
         set order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'
         
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at);
-        
-        /*
-		update order_to_cash 
-        
-		inner join receivable
-        on receivable.order_to_cash_id = order_to_cash.id
-        
-        set order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'
-        
-        where receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
-        and receivable.transaction_type = v_transaction_type
-        and receivable.contract_number = v_contract_number
-        and ( ( receivable.credit_card_brand is not null and receivable.credit_card_brand = v_credit_card_brand) or (receivable.credit_card_brand is null) )
-        and round(receivable.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        and round(receivable.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
-        and receivable.billing_date = v_billing_date
-        and receivable.credit_date = v_credit_date
-        and receivable.is_smartfin = v_is_smarftin        
-        and order_to_cash.origin_system = v_origin_system
-        and order_to_cash.operation = v_operation
-        and order_to_cash.unity_identification = v_unity_identification
-        and order_to_cash.erp_business_unit = v_erp_business_unit
-        and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and order_to_cash.country = v_country
-        and order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process'        
-        and order_to_cash.created_at = ( 
-											select 
-												max(order_to_cash_v2.created_at) as created_at
-											from order_to_cash order_to_cash_v2  
-											where order_to_cash_v2.country = order_to_cash.country
-											and order_to_cash_v2.minifactu_id = order_to_cash.minifactu_id
-										)
-		;
-        */
+  
+        set @resultset := exists (
 		select 	
 			 @v_gross_value := round(sum(receivable.gross_value),2) as gross_value
 			,@v_price_list_value := round(sum(receivable.price_list_value),2) as price_list_value
@@ -217,38 +164,7 @@ if get_lock(@v_keycontrol,1) = 1 then
         on order_to_cash.id = receivable.order_to_cash_id
         
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
-        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;
-        
-        /*
-        where order_to_cash.country = v_country
-        and order_to_cash.origin_system = v_origin_system
-        and order_to_cash.operation = v_operation
-        and order_to_cash.unity_identification = v_unity_identification
-        and order_to_cash.erp_business_unit = v_erp_business_unit
-        and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
-        and receivable.transaction_type = v_transaction_type
-        and receivable.contract_number = v_contract_number
-        and ( ( receivable.credit_card_brand is not null and receivable.credit_card_brand = v_credit_card_brand ) or (receivable.credit_card_brand is null)  )
-        and round(receivable.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        and round(receivable.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
-        and receivable.billing_date = v_billing_date
-        and receivable.credit_date = v_credit_date
-        and receivable.is_smartfin = v_is_smarftin 
-        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;
-		*/
-        
-		/*
-		select 	
-			 @v_gross_value
-			,@v_price_list_value
-			,@v_net_value
-			,@v_interest_value
-			,@v_administration_tax_value
-			,@v_antecipation_tax_value
-            ,@v_qtd_of_receivable;
-		*/
+        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created') ;
         
         insert into `oic_db`.`clustered_receivable`
 							(`country`,
@@ -300,26 +216,6 @@ if get_lock(@v_keycontrol,1) = 1 then
         
         set receivable.erp_clustered_receivable_id = @clustered_receivable_id
         , order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_created'
-        
-        /*
-        where order_to_cash.country = v_country
-        and order_to_cash.origin_system = v_origin_system
-        and order_to_cash.operation = v_operation
-        and order_to_cash.unity_identification = v_unity_identification
-        and order_to_cash.erp_business_unit = v_erp_business_unit
-        and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
-        and receivable.transaction_type = v_transaction_type
-        and receivable.contract_number = v_contract_number
-        and ( ( receivable.credit_card_brand is not null and receivable.credit_card_brand = v_credit_card_brand) or (receivable.credit_card_brand is null) )
-        and round(receivable.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        and round(receivable.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
-        and receivable.billing_date = v_billing_date
-        and receivable.credit_date = v_credit_date
-        and receivable.is_smartfin = v_is_smarftin
-        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;
-		*/
 
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
 		and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;        
