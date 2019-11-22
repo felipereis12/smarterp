@@ -122,6 +122,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 								and order_to_cash.erp_subsidiary = v_erp_subsidiary
 								and order_to_cash.country = v_country
 								and order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process'    
+                                and order_to_cash.to_generate_receivable = 'yes'
 								and not exists ( 
 													select 
 														1 
@@ -139,7 +140,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 															or	( receivable_v2.erp_receivable_id is not null ) 
 														)
 												)  limit 100 ;
-		                             
+
 		update order_to_cash 
         
 		inner join receivable
@@ -148,8 +149,8 @@ if get_lock(@v_keycontrol,1) = 1 then
         set order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'
         
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at);
-  
-        set @resultset := exists (
+		
+        /*set @resultset := exists (*/
 		select 	
 			 @v_gross_value := round(sum(receivable.gross_value),2) as gross_value
 			,@v_price_list_value := round(sum(receivable.price_list_value),2) as price_list_value
@@ -164,7 +165,7 @@ if get_lock(@v_keycontrol,1) = 1 then
         on order_to_cash.id = receivable.order_to_cash_id
         
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
-        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created') ;
+        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'/*)*/ ;
         
         insert into `oic_db`.`clustered_receivable`
 							(`country`,
