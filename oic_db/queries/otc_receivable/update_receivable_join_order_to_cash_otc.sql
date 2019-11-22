@@ -14,5 +14,5 @@ set order_to_cash.erp_receivable_returned_from_erp_at = current_timestamp -- col
 where order_to_cash.erp_business_unit = '<Colocar aqui o código da Business Unit do movimento>'
 and order_to_cash.erp_legal_entity = '<Colocar aqui o código da Legal Entity do movimento>'
 and order_to_cash.erp_subsidiary = '<Colocar aqui o código da Subsidiary do movimento>'
-and receivable.erp_receivable_id = '<Colocar aqui o Id clustered_receivable do registro que foi enviado para o Oracle>'
+and receivable.erp_clustered_receivable_id = '<Colocar aqui o Id clustered_receivable do registro que foi enviado para o Oracle>'
 and receivable.id = '<Colocar aqui o Id da Receivable do registro que foi enviado para o Oracle>';
