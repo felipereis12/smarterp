@@ -70,7 +70,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 									  on oftv.fiscal_federal_identification = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 
 		
-        /*set @resultset := exists (*/
+        set @resultset := exists (		
 			select 
 				
 				 @v_unity_identification := oftv.organization_from_to_unity_identification 
@@ -94,7 +94,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 									and oftv2.erp_legal_entity = oftv.erp_legal_entity 
 									and oftv2.erp_subsidiary = oftv.erp_subsidiary                            
 									)
-			where crc.is_smartfin = 'yes' /*)*/ ;
+			where crc.is_smartfin = 'yes' ) ;
 	
     set done = 0;
     open cur1;
