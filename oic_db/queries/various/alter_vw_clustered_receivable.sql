@@ -40,7 +40,7 @@ VIEW vw_clustered_receivable AS
 					))))
         JOIN clustered_receivable_customer ON ((clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification)))
     WHERE
-        ((order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process')
+        ((order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process' and order_to_cash.to_generate_receivable = 'yes')
             AND ISNULL(receivable.erp_clustered_receivable_id)
             AND ISNULL(receivable.erp_receivable_id)
             AND (receivable.is_smartfin <> 'yes'))
