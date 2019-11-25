@@ -7,7 +7,6 @@ select
     ,recg.erp_currency_conversion_type
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
-    ,crc.full_name
     ,rec.net_value
     ,rec.price_list_value
     ,rec.conciliator_id
@@ -37,7 +36,6 @@ on recg.country = otc.country
 and recg.origin_system = otc.origin_system
 and recg.operation = otc.operation
 and recg.transaction_type = rec.transaction_type
-and recg.converted_smartfin = rec.converted_smartfin
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
 and otc.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
