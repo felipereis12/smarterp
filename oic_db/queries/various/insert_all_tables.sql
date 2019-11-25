@@ -197,7 +197,7 @@ null, -- authorization_code
 290.9, -- price_list_value
 109.8, -- gross_value
 109.8, -- net_value
-0.0, -- interest_value
+1.5, -- interest_value
 3.1, -- administration_tax_percentage
 3.4038, -- administration_tax_value
 0.0, -- antecipation_tax_percentage
