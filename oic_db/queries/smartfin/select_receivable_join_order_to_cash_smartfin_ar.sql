@@ -5,7 +5,7 @@ select
     ,recg.erp_payments_terms
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
-    ,rec.erp_clustered_receivable_id
+    ,rec.erp_clustered_receivable_id 
     ,crc.identification_financial_responsible
     ,crc.full_name
     ,rec.net_value
