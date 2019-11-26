@@ -5,14 +5,23 @@ select
     ,iec.erp_payments_terms
     ,iec.erp_currency_code
     ,iec.erp_currency_conversion_type
-    ,otc.minifactu_id
-    ,ivcr.identification_financial_responsible
-    ,iit.id
-    ,iit.erp_item_ar_id
-    ,iit.erp_gl_segment_product
-    ,iit.quantity
-    ,iit.sale_price
-    ,iit.list_price
+    ,iec.erp_interface_line_context
+    ,iec.erp_product_category_fiscal
+    ,rec.erp_clustered_receivable_id -- id do aglutinado
+    ,otc.front_id -- id do front
+    ,otc.fin_id -- id do fin
+    ,otc.conciliator_id -- id do conciliator_id
+    ,otc.minifactu_id -- id do minifactu
+    ,ivcr.identification_financial_responsible -- cpf/cnpj do responsável financeiro
+    ,ivcr.full_name -- nome do responsável financeiro
+    ,rec.nsu -- nsu
+    ,rec.authorization_code -- código de autorização
+    ,iit.id -- id do item da invoice
+    ,iit.erp_item_ar_id -- código do item do ar no Oracle 
+    ,iit.erp_gl_segment_product -- código do segmento contábil de produto
+    ,iit.quantity -- Quantidade do item de venda
+    ,iit.sale_price -- Preço praticado
+    ,iit.list_price -- Preço de lista
 from invoice ivc
 
 inner join invoice_items iit
