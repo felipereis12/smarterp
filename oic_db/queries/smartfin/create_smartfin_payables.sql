@@ -26,6 +26,7 @@ declare cur1 cursor for
 						,rec.erp_receivable_id
                         ,rec.erp_clustered_receivable_id
 						,receivable_id_smartfin
+                        ,otc.unity_identification
                         ,otc.erp_business_unit
                         ,otc.erp_legal_entity
                         ,otc.erp_subsidiary
@@ -69,7 +70,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
     
     SmartfinPayablesLoop: loop
     
-        fetch cur1 into v_id_receivable, v_erp_receivable_id, v_erp_clustered_receivable_id, v_id_receivable_smartfin, v_erp_business_unit, v_erp_legal_entity, v_erp_subsidiary, v_acronym;
+        fetch cur1 into v_id_receivable, v_erp_receivable_id, v_erp_clustered_receivable_id, v_id_receivable_smartfin, v_unity_identification, v_erp_business_unit, v_erp_legal_entity, v_erp_subsidiary, v_acronym;
 		
         if done = 1 then leave SmartfinPayablesLoop; end if;			
 	
@@ -114,9 +115,12 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
                     )
                     
                     then 
-			
+				
+                select @v_erp_supplier_id, @v_erp_payable_supplier_identification;
+                
 			insert into oic_db.payable
-				(erp_business_unit,
+				(unity_identification,
+				erp_business_unit,
 				erp_legal_entity,
 				erp_subsidiary,
 				acronym,
@@ -125,6 +129,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
                 erp_receivable_id,
                 erp_clustered_receivable_id,
 				erp_supplier_id,
+                supplier_identification,
 				issue_date,
 				due_date,
 				erp_payable_send_to_erp_at,
@@ -138,7 +143,8 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 				erp_filename,
 				erp_line_in_file)
 				VALUES
-				(v_erp_business_unit, -- erp_business_unit
+				(v_unity_identification, -- unity_identification
+				v_erp_business_unit, -- erp_business_unit
 				v_erp_legal_entity, -- erp_legal_entity
 				v_erp_subsidiary, -- erp_subsidiary
 				v_acronym, -- acronym
@@ -147,6 +153,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
                 v_erp_receivable_id, -- erp_receivalbe_id
                 v_erp_clustered_receivable_id, -- erp_clustered_receivable_id
 				@v_erp_supplier_id, -- erp_supplier_id
+                @v_erp_payable_supplier_identification, -- supplier_identification
 				current_date(), -- issue_date
 				current_date(), -- due_date
 				null, -- erp_payable_send_to_erp_at
