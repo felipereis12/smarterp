@@ -12,7 +12,7 @@ select
     ,t1.erp_clustered_receivable_id
     ,t1.identification_financial_responsible
     ,t1.full_name
-    ,t1.net_value
+    ,t1.receivable_item_value
     ,t1.conciliator_id
     ,t1.credit_card_brand
     ,t1.contract_number
@@ -27,7 +27,11 @@ select
     ,t1.credit_date
     ,t1.converted_smartfin
 from (
-
+/*
+gross_value => valor serviço/mercadororia + juros/mora
+net_value => valor serviço/mercadororia + juros/mora - taxa operadora
+interest_value => juros/mora
+*/
 /*Valores bruto da venda*/
 select
 	 otc.erp_business_unit
@@ -43,7 +47,7 @@ select
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.net_value
+    ,rec.gross_value as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -101,7 +105,7 @@ select
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.administration_tax_value*-1
+    ,rec.administration_tax_value*-1 as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -160,7 +164,7 @@ select
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.interest_value
+    ,rec.interest_value as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
