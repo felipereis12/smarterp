@@ -9,23 +9,17 @@ select
     ,t1.erp_currency_conversion_type
     ,t1.erp_interface_line_context
     ,t1.erp_memo_line
-    ,t1.erp_clustered_receivable_id
     ,t1.identification_financial_responsible
     ,t1.full_name
     ,t1.net_value
-    ,t1.conciliator_id
+    ,t1.front_id
     ,t1.credit_card_brand
-    ,t1.contract_number
     ,t1.transaction_type
-    ,t1.truncated_credit_card
     ,t1.current_credit_card_installment
     ,t1.total_credit_card_installment
-    ,t1.nsu
-    ,t1.authorization_code
     ,t1.administration_tax_percentage
     ,t1.billing_date
     ,t1.credit_date
-    ,t1.converted_smartfin
 from (
 
 /*Valores bruto da venda*/
@@ -43,7 +37,8 @@ select
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.net_value
+    ,otc.front_id
+	,rec.net_value    
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -74,7 +69,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'gross_value'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
+and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
@@ -99,6 +94,7 @@ select
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
+    ,otc.front_id
     ,rec.administration_tax_value*-1
     ,rec.conciliator_id
     ,rec.credit_card_brand
@@ -130,7 +126,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'administration_tax'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
+and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
@@ -156,6 +152,7 @@ select
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
+    ,otc.front_id
     ,rec.interest_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
@@ -187,7 +184,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'interest'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
+and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
