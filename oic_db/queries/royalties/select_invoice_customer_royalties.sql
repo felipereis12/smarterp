@@ -1,4 +1,4 @@
-select
+select 
 		order_to_cash.origin_system,
 		invoice_customer.identification_financial_responsible,
 		invoice_customer.full_name,
