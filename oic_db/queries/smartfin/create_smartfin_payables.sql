@@ -45,7 +45,7 @@ declare cur1 cursor for
 					and rec.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
 					and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
 					and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados com o erp
-					and rec.erp_receivable_receipt_id is not null -- Filtrar somente os receivables que já foram integrados com o erp					
+					and rec.erp_receipt_id is not null -- Filtrar somente os receivables que já foram integrados com o erp					
 					and rec.receivable_id_smartfin is not null; -- Filtrar somente os registros de smartfin que foram gerados através da proc sp_create_smartfin_receivables;
 
 declare continue handler for not found set done=1;
