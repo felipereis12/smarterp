@@ -1,4 +1,4 @@
-select 
+select  
      order_to_cash.erp_business_unit
     ,order_to_cash.erp_legal_entity
     ,order_to_cash.erp_subsidiary
