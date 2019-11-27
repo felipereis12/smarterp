@@ -95,7 +95,7 @@ where order_to_cash.id = @order_to_cash_id;
 insert into oic_db.receivable
 			(order_to_cash_id,
 			erp_receivable_id,
-			erp_receivable_receipt_id,
+			erp_receipt_id,
 			erp_receivable_customer_id,
 			erp_clustered_receivable_id,
 			erp_clustered_receivable_customer_id,
@@ -134,7 +134,7 @@ insert into oic_db.receivable
 			values
 			(@order_to_cash_id, -- order_to_cash_id
 			null, -- erp_receivable_id
-			null, -- erp_receivable_receipt_id
+			null, -- erp_receipt_id
 			null, -- erp_receivable_customer_id
 			null, -- erp_clustered_receivable_id
 			null, -- erp_clustered_receivable_customer_id
@@ -187,6 +187,8 @@ set receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_cu
 
 where receivable.id = @receivable_id;
 
+-- if ( true /* select not exists ( select 1 from oic_db.supplier where identification_financial_responsible = '23383105000172') */ ) then 
+
 insert into oic_db.supplier
 			(erp_supplier_id,
 			full_name,
@@ -238,7 +240,8 @@ insert into oic_db.supplier
 			null, -- erp_supplier_status_transaction
 			null, -- erp_supplier_log
 			null, -- erp_filename
-			null); -- erp_line_in_file
+			null) ; -- erp_line_in_file
+-- end if;
 
 insert into oic_db.payable
 			(unity_identification,
@@ -272,8 +275,8 @@ insert into oic_db.payable
 			null, -- erp_subsidiary
 			null, -- acronym
 			null, -- erp_payable_id
-			null, -- receivable_id
-			@receivable_id, -- erp_receivable_id
+			@receivable_id, -- receivable_id
+			null, -- erp_receivable_id
 			null, -- erp_clustered_receivable_id
 			null, -- erp_payable_receipt_id
 			null, -- erp_supplier_id
