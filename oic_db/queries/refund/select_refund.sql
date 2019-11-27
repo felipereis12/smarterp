@@ -1,4 +1,4 @@
-select  
+select   
 	 refund.*  -- Utilizar aqui somente os campos necessários para a integração
     ,invoice_customer.erp_customer_id
     ,invoice_customer.*  -- Utilizar aqui somente os campos necessários para a integração
