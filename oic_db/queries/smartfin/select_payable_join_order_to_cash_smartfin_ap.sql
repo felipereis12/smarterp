@@ -1,5 +1,6 @@
 select 
-	 pay.erp_business_unit
+	 pay.unity_identification
+	,pay.erp_business_unit
     ,pay.erp_legal_entity
     ,pay.erp_subsidiary
     ,pay.acronym
