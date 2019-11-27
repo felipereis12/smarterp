@@ -72,6 +72,6 @@ and otc.erp_receivable_status_transaction = 'clustered_receivable_created' -- Fi
 and rec.converted_smartfin <> 'yes'
 and rec.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
 and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
--- and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados no erp e devem ser baixados
+and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados no erp e devem ser baixados
 and rec.net_value > 0
 and rec.transaction_type in ('debit_account_recurring','cash','boleto') -- Neste caso a integração deverá filtrar somente os receivables cujos métodos de recebimentos são débito em conta corrente, dinheiro ou boleto 
