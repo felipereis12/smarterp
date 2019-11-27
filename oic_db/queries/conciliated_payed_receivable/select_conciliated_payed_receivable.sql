@@ -1,6 +1,6 @@
 select 
 	cpr.* 
-    ,crc.erp_customer_id
+    ,crc.erp_customer_id 
     ,crc.full_name
     ,crc.identification_financial_responsible
 from conciliated_payed_receivable cpr
