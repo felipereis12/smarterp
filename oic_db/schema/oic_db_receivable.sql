@@ -29,7 +29,7 @@ CREATE TABLE `receivable` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `order_to_cash_id` int(11) NOT NULL,
   `erp_receivable_id` int(11) DEFAULT NULL,
-  `erp_receivable_receipt_id` int(11) DEFAULT NULL,
+  `erp_receipt_id` int(11) DEFAULT NULL,
   `erp_receivable_customer_id` int(11) DEFAULT NULL,
   `erp_clustered_receivable_id` int(11) DEFAULT NULL,
   `erp_clustered_receivable_customer_id` int(11) DEFAULT NULL,
