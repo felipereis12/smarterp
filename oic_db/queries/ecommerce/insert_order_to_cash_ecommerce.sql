@@ -94,7 +94,6 @@ order_to_cash.acronym = organization_from_to_version.acronym
 where order_to_cash.id = @order_to_cash_id;
 
 
-
 insert into oic_db.invoice_customer
 				(order_to_cash_id,
 				country,
