@@ -3092,7 +3092,7 @@ insert into oic_db.invoice_customer
 insert into oic_db.receivable
 				(order_to_cash_id,
 				erp_receivable_id,
-				erp_receivable_receipt_id,
+				erp_receipt_id,
 				erp_receivable_customer_id,
 				erp_clustered_receivable_id,
 				erp_clustered_receivable_customer_id,
@@ -3131,7 +3131,7 @@ insert into oic_db.receivable
 				values
 				(@order_to_cash_id, -- order_to_cash_id
 				null, -- erp_receivable_id
-				null, -- erp_receivable_receipt_id
+				null, -- erp_receipt_id
 				null, -- erp_receivable_customer_id
 				null, -- erp_clustered_receivable_id
 				null, -- erp_clustered_receivable_customer_id
@@ -3371,7 +3371,7 @@ where order_to_cash.id = @order_to_cash_id;
 insert into oic_db.receivable
 			(order_to_cash_id,
 			erp_receivable_id,
-			erp_receivable_receipt_id,
+			erp_receipt_id,
 			erp_receivable_customer_id,
 			erp_clustered_receivable_id,
 			erp_clustered_receivable_customer_id,
@@ -3410,7 +3410,7 @@ insert into oic_db.receivable
 			values
 			(@order_to_cash_id, -- order_to_cash_id
 			null, -- erp_receivable_id
-			null, -- erp_receivable_receipt_id
+			null, -- erp_receipt_id
 			null, -- erp_receivable_customer_id
 			null, -- erp_clustered_receivable_id
 			null, -- erp_clustered_receivable_customer_id
