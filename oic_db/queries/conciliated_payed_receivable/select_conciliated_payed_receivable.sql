@@ -1,9 +1,25 @@
 select 
-	rec.erp_receivable_id
-	,cpr.* 
-    ,crc.erp_customer_id 
-    ,crc.full_name
+	otc.id
+	,otc.erp_business_unit
+    ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
+    ,cpr.bank_number
+    ,cpr.bank_branch
+    ,cpr.bank_account
+    ,rec.net_value
+    ,rec.conciliator_id
+    ,rec.credit_card_brand
+    ,rec.contract_number
+    ,rec.transaction_type
+    ,rec.truncated_credit_card
+    ,rec.current_credit_card_installment
+    ,rec.total_credit_card_installment
+    ,rec.nsu
+    ,rec.authorization_code
+    ,rec.administration_tax_percentage
+    ,rec.administration_tax_value
+    ,rec.billing_date
+    ,rec.credit_date
 from conciliated_payed_receivable cpr
 
 inner join receivable rec
