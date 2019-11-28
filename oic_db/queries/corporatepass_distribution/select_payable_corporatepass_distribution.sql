@@ -24,6 +24,6 @@ and otc.origin_system = 'corporatepass' -- Integração em paralalo por origem (
 and otc.operation = 'distribution' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and pay.erp_payable_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and pay.erp_payable_id is null -- Filtrar somente os receivables que ainda não foram integrados com o erp
-and rec.transaction_type = 'boleto' -- Neste caso a integração de corporatepass repasse deve considerar somente boleto
+and rec.transaction_type = 'bank_transfer' -- Neste caso a integração de corporatepass repasse deve considerar somente boleto
 and rec.erp_receivable_id is not null
 and pay.erp_supplier_id is not null;
