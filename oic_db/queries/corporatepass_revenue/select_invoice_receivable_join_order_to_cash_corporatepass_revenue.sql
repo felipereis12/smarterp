@@ -21,7 +21,7 @@ on order_to_cash.id = receivable.order_to_cash_id
 where order_to_cash.country = 'Brazil' -- Integração em paralelo por operação do país
 and order_to_cash.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
 and order_to_cash.origin_system = 'corporatepass' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
-and order_to_cash.operation = 'renevue' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
+and order_to_cash.operation = 'revenue' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and order_to_cash.to_generate_invoice = 'yes'
 and order_to_cash.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and invoice.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
