@@ -221,11 +221,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -634,11 +634,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -1048,11 +1048,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -1461,11 +1461,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -1874,11 +1874,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -2287,11 +2287,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -3534,11 +3534,11 @@ update receivable
 inner join order_to_cash
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
-	,receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_receivable_customer_id = customer.erp_customer_id
+	,receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 

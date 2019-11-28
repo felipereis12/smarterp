@@ -57,7 +57,7 @@ from receivable rec
 inner join order_to_cash otc
 on otc.id = rec.order_to_cash_id
 
-inner join clustered_receivable_customer crc
+inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
 left join receivable_erp_configurations recg
@@ -73,7 +73,7 @@ and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
-and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
+and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 and rec.erp_receivable_id is null -- Filtrar somente os receivables que ainda não foram integrados com o erp
 and rec.transaction_type = 'credit_card_recurring' -- Integração em paralalo por tipo de transação (Cartão de crédito recorrente, cartão de débito recorrente, débito em conta, boleto etc...)
 
@@ -114,7 +114,7 @@ from receivable rec
 inner join order_to_cash otc
 on otc.id = rec.order_to_cash_id
 
-inner join clustered_receivable_customer crc
+inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
 left join receivable_erp_configurations recg
@@ -130,7 +130,7 @@ and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
-and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
+and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 and rec.erp_receivable_id is null -- Filtrar somente os receivables que ainda não foram integrados com o erp
 and rec.transaction_type = 'credit_card_recurring' -- Integração em paralalo por tipo de transação (Cartão de crédito recorrente, cartão de débito recorrente, débito em conta, boleto etc...)
 and rec.administration_tax_value > 0
@@ -172,7 +172,7 @@ from receivable rec
 inner join order_to_cash otc
 on otc.id = rec.order_to_cash_id
 
-inner join clustered_receivable_customer crc
+inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
 left join receivable_erp_configurations recg
@@ -188,7 +188,7 @@ and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
-and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
+and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 and rec.erp_receivable_id is null -- Filtrar somente os receivables que ainda não foram integrados com o erp
 and rec.transaction_type = 'credit_card_recurring' -- Integração em paralalo por tipo de transação (Cartão de crédito recorrente, cartão de débito recorrente, débito em conta, boleto etc...)
 and rec.interest_value > 0

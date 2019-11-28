@@ -65,14 +65,13 @@ end;
 
 set @v_keycontrol 	:= concat_ws('_','sp_create_smartfin_receivables',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type));
 
-if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivable_customer crc
+if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									  inner join organization_from_to_version oftv
 									  on oftv.fiscal_federal_identification = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 
 		
         /*set @resultset := exists (*/
 			select 
-				
 				 @v_unity_identification := oftv.organization_from_to_unity_identification 
 				,@v_erp_business_unit := oftv.erp_business_unit 
 				,@v_erp_legal_entity := oftv.erp_legal_entity
@@ -83,7 +82,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 				,@v_erp_receivable_customer_identification := crc.identification_financial_responsible			
 				
 				
-			from clustered_receivable_customer crc
+			from customer crc
 			
 			inner join organization_from_to_version oftv
 			on oftv.fiscal_federal_identification = crc.identification_financial_responsible 
@@ -99,11 +98,11 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
     set done = 0;
     open cur1;
     
-    SmartfinOperationLoop: loop
+    SmartfinReceivableLoop: loop
     
         fetch cur1 into v_id_receivable;
                         
-		if done = 1 then leave SmartfinOperationLoop; end if;
+		if done = 1 then leave SmartfinReceivableLoop; end if;
 
 		start transaction;
 
@@ -283,7 +282,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 		
 		where receivable.id = v_id_receivable ;
             
-    end loop SmartfinOperationLoop;
+    end loop SmartfinReceivableLoop;
     
     close cur1;	
     

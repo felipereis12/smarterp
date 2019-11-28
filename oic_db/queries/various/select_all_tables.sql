@@ -1,10 +1,10 @@
 select * from order_to_cash;
--- select * from invoice_customer;
--- select * from clustered_receivable_customer;
+select * from invoice_customer;
 select * from receivable;
+select * from customer;
 select * from supplier;
--- select * from payable;
--- select * from clustered_receivable;
+select * from payable;
+select * from clustered_receivable;
 -- select * from receivable_erp_configurations;
 select * from invoice;
 select * from invoice_items;

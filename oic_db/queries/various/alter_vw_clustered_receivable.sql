@@ -8,8 +8,8 @@ VIEW vw_clustered_receivable AS
         order_to_cash.erp_legal_entity AS erp_legal_entity,
         order_to_cash.erp_subsidiary AS erp_subsidiary,
         order_to_cash.operation AS operation,
-        clustered_receivable_customer.erp_customer_id AS erp_customer_id,
-        clustered_receivable_customer.full_name AS full_name,
+        customer.erp_customer_id AS erp_customer_id,
+        customer.full_name AS full_name,
         receivable.transaction_type AS transaction_type,
         receivable.credit_card_brand AS credit_card_brand,
         receivable.contract_number AS contract_number,
@@ -38,7 +38,7 @@ VIEW vw_clustered_receivable AS
 								or	( receivable_v2.erp_receivable_id is not null ) 
 							)
 					))))
-        JOIN clustered_receivable_customer ON ((clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification)))
+        JOIN customer ON ((customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification)))
     WHERE
         ((order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process' and order_to_cash.to_generate_receivable = 'yes')
             AND ISNULL(receivable.erp_clustered_receivable_id)

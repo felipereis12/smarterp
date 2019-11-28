@@ -150,7 +150,7 @@ insert into `oic_db`.`receivable`
 `erp_receivable_id`,
 `erp_receivable_customer_id`,
 `erp_clustered_receivable_id`,
-`erp_clustered_receivable_customer_id`,
+`erp_customer_id`,
 `is_smartfin`,
 `transaction_type`,
 `contract_number`,
@@ -183,7 +183,7 @@ values
 null, -- erp_receivable_id
 null, -- erp_receivable_customer_id
 null, -- erp_clustered_receivable_id
-null, -- erp_clustered_receivable_customer_id
+null, -- erp_customer_id
 'yes', -- is_smartfin
 'credit_card_recurring', -- transaction_type
 '1288329736', -- contract_number
@@ -221,11 +221,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -551,7 +551,7 @@ insert into `oic_db`.`receivable`
 `erp_receivable_id`,
 `erp_receivable_customer_id`,
 `erp_clustered_receivable_id`,
-`erp_clustered_receivable_customer_id`,
+`erp_customer_id`,
 `is_smartfin`,
 `transaction_type`,
 `contract_number`,
@@ -584,7 +584,7 @@ values
 null, -- erp_receivable_id
 null, -- erp_receivable_customer_id
 null, -- erp_clustered_receivable_id
-null, -- erp_clustered_receivable_customer_id
+null, -- erp_customer_id
 'no', -- is_smartfin
 'debit_account_recurring', -- transaction_type
 '1288329725', -- contract_number
@@ -622,11 +622,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -953,7 +953,7 @@ insert into `oic_db`.`receivable`
 `erp_receivable_id`,
 `erp_receivable_customer_id`,
 `erp_clustered_receivable_id`,
-`erp_clustered_receivable_customer_id`,
+`erp_customer_id`,
 `is_smartfin`,
 `transaction_type`,
 `contract_number`,
@@ -986,7 +986,7 @@ values
 null, -- erp_receivable_id
 null, -- erp_receivable_customer_id
 null, -- erp_clustered_receivable_id
-null, -- erp_clustered_receivable_customer_id
+null, -- erp_customer_id
 'no', -- is_smartfin
 'credit_card_recurring', -- transaction_type
 '1288329736', -- contract_number
@@ -1024,11 +1024,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -1354,7 +1354,7 @@ insert into `oic_db`.`receivable`
 `erp_receivable_id`,
 `erp_receivable_customer_id`,
 `erp_clustered_receivable_id`,
-`erp_clustered_receivable_customer_id`,
+`erp_customer_id`,
 `is_smartfin`,
 `transaction_type`,
 `contract_number`,
@@ -1387,7 +1387,7 @@ values
 null, -- erp_receivable_id
 null, -- erp_receivable_customer_id
 null, -- erp_clustered_receivable_id
-null, -- erp_clustered_receivable_customer_id
+null, -- erp_customer_id
 'no', -- is_smartfin
 'debit_account_recurring', -- transaction_type
 '1288329725', -- contract_number
@@ -1425,11 +1425,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -1755,7 +1755,7 @@ insert into `oic_db`.`receivable`
 `erp_receivable_id`,
 `erp_receivable_customer_id`,
 `erp_clustered_receivable_id`,
-`erp_clustered_receivable_customer_id`,
+`erp_customer_id`,
 `is_smartfin`,
 `transaction_type`,
 `contract_number`,
@@ -1788,7 +1788,7 @@ values
 null, -- erp_receivable_id
 null, -- erp_receivable_customer_id
 null, -- erp_clustered_receivable_id
-null, -- erp_clustered_receivable_customer_id
+null, -- erp_customer_id
 'no', -- is_smartfin
 'debit_account_recurring', -- transaction_type
 '1288329725', -- contract_number
@@ -1826,11 +1826,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
@@ -2156,7 +2156,7 @@ insert into `oic_db`.`receivable`
 `erp_receivable_id`,
 `erp_receivable_customer_id`,
 `erp_clustered_receivable_id`,
-`erp_clustered_receivable_customer_id`,
+`erp_customer_id`,
 `is_smartfin`,
 `transaction_type`,
 `contract_number`,
@@ -2189,7 +2189,7 @@ values
 null, -- erp_receivable_id
 null, -- erp_receivable_customer_id
 null, -- erp_clustered_receivable_id
-null, -- erp_clustered_receivable_customer_id
+null, -- erp_customer_id
 'no', -- is_smartfin
 'credit_card_recurring', -- transaction_type
 '1288329736', -- contract_number
@@ -2227,11 +2227,11 @@ update receivable
 inner join order_to_cash 
 on order_to_cash.id = receivable.order_to_cash_id
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
+inner join customer
+on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
-set receivable.erp_clustered_receivable_customer_id = clustered_receivable_customer.erp_customer_id,
-receivable.erp_receivable_customer_id = clustered_receivable_customer.erp_customer_id
+set receivable.erp_customer_id = customer.erp_customer_id,
+receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 

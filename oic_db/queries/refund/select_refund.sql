@@ -22,5 +22,5 @@ and order_to_cash.operation = 'person_plan' -- Neste caso filtrar somente person
 and refund.erp_refund_status_transaction = 'waiting_to_be_process'
 -- and invoice_customer.erp_customer_id is not null -- Filtrar somente os refuns que tiverem relacionamento com a invoice_customer, as quais já tiverem sido integradas com o erp
 and receivable.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
-and receivable.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
+and receivable.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 -- and receivable.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados com o erp

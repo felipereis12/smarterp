@@ -38,7 +38,7 @@ from receivable rec
 inner join order_to_cash otc
 on otc.id = rec.order_to_cash_id
 
-inner join clustered_receivable_customer crc
+inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
 left join receivable_erp_configurations recg
@@ -71,7 +71,7 @@ and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (Sm
 and otc.operation = 'person_plan' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.erp_receivable_status_transaction = 'clustered_receivable_created' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and rec.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
-and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
+and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados no erp e devem ser baixados
 and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados no erp e devem ser baixados
 and rec.net_value > 0

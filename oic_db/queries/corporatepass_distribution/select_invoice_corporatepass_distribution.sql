@@ -30,7 +30,7 @@ on otc.id = inv.order_to_cash_id
 inner join receivable rec
 on rec.order_to_cash_id = otc.id
 
-inner join clustered_receivable_customer crc
+inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
 left join invoice_erp_configurations iec

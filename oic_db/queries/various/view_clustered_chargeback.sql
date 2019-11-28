@@ -9,8 +9,8 @@ select
     ,order_to_cash.erp_legal_entity
     ,order_to_cash.erp_subsidiary
     ,order_to_cash.operation
-    ,clustered_receivable_customer.erp_customer_id
-    ,clustered_receivable_customer.full_name
+    ,customer.erp_customer_id
+    ,customer.full_name
     ,chargeback.transaction_type
 	,chargeback.credit_card_brand
 	,chargeback.contract_number
@@ -21,8 +21,8 @@ select
 
 from chargeback
 
-inner join clustered_receivable_customer
-on clustered_receivable_customer.chargeback_acquirer_label = chargeback.chargeback_acquirer_label
+inner join customer
+on customer.chargeback_acquirer_label = chargeback.chargeback_acquirer_label
 
 inner join receivable 
 on receivable.conciliator_id = chargeback.conciliator_id

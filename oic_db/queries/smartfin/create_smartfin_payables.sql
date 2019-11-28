@@ -43,7 +43,7 @@ declare cur1 cursor for
 					and otc.erp_receivable_status_transaction = 'created_at_erp' -- Filtrar somente os registros que já foram integrados o AR no Oracle
 					and otc.erp_receipt_status_transaction = 'created_at_erp' -- Filtrar somente os registros que já foram baixados (Receipt)
 					and rec.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
-					and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable_customer 
+					and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 					and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados com o erp
 					and rec.erp_receipt_id is not null -- Filtrar somente os receivables que já foram integrados com o erp					
 					and rec.receivable_id_smartfin is not null; -- Filtrar somente os registros de smartfin que foram gerados através da proc sp_create_smartfin_receivables;
@@ -59,7 +59,7 @@ end;
 
 set @v_keycontrol 	:= concat_ws('_','sp_create_smartfin_payables',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type));
 
-if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivable_customer crc
+if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									  inner join organization_from_to_version oftv
 									  on oftv.erp_legal_entity = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 

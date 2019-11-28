@@ -15,7 +15,7 @@ and rec.erp_clustered_receivable_id is not null -- Considerar somente os receiva
 and rec.erp_clustered_receivable_customer_id is not null -- Considerar somente os receivables que já foram convertidos em clustered_receivable, ou seja, que já foram aglutinados
 and rec.converted_smartfin <> 'yes'
 
-inner join clustered_receivable_customer crc
+inner join customer crc
 on crc.erp_customer_id = rec.erp_clustered_receivable_customer_id
 
 inner join order_to_cash otc

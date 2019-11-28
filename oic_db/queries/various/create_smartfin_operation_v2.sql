@@ -64,7 +64,7 @@ end;
 
 set @v_keycontrol 	:= concat_ws('_','sp_create_smartfin_operation',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type));
 
-if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivable_customer crc
+if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									  inner join organization_from_to_version oftv
 									  on oftv.erp_legal_entity = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 
@@ -90,7 +90,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from clustered_receivabl
 			,@v_erp_customer_id := crc.erp_customer_id
 			,@v_erp_clustered_receivable_customer_id := crc.erp_customer_id
 			,@v_erp_receivable_customer_identification := crc.identification_financial_responsible
-		from clustered_receivable_customer crc
+		from customer crc
 		
 		inner join organization_from_to_version oftv
 		on oftv.erp_legal_entity = crc.identification_financial_responsible 
