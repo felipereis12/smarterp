@@ -3818,7 +3818,7 @@ insert into oic_db.receivable
 				null, -- ecommerce_payment_terms
 				null, -- erp_payment_terms
 				null, -- conciliator_id
-				'boleto', -- transaction_type
+				'bank_transfer', -- transaction_type
 				null, -- contract_number
 				null, -- credit_card_brand
 				null, -- truncated_credit_card
