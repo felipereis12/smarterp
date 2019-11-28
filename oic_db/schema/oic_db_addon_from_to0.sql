@@ -29,7 +29,7 @@ CREATE TABLE `addon_from_to` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `country` enum('Brazil','Mexico','Colombia','Chile','Peru','Paraguay','Argentina','CostaRica','Guatemala','Ecuador','DominicanRepublic','Panama','ElSalvador') DEFAULT NULL,
   `origin_system` enum('smartsystem','biosystem','racesystem','nossystem','corporatepass','totalpass','magento','pdv','oic') DEFAULT NULL,
-  `operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','renevue','distribution') DEFAULT NULL,
+  `operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','revenue','distribution') DEFAULT NULL,
   `front_addon_id` varchar(45) DEFAULT NULL,
   `front_addon_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),

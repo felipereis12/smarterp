@@ -32,7 +32,7 @@ CREATE TABLE `invoice_erp_configurations` (
   `erp_subsidiary` varchar(45) DEFAULT NULL,
   `country` enum('Brazil','Mexico','Colombia','Chile','Peru','Paraguay','Argentina','CostaRica','Guatemala','Ecuador','DominicanRepublic','Panama','ElSalvador') DEFAULT NULL,
   `origin_system` enum('smartsystem','biosystem','racesystem','nossystem','corporatepass','totalpass','magento','pdv') DEFAULT NULL,
-  `operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','renevue','distribution') DEFAULT NULL,
+  `operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','revenue','distribution') DEFAULT NULL,
   `erp_source_name` varchar(100) DEFAULT NULL,
   `erp_type_transaction` varchar(100) DEFAULT NULL,
   `erp_payments_terms` varchar(100) DEFAULT NULL,

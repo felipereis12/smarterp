@@ -29,7 +29,7 @@ CREATE TABLE `product_from_to_version` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `country` enum('Brazil','Mexico','Colombia','Chile','Peru','Paraguay','Argentina','CostaRica','Guatemala','Ecuador','DominicanRepublic','Panama','ElSalvador') DEFAULT NULL,
   `product_from_to_origin_system` enum('smartsystem','biosystem','racesystem','nossystem','corporatepass','totalpass','magento','pdv','oic') DEFAULT NULL,
-  `product_from_to_operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','renevue','distribution') DEFAULT NULL,
+  `product_from_to_operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','revenue','distribution') DEFAULT NULL,
   `product_from_to_front_product_id` varchar(45) NOT NULL,
   `erp_item_ar_id` varchar(45) NOT NULL,
   `erp_item_ar_overdue_recovery_id` varchar(45) DEFAULT NULL,

@@ -38,7 +38,7 @@ CREATE TABLE `order_to_cash` (
   `to_generate_receivable` enum('yes','no') DEFAULT NULL,
   `to_generate_invoice` enum('yes','no') DEFAULT NULL,
   `origin_system` enum('smartsystem','biosystem','racesystem','nossystem','corporatepass','totalpass','magento','pdv','oic') NOT NULL,
-  `operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','renevue','distribution') NOT NULL,
+  `operation` enum('person_plan','corporate_plan','royalties','franchise_conciliator','uniform_sale_personal','uniform_sale_franchise','uniform_sale_own','product_sale','revenue','distribution') NOT NULL,
   `minifactu_id` int(11) DEFAULT NULL,
   `conciliator_id` varchar(100) DEFAULT NULL,
   `fin_id` int(11) DEFAULT NULL,
