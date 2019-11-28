@@ -27,6 +27,9 @@ on iit.id_invoice = inv.id
 inner join order_to_cash otc
 on otc.id = inv.order_to_cash_id
 
+inner join receivable rec
+on rec.order_to_cash_id = otc.id
+
 inner join clustered_receivable_customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
@@ -58,4 +61,5 @@ and otc.operation = 'distribution' -- Integração em paralelo por origem (Smart
 and otc.to_generate_invoice = 'yes'
 and otc.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and inv.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
+and rec.transaction_type = 'bank_transfer' -- Neste caso a integração de corporatepass repasse deve considerar somente boleto
 and day(current_date()) <= oftv.cutoff_limit_day -- Regra de cutoff
