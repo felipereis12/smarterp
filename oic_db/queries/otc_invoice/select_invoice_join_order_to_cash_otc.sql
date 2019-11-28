@@ -1,5 +1,6 @@
 select 
      otc.erp_business_unit
+    ,otc.erp_subsidiary
     ,iec.erp_source_name
     ,iec.erp_type_transaction
     ,iec.erp_payments_terms
