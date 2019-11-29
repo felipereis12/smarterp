@@ -147,7 +147,7 @@ insert into oic_db.receivable
 			null, -- conciliator_id
 			'credit_card_recurring', -- transaction_type
 			null, -- contract_number
-			'mastercard', -- credit_card_brand
+			'MASTER', -- credit_card_brand
 			null, -- truncated_credit_card
 			1, -- current_credit_card_installment
 			1, -- total_credit_card_installment

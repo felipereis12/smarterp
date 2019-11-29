@@ -187,7 +187,7 @@ null, -- erp_customer_id
 'yes', -- is_smartfin
 'credit_card_recurring', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '1232****8872', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -990,7 +990,7 @@ null, -- erp_customer_id
 'no', -- is_smartfin
 'credit_card_recurring', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '2134****2993', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2193,7 +2193,7 @@ null, -- erp_customer_id
 'no', -- is_smartfin
 'credit_card_recurring', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '2154****2992', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2503,7 +2503,7 @@ INSERT INTO `oic_db`.`chargeback`
 `conciliation_description`, -- Utilizar a coluna DESCRICAO do arquivo de retorno da Concil 
 `transaction_type`, -- Utilizar a coluna TIPO_TRANSACAO do arquivo de retorno da Concil - converter CREDITO para credit_card e DEBITO para debit_card
 `contract_number`,-- Utilizar a coluna ESTABELECIMENTO do arquivo de retorno da Concil 
-`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTERCARD para mastercard, HIPERCARD para hipercard, ELO para elo, VISA para visa e DINERS para diners
+`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTER para MASTER, HIPERCARD para hipercard, ELO para elo, VISA para VISA e DINERS para diners
 `truncated_credit_card`, -- Utilizar a coluna MASC_CARTAO do arquivo de retorno da Concil
 `current_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Left(NRO_PARCELA,2)
 `total_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Right(NRO_PARCELA,2)
@@ -2543,7 +2543,7 @@ null, -- front_log
 'CANCELAMENTO EFETUADO PELO PORTADOR', -- conciliation_description
 'credit_card', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '1232****8872', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2585,7 +2585,7 @@ INSERT INTO `oic_db`.`chargeback`
 `conciliation_description`, -- Utilizar a coluna DESCRICAO do arquivo de retorno da Concil 
 `transaction_type`, -- Utilizar a coluna TIPO_TRANSACAO do arquivo de retorno da Concil - converter CREDITO para credit_card e DEBITO para debit_card
 `contract_number`,-- Utilizar a coluna ESTABELECIMENTO do arquivo de retorno da Concil 
-`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTERCARD para mastercard, HIPERCARD para hipercard, ELO para elo, VISA para visa e DINERS para diners
+`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTER para MASTER, HIPERCARD para hipercard, ELO para elo, VISA para VISA e DINERS para diners
 `truncated_credit_card`, -- Utilizar a coluna MASC_CARTAO do arquivo de retorno da Concil
 `current_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Left(NRO_PARCELA,2)
 `total_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Right(NRO_PARCELA,2)
@@ -2625,7 +2625,7 @@ null, -- front_log
 'CANCELAMENTO EFETUADO PELO PORTADOR', -- conciliation_description
 'credit_card', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '2134****2993', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2666,7 +2666,7 @@ INSERT INTO `oic_db`.`chargeback`
 `conciliation_description`, -- Utilizar a coluna DESCRICAO do arquivo de retorno da Concil 
 `transaction_type`, -- Utilizar a coluna TIPO_TRANSACAO do arquivo de retorno da Concil - converter CREDITO para credit_card e DEBITO para debit_card
 `contract_number`,-- Utilizar a coluna ESTABELECIMENTO do arquivo de retorno da Concil 
-`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTERCARD para mastercard, HIPERCARD para hipercard, ELO para elo, VISA para visa e DINERS para diners
+`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTER para MASTER, HIPERCARD para hipercard, ELO para elo, VISA para VISA e DINERS para diners
 `truncated_credit_card`, -- Utilizar a coluna MASC_CARTAO do arquivo de retorno da Concil
 `current_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Left(NRO_PARCELA,2)
 `total_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Right(NRO_PARCELA,2)
@@ -2706,7 +2706,7 @@ null, -- front_log
 'CANCELAMENTO EFETUADO PELO PORTADOR', -- conciliation_description
 'credit_card', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '2154****2992', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2742,7 +2742,7 @@ INSERT INTO `oic_db`.`conciliated_payed_receivable`
 `conciliation_description`, -- Utilizar a coluna DESCRICAO do arquivo de retorno da Concil 
 `transaction_type`, -- Utilizar a coluna TIPO_TRANSACAO do arquivo de retorno da Concil - converter CREDITO para credit_card e DEBITO para debit_card
 `contract_number`, -- Utilizar a coluna ESTABELECIMENTO do arquivo de retorno da Concil 
-`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTERCARD para mastercard, HIPERCARD para hipercard, ELO para elo, VISA para visa e DINERS para diners
+`credit_card_brand`, -- Utilizar a coluna BANDEIRA do arquivo de retorno da Concil - converter os valores AMEX para americanexpress, MASTER para MASTER, HIPERCARD para hipercard, ELO para elo, VISA para VISA e DINERS para diners
 `truncated_credit_card`, -- Utilizar a coluna MASC_CARTAO do arquivo de retorno da Concil
 `current_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Left(NRO_PARCELA,2)
 `total_credit_card_installment`, -- Utilizar a coluna NRO_PARCELA do arquivo de retorno da Concil -- Right(NRO_PARCELA,2)
@@ -2777,7 +2777,7 @@ null, -- erp_receivable_customer_id
 'COMPROVANTE', -- conciliation_description
 'credit_card', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '1232****8872', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2848,7 +2848,7 @@ null, -- erp_receivable_customer_id
 'COMPROVANTE', -- conciliation_description
 'credit_card', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '2134****2993', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment
@@ -2920,7 +2920,7 @@ null, -- erp_receivable_customer_id
 'COMPROVANTE', -- conciliation_description
 'credit_card', -- transaction_type
 '1288329736', -- contract_number
-'mastercard', -- credit_card_brand
+'MASTER', -- credit_card_brand
 '2154****2992', -- truncated_credit_card
 1, -- current_credit_card_installment
 1, -- total_credit_card_installment

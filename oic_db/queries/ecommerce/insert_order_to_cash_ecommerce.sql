@@ -198,7 +198,7 @@ insert into oic_db.receivable
 				null, -- conciliator_id
 				'online_credit_card', -- transaction_type -- esse valor deve variar de acordo com a transação no e-commerce (cartão de crédito = online_credit_card, cartão de débito = online_debit_card)
 				'123458', -- contract_number -- esse valor deve vir do e-commerce - trata-se do número de contrato com as operadoras de cartão de crédito
-				'mastercard', -- credit_card_brand -- bandeira do cartão de crédito (mastercard, visa, americanexpress, elo, diners ou hipercard)
+				'MASTER', -- credit_card_brand -- bandeira do cartão de crédito (MASTER, VISA, americanexpress, elo, diners ou hipercard)
 				'4458', -- truncated_credit_card --  no caso do e-commerce somentes os quatro ultimos dígitos do cartão é fornecido
 				1, -- current_credit_card_installment -- trata-se da parcela atual. Neste caso sempre considerar 1, pois o Oracle ERP que gerará as parcelas de acordo com a condição de pagamento
 				3, -- total_credit_card_installment -- trata-se do total de parcelas.
