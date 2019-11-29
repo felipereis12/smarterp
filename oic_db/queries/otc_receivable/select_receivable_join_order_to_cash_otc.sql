@@ -2,6 +2,7 @@ select
 	 t1.erp_business_unit
 	,t1.front_id
 	,t1.fin_id
+    ,t1.conciliator_id
     ,t1.minifactu_id
 	,t1.id
     ,t1.idx_qry
@@ -11,6 +12,8 @@ select
     ,t1.erp_currency_code
     ,t1.erp_currency_conversion_type
     ,t1.erp_interface_line_context
+    ,t1.erp_payment_code
+    ,t1.erp_set_of_books_id
     ,t1.erp_memo_line
     ,t1.erp_clustered_receivable_id
     ,t1.identification_financial_responsible
@@ -47,10 +50,12 @@ select
     ,1 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
-    ,recg.erp_payments_terms
+    ,recg.erp_payments_terms    
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
     ,recg.erp_interface_line_context
+    ,recg.erp_payment_code
+    ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
@@ -112,6 +117,8 @@ select
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
     ,recg.erp_interface_line_context
+    ,recg.erp_payment_code
+    ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
@@ -174,6 +181,8 @@ select
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
     ,recg.erp_interface_line_context
+    ,recg.erp_payment_code
+    ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
