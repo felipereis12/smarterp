@@ -29,6 +29,8 @@ select
     ,t1.billing_date
     ,t1.credit_date
     ,t1.converted_smartfin
+    ,if(month(t1.billing_date)=month(current_date()),t1.billing_date,current_date()) as erp_trx_date
+    ,if(month(t1.billing_date)=month(current_date()),t1.billing_date,current_date()) as erp_gl_date    
 from (
 /*
 gross_value => valor serviço/mercadororia + juros/mora
