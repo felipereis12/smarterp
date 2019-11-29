@@ -34,7 +34,7 @@ CREATE TABLE `clustered_chargeback` (
   `erp_subsidiary` varchar(45) DEFAULT NULL,
   `erp_clustered_receivable_customer_id` int(11) DEFAULT NULL,
   `contract_number` varchar(45) DEFAULT NULL,
-  `credit_card_brand` set('mastercard','visa','americanexpress','elo','diners','hipercard') DEFAULT NULL,
+  `credit_card_brand` set('MASTER','VISA','americanexpress','elo','diners','hipercard') DEFAULT NULL,
   `billing_date` date DEFAULT NULL,
   `credit_date` date DEFAULT NULL,
   `price_list_value` float DEFAULT NULL,

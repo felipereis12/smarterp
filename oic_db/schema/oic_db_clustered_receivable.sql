@@ -34,7 +34,7 @@ CREATE TABLE `clustered_receivable` (
   `erp_subsidiary` varchar(45) NOT NULL,
   `erp_clustered_receivable_customer_id` int(11) NOT NULL,
   `contract_number` varchar(45) NOT NULL,
-  `credit_card_brand` enum('mastercard','visa','americanexpress','elo','diners','hipercard') DEFAULT NULL,
+  `credit_card_brand` enum('MASTER','VISA','americanexpress','elo','diners','hipercard') DEFAULT NULL,
   `billing_date` date NOT NULL,
   `credit_date` date NOT NULL,
   `price_list_value` float DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `clustered_receivable` (
 
 LOCK TABLES `clustered_receivable` WRITE;
 /*!40000 ALTER TABLE `clustered_receivable` DISABLE KEYS */;
-INSERT INTO `clustered_receivable` VALUES (197,'2019-11-21 20:23:05','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1452,'1288329736','mastercard','2019-10-18','2019-11-18',890.7,329.4,329.4,0,3.1,0,0,0,3),(198,'2019-11-21 20:23:05','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1534,'1288329725',NULL,'2019-10-18','2019-11-18',890.7,329.4,329.4,0,0,0,0,0,3),(199,'2019-11-21 20:24:12','Brazil','307','BR02 - SMARTFIN','11050377000171','BR020001',1452,'1288329736','mastercard','2019-10-17','2019-11-17',890.7,329.4,329.4,0,3.1,0,0,0,3),(200,'2019-11-21 20:24:12','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1684,'1288329736','mastercard','2019-10-17','2019-11-17',890.7,329.4,329.4,0,3.1,0,0,0,3);
+INSERT INTO `clustered_receivable` VALUES (197,'2019-11-21 20:23:05','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1452,'1288329736','MASTER','2019-10-18','2019-11-18',890.7,329.4,329.4,0,3.1,0,0,0,3),(198,'2019-11-21 20:23:05','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1534,'1288329725',NULL,'2019-10-18','2019-11-18',890.7,329.4,329.4,0,0,0,0,0,3),(199,'2019-11-21 20:24:12','Brazil','307','BR02 - SMARTFIN','11050377000171','BR020001',1452,'1288329736','MASTER','2019-10-17','2019-11-17',890.7,329.4,329.4,0,3.1,0,0,0,3),(200,'2019-11-21 20:24:12','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1684,'1288329736','MASTER','2019-10-17','2019-11-17',890.7,329.4,329.4,0,3.1,0,0,0,3);
 /*!40000 ALTER TABLE `clustered_receivable` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

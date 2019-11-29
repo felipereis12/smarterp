@@ -34,7 +34,7 @@ CREATE TABLE `clustered_chargeback` (
   `erp_subsidiary` varchar(45) DEFAULT NULL,
   `erp_clustered_receivable_customer_id` int(11) DEFAULT NULL,
   `contract_number` varchar(45) DEFAULT NULL,
-  `credit_card_brand` set('mastercard','visa','americanexpress','elo','diners','hipercard') DEFAULT NULL,
+  `credit_card_brand` set('MASTER','VISA','americanexpress','elo','diners','hipercard') DEFAULT NULL,
   `billing_date` date DEFAULT NULL,
   `credit_date` date DEFAULT NULL,
   `price_list_value` float DEFAULT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE `clustered_chargeback` (
 
 LOCK TABLES `clustered_chargeback` WRITE;
 /*!40000 ALTER TABLE `clustered_chargeback` DISABLE KEYS */;
-INSERT INTO `clustered_chargeback` VALUES (9,'2019-11-21 20:36:58','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1452,'1288329736','mastercard','2019-11-17','2019-11-29',NULL,NULL,NULL,NULL,3.1,NULL,0,NULL,NULL),(10,'2019-11-21 20:36:58','Brazil','307','BR02 - SMARTFIN','11050377000171','BR020001',1452,'1288329736','mastercard','2019-11-17','2019-11-29',NULL,NULL,NULL,NULL,3.1,NULL,0,NULL,NULL);
+INSERT INTO `clustered_chargeback` VALUES (9,'2019-11-21 20:36:58','Brazil','1','BR01 - SMARTFIT','07594978000178','BR010001',1452,'1288329736','MASTER','2019-11-17','2019-11-29',NULL,NULL,NULL,NULL,3.1,NULL,0,NULL,NULL),(10,'2019-11-21 20:36:58','Brazil','307','BR02 - SMARTFIN','11050377000171','BR020001',1452,'1288329736','MASTER','2019-11-17','2019-11-29',NULL,NULL,NULL,NULL,3.1,NULL,0,NULL,NULL);
 /*!40000 ALTER TABLE `clustered_chargeback` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

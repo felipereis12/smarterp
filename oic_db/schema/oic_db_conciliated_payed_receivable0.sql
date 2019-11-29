@@ -39,7 +39,7 @@ CREATE TABLE `conciliated_payed_receivable` (
   `conciliation_description` varchar(255) NOT NULL,
   `transaction_type` enum('credit_card','debit_card') NOT NULL,
   `contract_number` varchar(50) NOT NULL,
-  `credit_card_brand` set('mastercard','visa','americanexpress','elo','diners','hipercard') NOT NULL,
+  `credit_card_brand` set('MASTER','VISA','americanexpress','elo','diners','hipercard') NOT NULL,
   `truncated_credit_card` varchar(45) DEFAULT NULL,
   `current_credit_card_installment` int(11) DEFAULT NULL,
   `total_credit_card_installment` int(11) DEFAULT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE `conciliated_payed_receivable` (
 
 LOCK TABLES `conciliated_payed_receivable` WRITE;
 /*!40000 ALTER TABLE `conciliated_payed_receivable` DISABLE KEYS */;
-INSERT INTO `conciliated_payed_receivable` VALUES (13,'2019-11-27 21:41:57','Brazil',NULL,'waiting_to_be_process',NULL,NULL,NULL,NULL,'abc123','PCV','COMPROVANTE','credit_card','1288329736','mastercard','1232****8872',1,1,'883765246',NULL,'332412',290.9,109.8,109.8,0,3.1,34.038,0,0,'2019-10-17','2019-11-17','341','1123','77662537',NULL,NULL),(14,'2019-11-27 21:41:57','Brazil',NULL,'waiting_to_be_process',NULL,NULL,NULL,NULL,'hdjuhs123','PCV','COMPROVANTE','credit_card','1288329736','mastercard','2134****2993',1,1,'3276518275',NULL,'332412',290.8,109.8,109.8,0,3.1,34.038,0,0,'2019-10-18','2019-11-18','341','1123','77662537',NULL,NULL),(15,'2019-11-27 21:41:57','Brazil',NULL,'waiting_to_be_process',NULL,NULL,NULL,NULL,'hdjude123','PCV','COMPROVANTE','credit_card','1288329736','mastercard','2154****2992',1,1,'3278628275',NULL,'332412',329,109.8,109.8,0,3.1,34.038,0,0,'2019-10-18','2019-11-18','341','1123','77662537',NULL,NULL);
+INSERT INTO `conciliated_payed_receivable` VALUES (13,'2019-11-27 21:41:57','Brazil',NULL,'waiting_to_be_process',NULL,NULL,NULL,NULL,'abc123','PCV','COMPROVANTE','credit_card','1288329736','MASTER','1232****8872',1,1,'883765246',NULL,'332412',290.9,109.8,109.8,0,3.1,34.038,0,0,'2019-10-17','2019-11-17','341','1123','77662537',NULL,NULL),(14,'2019-11-27 21:41:57','Brazil',NULL,'waiting_to_be_process',NULL,NULL,NULL,NULL,'hdjuhs123','PCV','COMPROVANTE','credit_card','1288329736','MASTER','2134****2993',1,1,'3276518275',NULL,'332412',290.8,109.8,109.8,0,3.1,34.038,0,0,'2019-10-18','2019-11-18','341','1123','77662537',NULL,NULL),(15,'2019-11-27 21:41:57','Brazil',NULL,'waiting_to_be_process',NULL,NULL,NULL,NULL,'hdjude123','PCV','COMPROVANTE','credit_card','1288329736','MASTER','2154****2992',1,1,'3278628275',NULL,'332412',329,109.8,109.8,0,3.1,34.038,0,0,'2019-10-18','2019-11-18','341','1123','77662537',NULL,NULL);
 /*!40000 ALTER TABLE `conciliated_payed_receivable` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

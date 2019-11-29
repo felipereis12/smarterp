@@ -44,7 +44,7 @@ CREATE TABLE `chargeback` (
   `conciliation_description` varchar(255) DEFAULT NULL,
   `transaction_type` enum('credit_card','debit_card') DEFAULT NULL,
   `contract_number` varchar(45) DEFAULT NULL,
-  `credit_card_brand` set('mastercard','visa','americanexpress','elo','diners','hipercard') DEFAULT NULL,
+  `credit_card_brand` set('MASTER','VISA','americanexpress','elo','diners','hipercard') DEFAULT NULL,
   `truncated_credit_card` varchar(45) DEFAULT NULL,
   `current_credit_card_installment` int(11) DEFAULT NULL,
   `total_credit_card_installment` int(11) DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `chargeback` (
 
 LOCK TABLES `chargeback` WRITE;
 /*!40000 ALTER TABLE `chargeback` DISABLE KEYS */;
-INSERT INTO `chargeback` VALUES (48,'2019-11-21 20:36:40','Brazil',10,NULL,'clustered_chargeback_created',NULL,NULL,NULL,'waiting_to_be_process',NULL,NULL,NULL,'CIELO','abc123','CHBK','CANCELAMENTO EFETUADO PELO PORTADOR','credit_card','1288329736','mastercard','1232****8872',1,1,'883765246',NULL,'332412',290.9,109.8,109.8,0,3.1,34.038,0,0,'2019-11-17','2019-11-29','341','1123','77662537',NULL,NULL),(49,'2019-11-21 20:36:40','Brazil',9,NULL,'clustered_chargeback_created',NULL,NULL,NULL,'waiting_to_be_process',NULL,NULL,NULL,'CIELO','hdjuhs123','CHBK','CANCELAMENTO EFETUADO PELO PORTADOR','credit_card','1288329736','mastercard','2134****2993',1,1,'3276518275',NULL,'332412',290.9,109.8,109.8,0,3.1,34.038,0,0,'2019-11-17','2019-11-29','341','1123','77662537',NULL,NULL),(50,'2019-11-21 20:36:40','Brazil',9,NULL,'clustered_chargeback_created',NULL,NULL,NULL,'waiting_to_be_process',NULL,NULL,NULL,'CIELO','hdjude123','CHBK','CANCELAMENTO EFETUADO PELO PORTADOR','credit_card','1288329736','mastercard','2154****2992',1,1,'3278628275',NULL,'332412',329,109.8,109.8,0,3.1,34.038,0,0,'2019-11-17','2019-11-29','341','1123','77662537',NULL,NULL);
+INSERT INTO `chargeback` VALUES (48,'2019-11-21 20:36:40','Brazil',10,NULL,'clustered_chargeback_created',NULL,NULL,NULL,'waiting_to_be_process',NULL,NULL,NULL,'CIELO','abc123','CHBK','CANCELAMENTO EFETUADO PELO PORTADOR','credit_card','1288329736','MASTER','1232****8872',1,1,'883765246',NULL,'332412',290.9,109.8,109.8,0,3.1,34.038,0,0,'2019-11-17','2019-11-29','341','1123','77662537',NULL,NULL),(49,'2019-11-21 20:36:40','Brazil',9,NULL,'clustered_chargeback_created',NULL,NULL,NULL,'waiting_to_be_process',NULL,NULL,NULL,'CIELO','hdjuhs123','CHBK','CANCELAMENTO EFETUADO PELO PORTADOR','credit_card','1288329736','MASTER','2134****2993',1,1,'3276518275',NULL,'332412',290.9,109.8,109.8,0,3.1,34.038,0,0,'2019-11-17','2019-11-29','341','1123','77662537',NULL,NULL),(50,'2019-11-21 20:36:40','Brazil',9,NULL,'clustered_chargeback_created',NULL,NULL,NULL,'waiting_to_be_process',NULL,NULL,NULL,'CIELO','hdjude123','CHBK','CANCELAMENTO EFETUADO PELO PORTADOR','credit_card','1288329736','MASTER','2154****2992',1,1,'3278628275',NULL,'332412',329,109.8,109.8,0,3.1,34.038,0,0,'2019-11-17','2019-11-29','341','1123','77662537',NULL,NULL);
 /*!40000 ALTER TABLE `chargeback` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

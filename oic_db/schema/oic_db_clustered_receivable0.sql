@@ -34,7 +34,7 @@ CREATE TABLE `clustered_receivable` (
   `erp_subsidiary` varchar(45) NOT NULL,
   `erp_clustered_receivable_customer_id` int(11) NOT NULL,
   `contract_number` varchar(45) NOT NULL,
-  `credit_card_brand` enum('mastercard','visa','americanexpress','elo','diners','hipercard') DEFAULT NULL,
+  `credit_card_brand` enum('MASTER','VISA','americanexpress','elo','diners','hipercard') DEFAULT NULL,
   `billing_date` date NOT NULL,
   `credit_date` date NOT NULL,
   `price_list_value` float DEFAULT NULL,
