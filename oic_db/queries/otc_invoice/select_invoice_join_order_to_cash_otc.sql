@@ -6,6 +6,8 @@ select
     ,iec.erp_currency_code
     ,iec.erp_currency_conversion_type
     ,iec.erp_interface_line_context
+    ,iec.erp_payment_code
+    ,iec.erp_set_of_books_id    
     ,iec.erp_product_category_fiscal
     ,rec.erp_clustered_receivable_id -- id do aglutinado
     ,otc.front_id -- id do front
@@ -16,12 +18,18 @@ select
     ,ivcr.full_name -- nome do responsável financeiro
     ,rec.nsu -- nsu
     ,rec.authorization_code -- código de autorização
+    ,rec.credit_card_brand
+	,rec.contract_number
+	,rec.erp_clustered_receivable_id
+	,otc.erp_subsidiary
     ,iit.id -- id do item da invoice
     ,iit.erp_item_ar_id -- código do item do ar no Oracle 
     ,iit.erp_gl_segment_product -- código do segmento contábil de produto
     ,iit.quantity -- Quantidade do item de venda
     ,iit.sale_price -- Preço praticado
     ,iit.list_price -- Preço de lista
+    ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_trx_date
+    ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date       
 from invoice ivc
 
 inner join invoice_items iit
