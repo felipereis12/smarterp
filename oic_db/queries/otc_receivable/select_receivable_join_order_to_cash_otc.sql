@@ -1,5 +1,8 @@
 select 
 	 t1.erp_business_unit
+	,t1.front_id
+	,t1.fin_id
+    ,t1.minifactu_id
 	,t1.id
     ,t1.idx_qry
 	,t1.erp_source_name
@@ -35,7 +38,10 @@ interest_value => juros/mora
 /*Valores bruto da venda*/
 select
 	 otc.erp_business_unit
-	,otc.id
+	,otc.front_id
+	,otc.fin_id
+    ,otc.minifactu_id
+    ,otc.id
     ,1 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
@@ -93,7 +99,10 @@ union
 /*Valores da taxa de administração da operadora*/
 select 
 	 otc.erp_business_unit
-	,otc.id
+	,otc.front_id
+	,otc.fin_id
+    ,otc.minifactu_id
+    ,otc.id
     ,2 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
@@ -152,7 +161,10 @@ union
 /*Valores de juros/mora*/
 select 
 	 otc.erp_business_unit
-	,otc.id
+	,otc.front_id
+	,otc.fin_id
+    ,otc.minifactu_id
+    ,otc.id
     ,3 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
