@@ -15,6 +15,7 @@ select
     ,t1.erp_payment_code
     ,t1.erp_set_of_books_id
     ,t1.erp_memo_line
+    ,t1.erp_attribute_category
     ,t1.erp_clustered_receivable_id
     ,t1.identification_financial_responsible
     ,t1.full_name
@@ -57,6 +58,7 @@ select
     ,recg.erp_payment_code
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
+    ,recg.erp_attribute_category
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
@@ -120,6 +122,7 @@ select
     ,recg.erp_payment_code
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
+    ,recg.erp_attribute_category
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
@@ -184,6 +187,7 @@ select
     ,recg.erp_payment_code
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
+    ,recg.erp_attribute_category
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
