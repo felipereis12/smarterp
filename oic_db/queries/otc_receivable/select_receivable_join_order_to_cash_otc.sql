@@ -24,6 +24,7 @@ select
     ,t1.credit_card_brand
     ,t1.contract_number
     ,t1.transaction_type
+    ,t1.warehouse_id
     ,t1.truncated_credit_card
     ,t1.current_credit_card_installment
     ,t1.total_credit_card_installment
@@ -59,6 +60,7 @@ select
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,recg.erp_attribute_category
+    ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
@@ -123,6 +125,7 @@ select
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,recg.erp_attribute_category
+	,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
@@ -188,6 +191,7 @@ select
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,recg.erp_attribute_category
+    ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
