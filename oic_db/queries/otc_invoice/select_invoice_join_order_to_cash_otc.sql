@@ -10,6 +10,7 @@ select
     ,iec.erp_set_of_books_id    
     ,iec.erp_product_category_fiscal
     ,iec.erp_attribute_category
+    ,iec.warehouse_id
     ,rec.erp_clustered_receivable_id -- id do aglutinado
     ,otc.front_id -- id do front
     ,otc.fin_id -- id do fin
