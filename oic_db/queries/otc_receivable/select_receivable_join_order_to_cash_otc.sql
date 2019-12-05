@@ -16,6 +16,7 @@ select
     ,t1.erp_set_of_books_id
     ,t1.erp_memo_line
     ,t1.erp_attribute_category
+    ,t1.warehouse_id
     ,t1.erp_clustered_receivable_id
     ,t1.identification_financial_responsible
     ,t1.full_name
@@ -59,6 +60,7 @@ select
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,recg.erp_attribute_category
+    ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
@@ -124,6 +126,7 @@ select
     ,recg.erp_memo_line
     ,recg.erp_attribute_category
     ,rec.erp_clustered_receivable_id
+    ,recg.warehouse_id
     ,crc.identification_financial_responsible
     ,crc.full_name
     ,rec.administration_tax_value*-1 as receivable_item_value
@@ -188,6 +191,7 @@ select
     ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
     ,recg.erp_attribute_category
+    ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
