@@ -1,3 +1,4 @@
+drop view if exists vw_clustered_chargeback; 
 create view vw_clustered_chargeback as 
 
 select 

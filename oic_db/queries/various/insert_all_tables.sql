@@ -3,7 +3,7 @@ set sql_mode = traditional;
 
 -- { example: Brazil, smartfit, person_plan, credit_card } =========================================================================================================================================
 -- create the order_to_cash header moviment
-insert into oic_db.order_to_cash
+insert into order_to_cash
 (country,
 unity_identification,
 erp_business_unit,
@@ -97,8 +97,9 @@ order_to_cash.to_generate_invoice = organization_from_to_version.to_generate_inv
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -122,6 +123,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'Felipe Volcov Nambara', -- full_name
 'natural_person', -- type_person
@@ -145,7 +147,7 @@ null, -- erp_filename
 null); -- erp_line_in_file
 
 -- create the receivable
-insert into oic_db.receivable
+insert into receivable
 (order_to_cash_id,
 erp_receivable_id,
 erp_receivable_customer_id,
@@ -230,7 +232,7 @@ receivable.erp_receivable_customer_id = customer.erp_customer_id
 where receivable.id = @receivable_id;
 
 -- create the invoice
-insert into oic_db.invoice
+insert into invoice
 (order_to_cash_id,
 erp_invoice_customer_id,
 transaction_type,
@@ -259,7 +261,7 @@ null); -- erp_line_in_file
 set @invoice_id = last_insert_id();
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -337,7 +339,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -416,7 +418,7 @@ where invoice_items.id = @invoice_id_item ;
 
 -- { example: Brazil, smartfit, person_plan, debit_account } =========================================================================================================================================
 -- create the order_to_cash header moviment
-insert into oic_db.order_to_cash
+insert into order_to_cash
 (country,
 unity_identification,
 erp_business_unit,
@@ -510,8 +512,9 @@ order_to_cash.to_generate_invoice = organization_from_to_version.to_generate_inv
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -535,6 +538,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'João da Silva', -- full_name
 'natural_person', -- type_person
@@ -558,7 +562,7 @@ null, -- erp_filename
 null); -- erp_line_in_file
 
 -- create the receivable
-insert into oic_db.receivable
+insert into receivable
 (order_to_cash_id,
 erp_receivable_id,
 erp_receivable_customer_id,
@@ -643,7 +647,7 @@ receivable.erp_receivable_customer_id = customer.erp_customer_id
 where receivable.id = @receivable_id;
 
 -- create the invoice
-insert into oic_db.invoice
+insert into invoice
 (order_to_cash_id,
 erp_invoice_customer_id,
 transaction_type,
@@ -672,7 +676,7 @@ null); -- erp_line_in_file
 set @invoice_id = last_insert_id();
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -750,7 +754,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -829,7 +833,7 @@ where invoice_items.id = @invoice_id_item ;
 
 -- { example: Brazil, smartfit, person_plan, credit_card } =========================================================================================================================================
 -- create the order_to_cash header moviment
-insert into oic_db.order_to_cash
+insert into order_to_cash
 (country,
 unity_identification,
 erp_business_unit,
@@ -924,8 +928,9 @@ order_to_cash.to_generate_invoice = organization_from_to_version.to_generate_inv
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -949,6 +954,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'Maria da Silva', -- full_name
 'natural_person', -- type_person
@@ -972,7 +978,7 @@ null, -- erp_filename
 null); -- erp_line_in_file
 
 -- create the receivable
-insert into oic_db.receivable
+insert into receivable
 (order_to_cash_id,
 erp_receivable_id,
 erp_receivable_customer_id,
@@ -1057,7 +1063,7 @@ receivable.erp_receivable_customer_id = customer.erp_customer_id
 where receivable.id = @receivable_id;
 
 -- create the invoice
-insert into oic_db.invoice
+insert into invoice
 (order_to_cash_id,
 erp_invoice_customer_id,
 transaction_type,
@@ -1086,7 +1092,7 @@ null); -- erp_line_in_file
 set @invoice_id = last_insert_id();
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -1164,7 +1170,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -1243,7 +1249,7 @@ where invoice_items.id = @invoice_id_item ;
 
 -- { example: Brazil, smartfit, person_plan, debit_account } =========================================================================================================================================
 -- create the order_to_cash header moviment
-insert into oic_db.order_to_cash
+insert into order_to_cash
 (country,
 unity_identification,
 erp_business_unit,
@@ -1337,8 +1343,9 @@ order_to_cash.to_generate_invoice = organization_from_to_version.to_generate_inv
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -1362,6 +1369,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'Carol da Silva', -- full_name
 'natural_person', -- type_person
@@ -1385,7 +1393,7 @@ null, -- erp_filename
 null); -- erp_line_in_file
 
 -- create the receivable
-insert into oic_db.receivable
+insert into receivable
 (order_to_cash_id,
 erp_receivable_id,
 erp_receivable_customer_id,
@@ -1470,7 +1478,7 @@ receivable.erp_receivable_customer_id = customer.erp_customer_id
 where receivable.id = @receivable_id;
 
 -- create the invoice
-insert into oic_db.invoice
+insert into invoice
 (order_to_cash_id,
 erp_invoice_customer_id,
 transaction_type,
@@ -1499,7 +1507,7 @@ null); -- erp_line_in_file
 set @invoice_id = last_insert_id();
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -1577,7 +1585,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -1656,7 +1664,7 @@ where invoice_items.id = @invoice_id_item ;
 
 -- { example: Brazil, smartfit, person_plan, debit_account } =========================================================================================================================================
 -- create the order_to_cash header moviment
-insert into oic_db.order_to_cash
+insert into order_to_cash
 (country,
 unity_identification,
 erp_business_unit,
@@ -1750,8 +1758,9 @@ order_to_cash.to_generate_invoice = organization_from_to_version.to_generate_inv
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -1775,6 +1784,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'José da Silva', -- full_name
 'natural_person', -- type_person
@@ -1798,7 +1808,7 @@ null, -- erp_filename
 null); -- erp_line_in_file
 
 -- create the receivable
-insert into oic_db.receivable
+insert into receivable
 (order_to_cash_id,
 erp_receivable_id,
 erp_receivable_customer_id,
@@ -1883,7 +1893,7 @@ receivable.erp_receivable_customer_id = customer.erp_customer_id
 where receivable.id = @receivable_id;
 
 -- create the invoice
-insert into oic_db.invoice
+insert into invoice
 (order_to_cash_id,
 erp_invoice_customer_id,
 transaction_type,
@@ -1912,7 +1922,7 @@ null); -- erp_line_in_file
 set @invoice_id = last_insert_id();
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -1990,7 +2000,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -2069,7 +2079,7 @@ where invoice_items.id = @invoice_id_item ;
 
 -- { example: Brazil, smartfit, person_plan, credit_card } =========================================================================================================================================
 -- create the order_to_cash header moviment
-insert into oic_db.order_to_cash
+insert into order_to_cash
 (country,
 unity_identification,
 erp_business_unit,
@@ -2163,8 +2173,9 @@ order_to_cash.to_generate_invoice = organization_from_to_version.to_generate_inv
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -2188,6 +2199,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'Jesus da Silva', -- full_name
 'natural_person', -- type_person
@@ -2211,7 +2223,7 @@ null, -- erp_filename
 null); -- erp_line_in_file
 
 -- create the receivable
-insert into oic_db.receivable
+insert into receivable
 (order_to_cash_id,
 erp_receivable_id,
 erp_receivable_customer_id,
@@ -2296,7 +2308,7 @@ receivable.erp_receivable_customer_id = customer.erp_customer_id
 where receivable.id = @receivable_id;
 
 -- create the invoice
-insert into oic_db.invoice
+insert into invoice
 (order_to_cash_id,
 erp_invoice_customer_id,
 transaction_type,
@@ -2325,7 +2337,7 @@ null); -- erp_line_in_file
 set @invoice_id = last_insert_id();
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -2405,7 +2417,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 -- create the invoice_items
-insert into oic_db.invoice_items
+insert into invoice_items
 (id_invoice,
 front_product_id,
 front_plan_id,
@@ -2483,7 +2495,7 @@ invoice_items.erp_gl_segment_product = plan_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 
-INSERT INTO oic_db.refund
+INSERT INTO refund
 (country,
 unity_identification,
 erp_business_unit,
@@ -2534,7 +2546,7 @@ null, -- erp_refund_id
 'Felipe Volcov Nambara', -- bank_account_owner_name
 '39367233892'); -- bank_account_owner_identification
 
-INSERT INTO oic_db.refund_items
+INSERT INTO refund_items
 (refund_id,
 front_id,
 refund_item_value,
@@ -2545,7 +2557,7 @@ VALUES
 75.425, -- refund_item_value
 '2019-01-10'); -- billing_date
 
-INSERT INTO oic_db.refund_items
+INSERT INTO refund_items
 (refund_id, -- refund_id
 front_id, -- front_id
 refund_item_value, -- refund_item_value
@@ -2557,7 +2569,7 @@ VALUES
 '2019-02-10');
 
 
-INSERT INTO oic_db.chargeback
+INSERT INTO chargeback
 (country,-- Criar uma integração para cada país. No caso do Brasil será um job para a conciliadora Concil
 erp_clustered_chargeback_id, -- Id do aglutinado de chargeback
 erp_receipt_id, -- Id único e imutável do receipt no Oracle
@@ -2639,7 +2651,7 @@ null, -- conciliator_filename
 null); -- acquirer_bank_filename
 
 
-INSERT INTO oic_db.chargeback
+INSERT INTO chargeback
 (country,-- Criar uma integração para cada país. No caso do Brasil será um job para a conciliadora Concil
 erp_clustered_chargeback_id, -- Id do aglutinado de chargeback
 erp_receipt_id, -- Id único e imutável do receipt no Oracle
@@ -2720,7 +2732,7 @@ null, -- authorization_code
 null, -- conciliator_filename
 null); -- acquirer_bank_filename
 
-INSERT INTO oic_db.chargeback
+INSERT INTO chargeback
 (country,-- Criar uma integração para cada país. No caso do Brasil será um job para a conciliadora Concil
 erp_clustered_chargeback_id, -- Id do aglutinado de chargeback
 erp_receipt_id, -- Id único e imutável do receipt no Oracle
@@ -2801,7 +2813,7 @@ null, -- authorization_code
 null, -- conciliator_filename
 null); -- acquirer_bank_filename
 
-INSERT INTO oic_db.conciliated_payed_receivable
+INSERT INTO conciliated_payed_receivable
 (country, -- Criar uma integração para cada país. No caso do Brasil será um job para a conciliadora Concil
 erp_receipt_id, -- Id único e imutável do receipt no Oracle
 erp_receipt_status_transaction, -- Ao ler o arquivo da Concil preencher com 'waiting_to_be_process'
@@ -2872,7 +2884,7 @@ null, -- authorization_code
 null, -- conciliator_filename
 null); -- acquirer_bank_filename
 
-INSERT INTO oic_db.conciliated_payed_receivable
+INSERT INTO conciliated_payed_receivable
 (country,
 erp_receipt_id,
 erp_receipt_status_transaction,
@@ -2944,7 +2956,7 @@ null, -- conciliator_filename
 null); -- acquirer_bank_filename
 
 
-INSERT INTO oic_db.conciliated_payed_receivable
+INSERT INTO conciliated_payed_receivable
 (country,
 erp_receipt_id,
 erp_receipt_status_transaction,
@@ -3016,7 +3028,7 @@ null, -- conciliator_filename
 null); -- acquirer_bank_filename
 
 
-insert into oic_db.order_to_cash
+insert into order_to_cash
 				(order_to_cash_id_smartfin,
 				country,
 				unity_identification,
@@ -3112,7 +3124,7 @@ where order_to_cash.id = @order_to_cash_id;
 
 
 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 				(order_to_cash_id,
 				country,
 				erp_customer_id,
@@ -3161,7 +3173,7 @@ insert into oic_db.invoice_customer
 				null, -- erp_filename
 				null); -- erp_line_in_file
 
-insert into oic_db.receivable
+insert into receivable
 				(order_to_cash_id,
 				erp_receivable_id,
 				erp_receipt_id,
@@ -3258,7 +3270,7 @@ set receivable.erp_payment_terms = payment_terms_from_to_version.erp_payment_ter
 
 where receivable.id = @receivable_id;
 
-insert into oic_db.invoice
+insert into invoice
 				(order_to_cash_id,
 				erp_invoice_id,
 				erp_invoice_customer_id,
@@ -3288,7 +3300,7 @@ insert into oic_db.invoice
 -- saves the auto increment id from order_to_cash table
 set @invoice_id = last_insert_id();
 
-insert into oic_db.invoice_items
+insert into invoice_items
 				(id_invoice,
 				front_product_id,
 				front_plan_id,
@@ -3353,7 +3365,7 @@ where invoice_items.id = @invoice_id_item ;
 INSERT INTO supplier VALUES (1,'2019-11-21 18:52:01',44584,'SPCMOR3     ','legal_person','07594978000178','BR','SP','São Paulo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'felipe.nambara@bioritmo.com.br',NULL,NULL,'yes','yes',NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO supplier VALUES (13,'2019-11-21 18:52:01',55455,'SPCSTO1     ','legal_person','07594978001654','BR','SP','São Paulo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'felipe.nambara@bioritmo.com.br',NULL,NULL,'yes','yes',NULL,NULL,NULL,NULL,NULL,NULL);
 
-insert into oic_db.order_to_cash
+insert into order_to_cash
 				(order_to_cash_id_smartfin,
 				country,
 				unity_identification,
@@ -3447,7 +3459,7 @@ order_to_cash.acronym = organization_from_to_version.acronym
 
 where order_to_cash.id = @order_to_cash_id;
 
-insert into oic_db.receivable
+insert into receivable
 			(order_to_cash_id,
 			erp_receivable_id,
 			erp_receipt_id,
@@ -3542,7 +3554,7 @@ set receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
-insert into oic_db.supplier
+insert into supplier
 			(erp_supplier_id,
 			full_name,
 			type_person,
@@ -3595,7 +3607,7 @@ insert into oic_db.supplier
 			null, -- erp_filename
 			null); -- erp_line_in_file
 
-insert into oic_db.payable
+insert into payable
 			(unity_identification,
 			erp_business_unit,
 			erp_legal_entity,
@@ -3671,7 +3683,7 @@ payable.acronym = organization_from_to_version.acronym
 
 where payable.id = @payable_id;            
 
-insert into oic_db.order_to_cash
+insert into order_to_cash
 				(order_to_cash_id_smartfin,
 				country,
 				unity_identification,
@@ -3765,7 +3777,7 @@ order_to_cash.acronym = organization_from_to_version.acronym
 
 where order_to_cash.id = @order_to_cash_id;
 
-insert into oic_db.receivable
+insert into receivable
 				(order_to_cash_id,
 				erp_receivable_id,
 				erp_receipt_id,
@@ -3847,7 +3859,7 @@ insert into oic_db.receivable
 -- saves the auto increment id from receivable table
 set @receivable_id = last_insert_id();
 
-insert into oic_db.invoice
+insert into invoice
 				(order_to_cash_id,
 				erp_invoice_id,
 				erp_invoice_customer_id,
@@ -3877,7 +3889,7 @@ insert into oic_db.invoice
 -- saves the auto increment id from order_to_cash table
 set @invoice_id = last_insert_id();
 
-insert into oic_db.invoice_items
+insert into invoice_items
 				(id_invoice,
 				front_product_id,
 				front_plan_id,
@@ -3940,7 +3952,7 @@ invoice_items.erp_gl_segment_product = product_from_to_version.erp_gl_segment_id
 where invoice_items.id = @invoice_id_item ;
 
 
-insert into oic_db.payable
+insert into payable
 			(unity_identification,
 			erp_business_unit,
 			erp_legal_entity,
@@ -4020,7 +4032,7 @@ payable.erp_supplier_id = supplier.erp_supplier_id
 
 where payable.id = @payable_id;
 
-insert into oic_db.order_to_cash
+insert into order_to_cash
 				(order_to_cash_id_smartfin,
 				country,
 				unity_identification,
@@ -4115,8 +4127,9 @@ order_to_cash.acronym = organization_from_to_version.acronym
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
+country,
 erp_customer_id,
 full_name,
 type_person,
@@ -4140,6 +4153,7 @@ erp_filename,
 erp_line_in_file)
 values
 (@order_to_cash_id, -- order_to_cash_id
+'Brazil', -- country
 null, -- erp_customer_id
 'Carrefour', -- full_name
 'legal_person', -- type_person
@@ -4162,7 +4176,7 @@ null, -- federal_registration
 null, -- erp_filename
 null); -- erp_line_in_file
 
-insert into oic_db.receivable
+insert into receivable
 				(order_to_cash_id,
 				erp_receivable_id,
 				erp_receipt_id,
@@ -4244,7 +4258,7 @@ insert into oic_db.receivable
 -- saves the auto increment id from receivable table
 set @receivable_id = last_insert_id();
 
-insert into oic_db.invoice
+insert into invoice
 				(order_to_cash_id,
 				erp_invoice_id,
 				erp_invoice_customer_id,
@@ -4274,7 +4288,7 @@ insert into oic_db.invoice
 -- saves the auto increment id from order_to_cash table
 set @invoice_id = last_insert_id();
 
-insert into oic_db.invoice_items
+insert into invoice_items
 				(id_invoice,
 				front_product_id,
 				front_plan_id,

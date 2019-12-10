@@ -98,25 +98,25 @@ declare continue handler for not found set done=1;
         and receivable.credit_date = v_credit_date
         and receivable.is_smartfin = v_is_smarftin; 
         
-        insert into `oic_db`.`clustered_receivable`
-							(`country`,
-							`unity_identification`,
-							`erp_business_unit`,
-							`erp_legal_entity`,
-							`erp_subsidiary`,
-							`erp_clustered_receivable_customer_id`,
-							`contract_number`,
-							`credit_card_brand`,
-							`billing_date`,
-							`credit_date`,
-							`gross_value`,
-							`net_value`,
-							`interest_value`,
-							`administration_tax_percentage`,
-							`administration_tax_value`,
-							`antecipation_tax_percentage`,
-							`antecipation_tax_value`,
-                            `quantity_of_receivable`)
+        insert into clustered_receivable
+							(country,
+							unity_identification,
+							erp_business_unit,
+							erp_legal_entity,
+							erp_subsidiary,
+							erp_clustered_receivable_customer_id,
+							contract_number,
+							credit_card_brand,
+							billing_date,
+							credit_date,
+							gross_value,
+							net_value,
+							interest_value,
+							administration_tax_percentage,
+							administration_tax_value,
+							antecipation_tax_percentage,
+							antecipation_tax_value,
+                            quantity_of_receivable)
 							VALUES
 							(v_country,
 							v_unity_identification,

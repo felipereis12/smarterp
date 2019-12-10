@@ -188,7 +188,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		
 		set @v_order_to_cash_id = last_insert_id();	
 		
-		insert into oic_db.receivable
+		insert into receivable
 		(id,
 		created_at,
 		receivable_id_smartfin,    
