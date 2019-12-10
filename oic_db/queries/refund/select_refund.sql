@@ -1,26 +1,45 @@
-select   
-	 refund.*  -- Utilizar aqui somente os campos necessários para a integração
-    ,invoice_customer.erp_customer_id
-    ,invoice_customer.*  -- Utilizar aqui somente os campos necessários para a integração
-    ,receivable.*  -- Utilizar aqui somente os campos necessários para a integração
-from refund 
+select   	
+     inc.erp_customer_id
+    ,ref.erp_business_unit
+    ,ref.erp_legal_entity    
+    ,ref.erp_subsidiary
+    ,ref.front_refund_id -- id unico
+    ,ref.refund_value
+    ,ref.origin_system
+    ,recg.erp_type_transaction
+    ,recg.erp_set_of_books_id
+    ,recg.erp_currency_code
+    ,recg.erp_interface_line_context
+    ,recg.erp_memo_line
+	,recg.erp_payments_terms
+	,recg.erp_payment_code
+    ,inc.identification_financial_responsible
+    ,inc.full_name
+    ,if(month(ref.issue_date)=month(current_date()),ref.issue_date,current_date()) as erp_trx_date
+    ,if(month(ref.issue_date)=month(current_date()),ref.issue_date,current_date()) as erp_gl_date
+from refund ref
 
-inner join invoice_customer
-on invoice_customer.identification_financial_responsible = refund.refund_requester_identification
+inner join invoice_customer inc
+on inc.identification_financial_responsible = ref.refund_requester_identification
+and inc.created_at = 
+					(
+						select
+							max(inc_v2.created_at)
+						from invoice_customer inc_v2
+						where inc_v2.identification_financial_responsible = inc.identification_financial_responsible
+					)
+-- and inc.erp_customer_id is not null
 
-inner join order_to_cash
-on order_to_cash.id = invoice_customer.order_to_cash_id
-and order_to_cash.country = refund.country
+inner join refund_erp_configurations recg
+on  recg.country = ref.country
+and recg.origin_system = ref.origin_system
+and recg.operation = ref.operation
 
-inner join receivable
-on receivable.order_to_cash_id = order_to_cash.id
+where ref.country = 'Brazil' -- Integração em paralalo por operação do país
+and ref.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
+and ref.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
+and ref.operation = 'person_plan' -- Neste caso filtrar somente person_plan, pois a operação de refund só ocorre para os planos de alunos
+and ref.erp_refund_status_transaction = 'waiting_to_be_process'
+-- and inc.erp_customer_id is not null -- Filtrar somente os refuns que tiverem relacionamento com a invoice_customer, as quais já tiverem sido integradas com o erp
 
-where order_to_cash.country = 'Brazil' -- Integração em paralalo por operação do país
-and order_to_cash.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
-and order_to_cash.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
-and order_to_cash.operation = 'person_plan' -- Neste caso filtrar somente person_plan, pois a operação de refund só ocorre para os planos de alunos
-and refund.erp_refund_status_transaction = 'waiting_to_be_process'
--- and invoice_customer.erp_customer_id is not null -- Filtrar somente os refuns que tiverem relacionamento com a invoice_customer, as quais já tiverem sido integradas com o erp
-and receivable.erp_clustered_receivable_id is not null -- Filtrar somente os receivables que possui relacionamento com a clustered_receivable
-and receivable.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
--- and receivable.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados com o erp
+
