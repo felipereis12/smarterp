@@ -1,5 +1,5 @@
-alter 
-VIEW vw_clustered_receivable AS
+drop view if exists vw_clustered_receivable; 
+create VIEW vw_clustered_receivable AS
     SELECT DISTINCT
         order_to_cash.country AS country,
         order_to_cash.origin_system AS origin_system,
