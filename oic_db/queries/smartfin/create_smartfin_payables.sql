@@ -78,11 +78,13 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		
         if exists (
 					select 
-						 sup.erp_supplier_id
-						,sup.identification_financial_responsible
+						 @v_erp_supplier_id := sup.erp_supplier_id
+						,@v_erp_payable_supplier_identification  := sup.identification_financial_responsible
                         
+                        /*
                         into @v_erp_supplier_id
 							,@v_erp_payable_supplier_identification 
+						*/
                         
 					from receivable rec
 					
@@ -119,9 +121,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
                     )
                     
                     then 
-				
-                select @v_erp_supplier_id, @v_erp_payable_supplier_identification;
-                
+             
 			insert into payable
 				(unity_identification,
 				erp_business_unit,
