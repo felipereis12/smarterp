@@ -70,17 +70,24 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									  on oftv.fiscal_federal_identification = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 
 		
-        /*set @resultset := exists (*/
 			select 
-				 @v_unity_identification := oftv.organization_from_to_unity_identification 
-				,@v_erp_business_unit := oftv.erp_business_unit 
-				,@v_erp_legal_entity := oftv.erp_legal_entity
-				,@v_erp_subsidiary := oftv.erp_subsidiary
-				,@v_acronym := oftv.acronym
-				,@v_erp_customer_id := crc.erp_customer_id
-				,@v_erp_clustered_receivable_customer_id := crc.erp_customer_id
-				,@v_erp_receivable_customer_identification := crc.identification_financial_responsible			
+				 oftv.organization_from_to_unity_identification 
+				,oftv.erp_business_unit 
+				,oftv.erp_legal_entity
+				,oftv.erp_subsidiary
+				,oftv.acronym
+				,crc.erp_customer_id
+				,crc.erp_customer_id
+				,crc.identification_financial_responsible			
 				
+                into @v_unity_identification
+				,@v_erp_business_unit 
+				,@v_erp_legal_entity 
+				,@v_erp_subsidiary 
+				,@v_acronym 
+				,@v_erp_customer_id 
+				,@v_erp_clustered_receivable_customer_id 
+				,@v_erp_receivable_customer_identification 
 				
 			from customer crc
 			
@@ -93,7 +100,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									and oftv2.erp_legal_entity = oftv.erp_legal_entity 
 									and oftv2.erp_subsidiary = oftv.erp_subsidiary                            
 									)
-			where crc.is_smartfin = 'yes' /*)*/ ;
+			where crc.is_smartfin = 'yes'  ;
 	
     set done = 0;
     open cur1;
@@ -189,7 +196,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		
 		set @v_order_to_cash_id = last_insert_id();	
 		
-		insert into oic_db.receivable
+		insert into receivable
 		(id,
 		created_at,
 		receivable_id_smartfin,    
