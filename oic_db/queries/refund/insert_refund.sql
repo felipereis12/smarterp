@@ -1,30 +1,34 @@
-INSERT INTO `oic_db`.`refund`
-(`country`,
-`unity_identification`,
-`erp_business_unit`,
-`erp_legal_entity`,
-`erp_subsidiary`,
-`acronym`,
-`erp_refund_status_transaction`,
-`erp_refund_sent_to_erp_at`,
-`erp_refund_returned_from_erp_at`,
-`erp_refund_log`,
-`refund_requester_name`,
-`refund_requester_identification`,
-`issue_date`,
-`due_date`,
-`erp_refund_id`,
-`front_refund_id`,
-`refund_value`,
-`bank_number`,
-`bank_branch`,
-`bank_branch_digit`,
-`bank_account_number`,
-`bank_account_number_digit`,
-`bank_account_owner_name`,
-`bank_account_owner_identification`)
+INSERT INTO refund
+(country,
+origin_system,
+operation,
+unity_identification,
+erp_business_unit,
+erp_legal_entity,
+erp_subsidiary,
+acronym,
+erp_refund_status_transaction,
+erp_refund_sent_to_erp_at,
+erp_refund_returned_from_erp_at,
+erp_refund_log,
+refund_requester_name,
+refund_requester_identification,
+issue_date,
+due_date,
+erp_refund_id,
+front_refund_id,
+refund_value,
+bank_number,
+bank_branch,
+bank_branch_digit,
+bank_account_number,
+bank_account_number_digit,
+bank_account_owner_name,
+bank_account_owner_identification)
 VALUES
 ('Brazil',-- country
+'smartsystem', -- origin_system
+'person_plan', -- operation
 1, -- unity_identification
 'BR01 - SMARTFIT', -- erp_business_unit
 '07594978000178', -- erp_legal_entity
@@ -49,22 +53,22 @@ null, -- erp_refund_id
 'Felipe Volcov Nambara', -- bank_account_owner_name
 '39367233892'); -- bank_account_owner_identification
 
-INSERT INTO `oic_db`.`refund_items`
-(`refund_id`,
-`front_id`,
-`refund_item_value`,
-`billing_date`)
+INSERT INTO refund_items
+(refund_id,
+front_id,
+refund_item_value,
+billing_date)
 VALUES
 (1546, -- refund_id
 99877897, -- front_id
 75.425, -- refund_item_value
 '2019-01-10'); -- billing_date
 
-INSERT INTO `oic_db`.`refund_items`
-(`refund_id`, -- refund_id
-`front_id`, -- front_id
-`refund_item_value`, -- refund_item_value
-`billing_date`) -- billing_date
+INSERT INTO refund_items
+(refund_id, -- refund_id
+front_id, -- front_id
+refund_item_value, -- refund_item_value
+billing_date) -- billing_date
 VALUES
 (1546,
 91237897,

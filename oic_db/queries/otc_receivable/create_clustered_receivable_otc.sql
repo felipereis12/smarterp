@@ -59,7 +59,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 							select 
 								1 
 							from information_schema.tables 
-							where table_schema = 'oic_db' 
+							where table_schema = database()
 							and table_name = 'control_clustered_receivable'
 							)
 		) then		
@@ -149,44 +149,52 @@ if get_lock(@v_keycontrol,1) = 1 then
         set order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'
         
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at);
-		
-        /*set @resultset := exists (*/
+	
 		select 	
-			 @v_gross_value := round(sum(receivable.gross_value),2) as gross_value
-			,@v_price_list_value := round(sum(receivable.price_list_value),2) as price_list_value
-			,@v_net_value := round(sum(receivable.net_value),2) as net_value
-			,@v_interest_value := round(sum(receivable.interest_value),2) as interest_value
-			,@v_administration_tax_value := round(sum(receivable.administration_tax_value),2) as administration_tax_value
-			,@v_antecipation_tax_value := round(sum(receivable.antecipation_tax_value),2) as antecipation_tax_value
-            ,@v_qtd_of_receivable := count(1) as qtd
+			 round(sum(receivable.gross_value),2) as gross_value
+			,round(sum(receivable.price_list_value),2) as price_list_value
+			,round(sum(receivable.net_value),2) as net_value
+			,round(sum(receivable.interest_value),2) as interest_value
+			,round(sum(receivable.administration_tax_value),2) as administration_tax_value
+			,round(sum(receivable.antecipation_tax_value),2) as antecipation_tax_value
+            ,count(1) as qtd
+            
+            into @v_gross_value
+				,@v_price_list_value
+                ,@v_net_value
+                ,@v_interest_value
+                ,@v_administration_tax_value
+                ,@v_antecipation_tax_value
+                ,@v_qtd_of_receivable
+            
 		from receivable 
         
         inner join order_to_cash
         on order_to_cash.id = receivable.order_to_cash_id
         
         where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
-        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'/*)*/ ;
+        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' /*)*/ ;
         
-        insert into `oic_db`.`clustered_receivable`
-							(`country`,
-							`unity_identification`,
-							`erp_business_unit`,
-							`erp_legal_entity`,
-							`erp_subsidiary`,
-							`erp_clustered_receivable_customer_id`,
-							`contract_number`,
-							`credit_card_brand`,
-							`billing_date`,
-							`credit_date`,
-                            `price_list_value`,
-							`gross_value`,
-							`net_value`,
-							`interest_value`,
-							`administration_tax_percentage`,
-							`administration_tax_value`,
-							`antecipation_tax_percentage`,
-							`antecipation_tax_value`,
-                            `quantity_of_receivable`)
+        insert into clustered_receivable
+							(country,
+							unity_identification,
+							erp_business_unit,
+							erp_legal_entity,
+							erp_subsidiary,
+							erp_clustered_receivable_customer_id,
+							contract_number,
+							credit_card_brand,
+							billing_date,
+							credit_date,
+                            price_list_value,
+							gross_value,
+							net_value,
+							interest_value,
+							administration_tax_percentage,
+							administration_tax_value,
+							antecipation_tax_percentage,
+							antecipation_tax_value,
+                            quantity_of_receivable)
 							VALUES
 							(v_country,
 							v_unity_identification,

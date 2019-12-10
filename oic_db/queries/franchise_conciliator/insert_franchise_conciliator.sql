@@ -1,4 +1,4 @@
-insert into oic_db.order_to_cash
+insert into order_to_cash
 				(order_to_cash_id_smartfin,
 				country,
 				unity_identification,
@@ -92,7 +92,7 @@ order_to_cash.acronym = organization_from_to_version.acronym
 
 where order_to_cash.id = @order_to_cash_id;
 
-insert into oic_db.receivable
+insert into receivable
 			(order_to_cash_id,
 			erp_receivable_id,
 			erp_receipt_id,
@@ -187,9 +187,9 @@ set receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
--- if ( true /* select not exists ( select 1 from oic_db.supplier where identification_financial_responsible = '23383105000172') */ ) then 
+-- if ( true /* select not exists ( select 1 from supplier where identification_financial_responsible = '23383105000172') */ ) then 
 
-insert into oic_db.supplier
+insert into supplier
 			(erp_supplier_id,
 			full_name,
 			type_person,
@@ -243,7 +243,7 @@ insert into oic_db.supplier
 			null) ; -- erp_line_in_file
 -- end if;
 
-insert into oic_db.payable
+insert into payable
 			(unity_identification,
 			erp_business_unit,
 			erp_legal_entity,

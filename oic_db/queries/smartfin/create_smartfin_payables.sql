@@ -78,8 +78,12 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		
         if exists (
 					select 
-						 @v_erp_supplier_id := sup.erp_supplier_id
-						,@v_erp_payable_supplier_identification := sup.identification_financial_responsible
+						 sup.erp_supplier_id
+						,sup.identification_financial_responsible
+                        
+                        into @v_erp_supplier_id
+							,@v_erp_payable_supplier_identification 
+                        
 					from receivable rec
 					
 					inner join order_to_cash otc
@@ -107,7 +111,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
                     (
 						select
 							1
-						from oic_db.payable pay
+						from payable pay
                         where pay.erp_business_unit = @v_erp_business_unit
                         and pay.erp_legal_entity = @v_erp_legal_entity
                         and pay.erp_subsidiary = @v_erp_subsidiary
@@ -118,7 +122,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 				
                 select @v_erp_supplier_id, @v_erp_payable_supplier_identification;
                 
-			insert into oic_db.payable
+			insert into payable
 				(unity_identification,
 				erp_business_unit,
 				erp_legal_entity,

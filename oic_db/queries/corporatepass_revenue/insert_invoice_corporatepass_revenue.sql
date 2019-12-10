@@ -1,4 +1,4 @@
-insert into oic_db.order_to_cash
+insert into order_to_cash
 				(order_to_cash_id_smartfin,
 				country,
 				unity_identification,
@@ -93,7 +93,7 @@ order_to_cash.acronym = organization_from_to_version.acronym
 where order_to_cash.id = @order_to_cash_id;
 
 -- create the invoice_customer 
-insert into oic_db.invoice_customer
+insert into invoice_customer
 (order_to_cash_id,
 erp_customer_id,
 full_name,
@@ -140,7 +140,7 @@ null, -- federal_registration
 null, -- erp_filename
 null); -- erp_line_in_file
 
-insert into oic_db.receivable
+insert into receivable
 				(order_to_cash_id,
 				erp_receivable_id,
 				erp_receipt_id,
@@ -222,7 +222,7 @@ insert into oic_db.receivable
 -- saves the auto increment id from receivable table
 set @receivable_id = last_insert_id();
 
-insert into oic_db.invoice
+insert into invoice
 				(order_to_cash_id,
 				erp_invoice_id,
 				erp_invoice_customer_id,
@@ -252,7 +252,7 @@ insert into oic_db.invoice
 -- saves the auto increment id from order_to_cash table
 set @invoice_id = last_insert_id();
 
-insert into oic_db.invoice_items
+insert into invoice_items
 				(id_invoice,
 				front_product_id,
 				front_plan_id,
