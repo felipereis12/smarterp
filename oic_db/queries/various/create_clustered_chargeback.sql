@@ -160,26 +160,26 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and receivable.is_smartfin = v_is_smarftin 
         and chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created' ;
 			
-        insert into `oic_db`.`clustered_chargeback`
-							(`country`,
-							`unity_identification`,
-							`erp_business_unit`,
-							`erp_legal_entity`,
-							`erp_subsidiary`,
-							`erp_clustered_receivable_customer_id`,
-							`contract_number`,
-							`credit_card_brand`,
-							`billing_date`,
-							`credit_date`,
-                            `price_list_value`,
-							`gross_value`,
-							`net_value`,
-							`interest_value`,
-							`administration_tax_percentage`,
-							`administration_tax_value`,
-							`antecipation_tax_percentage`,
-							`antecipation_tax_value`,
-                            `quantity_of_chargeback`)
+        insert into clustered_chargeback
+							(country,
+							unity_identification,
+							erp_business_unit,
+							erp_legal_entity,
+							erp_subsidiary,
+							erp_clustered_receivable_customer_id,
+							contract_number,
+							credit_card_brand,
+							billing_date,
+							credit_date,
+                            price_list_value,
+							gross_value,
+							net_value,
+							interest_value,
+							administration_tax_percentage,
+							administration_tax_value,
+							antecipation_tax_percentage,
+							antecipation_tax_value,
+                            quantity_of_chargeback)
 							VALUES
 							(v_country,
 							v_unity_identification,
