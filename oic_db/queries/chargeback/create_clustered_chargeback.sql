@@ -21,6 +21,7 @@ declare v_antecipation_tax_percentage float;
 declare v_billing_date date;
 declare v_credit_date date;
 declare v_is_smarftin varchar(45);
+declare v_converted_smartfin varchar(45);
 declare v_price_list_value float;
 declare v_gross_value float;
 declare v_net_value float;
@@ -71,10 +72,32 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
                         ,v_antecipation_tax_percentage
                         ,v_billing_date
                         ,v_credit_date
-                        ,v_is_smarftin;
+                        ,v_is_smarftin
+                        ,v_converted_smartfin;
                         
 		if done = 1 then leave ClusteredChargebackLoop; end if;
-
+		
+        /*
+        select v_country
+						,v_origin_system
+						,v_unity_identification
+						,v_erp_business_unit
+                        ,v_erp_legal_entity
+                        ,v_erp_subsidiary
+                        ,v_operation
+                        ,v_erp_customer_id
+                        ,v_fullname
+                        ,v_transaction_type
+                        ,v_credit_card_brand
+                        ,v_contract_number
+                        ,v_administration_tax_percentage
+                        ,v_antecipation_tax_percentage
+                        ,v_billing_date
+                        ,v_credit_date
+                        ,v_is_smarftin
+                        ,v_converted_smartfin;
+        */
+        
         start transaction;
 	
 		update chargeback
@@ -88,33 +111,42 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         set chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created'
         
         where receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
-        and receivable.transaction_type = v_transaction_type
+        and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand) or (chargeback.credit_card_brand is null) )
-        and chargeback.administration_tax_percentage = v_administration_tax_percentage
-        and chargeback.antecipation_tax_percentage = v_antecipation_tax_percentage
+        and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
+        and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
-        and receivable.is_smartfin = v_is_smarftin        
         and order_to_cash.origin_system = v_origin_system
         and order_to_cash.operation = v_operation
         and order_to_cash.unity_identification = v_unity_identification
         and order_to_cash.erp_business_unit = v_erp_business_unit
         and order_to_cash.erp_legal_entity = v_erp_legal_entity
         and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and order_to_cash.country = v_country
-        and chargeback.erp_receipt_status_transaction = 'waiting_to_be_process'
-        and receivable.converted_smartfin <> 'yes' ;    
-  
-        /*set @resultset := exists (*/
+        and order_to_cash.country = v_country        
+        and receivable.converted_smartfin = v_converted_smartfin
+        and receivable.is_smartfin = v_is_smarftin                
+        and chargeback.erp_receipt_status_transaction = 'waiting_to_be_process';    
+		
 		select 	
-			 @v_gross_value := sum(receivable.gross_value) as gross_value
-			,@v_price_list_value := sum(receivable.price_list_value) as price_list_value
-			,@v_net_value := sum(receivable.net_value) as net_value
-			,@v_interest_value := sum(receivable.interest_value) as interest_value
-			,@v_administration_tax_value := sum(receivable.administration_tax_value) as administration_tax_value
-			,@v_antecipation_tax_value := sum(receivable.antecipation_tax_value) as antecipation_tax_value
-            ,@v_qtd_of_receivable := count(1) as qtd
+			 round(sum(receivable.gross_value),2) as gross_value
+			,round(sum(receivable.price_list_value),2) as price_list_value
+			,round(sum(receivable.net_value),2) as net_value
+			,round(sum(receivable.interest_value),2) as interest_value
+			,round(sum(receivable.administration_tax_value),2) as administration_tax_value
+			,round(sum(receivable.antecipation_tax_value),2) as antecipation_tax_value
+            ,count(1) as qtd
+            
+            into @v_gross_value 
+			,@v_price_list_value
+			,@v_net_value
+			,@v_interest_value 
+			,@v_administration_tax_value 
+			,@v_antecipation_tax_value
+            ,@v_qtd_of_receivable
+            
+            
 		from chargeback 
 
         inner join receivable
@@ -131,36 +163,37 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and order_to_cash.erp_legal_entity = v_erp_legal_entity
         and order_to_cash.erp_subsidiary = v_erp_subsidiary
         and receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
-        and receivable.transaction_type = v_transaction_type
+        and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand ) or (chargeback.credit_card_brand is null)  )
-        and chargeback.administration_tax_percentage = v_administration_tax_percentage
-        and chargeback.antecipation_tax_percentage = v_antecipation_tax_percentage
+        and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
+        and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
         and receivable.is_smartfin = v_is_smarftin 
-        and chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created' /*)*/;
-
-        insert into `oic_db`.`clustered_chargeback`
-							(`country`,
-							`unity_identification`,
-							`erp_business_unit`,
-							`erp_legal_entity`,
-							`erp_subsidiary`,
-							`erp_clustered_receivable_customer_id`,
-							`contract_number`,
-							`credit_card_brand`,
-							`billing_date`,
-							`credit_date`,
-                            `price_list_value`,
-							`gross_value`,
-							`net_value`,
-							`interest_value`,
-							`administration_tax_percentage`,
-							`administration_tax_value`,
-							`antecipation_tax_percentage`,
-							`antecipation_tax_value`,
-                            `quantity_of_chargeback`)
+        and receivable.converted_smartfin = v_converted_smartfin
+        and chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created' ;
+		
+        insert into clustered_chargeback
+							(country,
+							unity_identification,
+							erp_business_unit,
+							erp_legal_entity,
+							erp_subsidiary,
+							erp_clustered_receivable_customer_id,
+							contract_number,
+							credit_card_brand,
+							billing_date,
+							credit_date,
+                            price_list_value,
+							gross_value,
+							net_value,
+							interest_value,
+							administration_tax_percentage,
+							administration_tax_value,
+							antecipation_tax_percentage,
+							antecipation_tax_value,
+                            quantity_of_chargeback)
 							VALUES
 							(v_country,
 							v_unity_identification,
@@ -183,7 +216,9 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
                             @v_qtd_of_receivable);
 
         set @clustered_chargeback_id = last_insert_id();
-
+		
+        -- select @clustered_chargeback_id,@v_price_list_value;
+        
         update chargeback
 
         inner join receivable
@@ -203,14 +238,15 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and order_to_cash.erp_legal_entity = v_erp_legal_entity
         and order_to_cash.erp_subsidiary = v_erp_subsidiary
         and receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
-        and receivable.transaction_type = v_transaction_type
+        and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand) or (chargeback.credit_card_brand is null) )
-        and chargeback.administration_tax_percentage = v_administration_tax_percentage
-        and chargeback.antecipation_tax_percentage = v_antecipation_tax_percentage
+        and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
+        and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
         and receivable.is_smartfin = v_is_smarftin
+        and receivable.converted_smartfin = v_converted_smartfin
         and chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created' ;
 
     end loop ClusteredChargebackLoop;
