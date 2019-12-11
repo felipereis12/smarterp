@@ -104,7 +104,7 @@ if get_lock(@v_keycontrol,1) = 1 then
                                 
 								inner join receivable
 								on receivable.order_to_cash_id = order_to_cash.id
-                                
+                                                                
 								where receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
 								and receivable.transaction_type = v_transaction_type
 								and receivable.contract_number = v_contract_number
@@ -123,6 +123,17 @@ if get_lock(@v_keycontrol,1) = 1 then
 								and order_to_cash.country = v_country
 								and order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process'    
                                 and order_to_cash.to_generate_receivable = 'yes'
+                                and exists ( select 1 
+											from order_to_cash otc_v2  
+                                            
+                                            inner join invoice_customer invc
+                                            on invc.order_to_cash_id = otc_v2.id 
+                                            
+                                            where otc_v2.country = order_to_cash.country
+                                            and otc_v2.origin_system = order_to_cash.origin_system
+                                            and otc_v2.operation = order_to_cash.operation
+                                            and otc_v2.minifactu_id = order_to_cash.minifactu_id
+                                            and invc.erp_customer_id is not null )
 								and not exists ( 
 													select 
 														1 
@@ -140,94 +151,98 @@ if get_lock(@v_keycontrol,1) = 1 then
 															or	( receivable_v2.erp_receivable_id is not null ) 
 														)
 												)  limit 100 ;
+                                                
+		if exists ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)  then 
+        
+			update order_to_cash 
+			
+			inner join receivable
+			on receivable.order_to_cash_id = order_to_cash.id
+			
+			set order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'
+			
+			where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at);
+		
+			select 	
+				 round(sum(receivable.gross_value),2) as gross_value
+				,round(sum(receivable.price_list_value),2) as price_list_value
+				,round(sum(receivable.net_value),2) as net_value
+				,round(sum(receivable.interest_value),2) as interest_value
+				,round(sum(receivable.administration_tax_value),2) as administration_tax_value
+				,round(sum(receivable.antecipation_tax_value),2) as antecipation_tax_value
+				,count(1) as qtd
+				
+				into @v_gross_value
+					,@v_price_list_value
+					,@v_net_value
+					,@v_interest_value
+					,@v_administration_tax_value
+					,@v_antecipation_tax_value
+					,@v_qtd_of_receivable
+				
+			from receivable 
+			
+			inner join order_to_cash
+			on order_to_cash.id = receivable.order_to_cash_id
+			
+			where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
+			and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;			
+			
+			insert into clustered_receivable
+								(country,
+								unity_identification,
+								erp_business_unit,
+								erp_legal_entity,
+								erp_subsidiary,
+								erp_clustered_receivable_customer_id,
+								contract_number,
+								credit_card_brand,
+								billing_date,
+								credit_date,
+								price_list_value,
+								gross_value,
+								net_value,
+								interest_value,
+								administration_tax_percentage,
+								administration_tax_value,
+								antecipation_tax_percentage,
+								antecipation_tax_value,
+								quantity_of_receivable)
+								VALUES
+								(v_country,
+								v_unity_identification,
+								v_erp_business_unit,
+								v_erp_legal_entity,
+								v_erp_subsidiary,
+								v_erp_customer_id,
+								v_contract_number,
+								v_credit_card_brand,
+								v_billing_date,
+								v_credit_date,
+								@v_price_list_value,
+								@v_gross_value,
+								@v_net_value,
+								@v_interest_value,
+								v_administration_tax_percentage,
+								@v_administration_tax_value,
+								v_antecipation_tax_percentage,
+								@v_antecipation_tax_value,
+								@v_qtd_of_receivable);
 
-		update order_to_cash 
-        
-		inner join receivable
-        on receivable.order_to_cash_id = order_to_cash.id
-        
-        set order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created'
-        
-        where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at);
-	
-		select 	
-			 round(sum(receivable.gross_value),2) as gross_value
-			,round(sum(receivable.price_list_value),2) as price_list_value
-			,round(sum(receivable.net_value),2) as net_value
-			,round(sum(receivable.interest_value),2) as interest_value
-			,round(sum(receivable.administration_tax_value),2) as administration_tax_value
-			,round(sum(receivable.antecipation_tax_value),2) as antecipation_tax_value
-            ,count(1) as qtd
-            
-            into @v_gross_value
-				,@v_price_list_value
-                ,@v_net_value
-                ,@v_interest_value
-                ,@v_administration_tax_value
-                ,@v_antecipation_tax_value
-                ,@v_qtd_of_receivable
-            
-		from receivable 
-        
-        inner join order_to_cash
-        on order_to_cash.id = receivable.order_to_cash_id
-        
-        where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
-        and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' /*)*/ ;
-        
-        insert into clustered_receivable
-							(country,
-							unity_identification,
-							erp_business_unit,
-							erp_legal_entity,
-							erp_subsidiary,
-							erp_clustered_receivable_customer_id,
-							contract_number,
-							credit_card_brand,
-							billing_date,
-							credit_date,
-                            price_list_value,
-							gross_value,
-							net_value,
-							interest_value,
-							administration_tax_percentage,
-							administration_tax_value,
-							antecipation_tax_percentage,
-							antecipation_tax_value,
-                            quantity_of_receivable)
-							VALUES
-							(v_country,
-							v_unity_identification,
-							v_erp_business_unit,
-							v_erp_legal_entity,
-							v_erp_subsidiary,
-							v_erp_customer_id,
-							v_contract_number,
-							v_credit_card_brand,
-							v_billing_date,
-							v_credit_date,
-                            @v_price_list_value,
-							@v_gross_value,
-							@v_net_value,
-							@v_interest_value,
-							v_administration_tax_percentage,
-							@v_administration_tax_value,
-							v_antecipation_tax_percentage,
-							@v_antecipation_tax_value,
-                            @v_qtd_of_receivable);
+			set @clustered_receivable_id = last_insert_id();
+			
+			update receivable
+			
+			inner join order_to_cash
+			on order_to_cash.id = receivable.order_to_cash_id
+			
+			set receivable.erp_clustered_receivable_id = @clustered_receivable_id
+			, order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_created'
 
-        set @clustered_receivable_id = last_insert_id();
+			where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
+			and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;        
         
-        update receivable
-        
-		inner join order_to_cash
-        on order_to_cash.id = receivable.order_to_cash_id
-        
-        set receivable.erp_clustered_receivable_id = @clustered_receivable_id
-        , order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_created'
-
-        where order_to_cash.id in ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)
-		and order_to_cash.erp_receivable_status_transaction = 'clustered_receivable_being_created' ;        
+        end if;
         
         delete from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at;
         
