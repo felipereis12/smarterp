@@ -128,7 +128,6 @@ select
     ,recg.erp_attribute_category
 	,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
-    ,recg.warehouse_id
     ,crc.identification_financial_responsible
     ,crc.full_name
     ,rec.administration_tax_value*-1 as receivable_item_value
