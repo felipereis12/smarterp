@@ -11,8 +11,9 @@ select
     ,iec.erp_product_category_fiscal
     ,iec.erp_attribute_category
     ,iec.warehouse_id
+    ,iec.erp_receipt_method
     ,otc.id as id_otc-- id da order_to_cash
-    ,ifnull(rec.erp_clustered_receivable_id,rec_v2.erp_clustered_receivable_id) as erp_clustered_receivable_id -- id do aglutinado
+    ,rec.erp_clustered_receivable_id -- id do aglutinado
     ,otc.front_id -- id do front
     ,otc.fin_id -- id do fin
     ,otc.conciliator_id -- id do conciliator_id
@@ -43,6 +44,9 @@ on otc.id = inv.order_to_cash_id
 inner join receivable rec
 on otc.id = rec.order_to_cash_id
 
+inner join invoice_customer ivcr
+on ivcr.order_to_cash_id = otc.id
+
 inner join invoice_erp_configurations iec
 on iec.country = otc.country
 and iec.erp_business_unit = otc.erp_business_unit
@@ -51,11 +55,11 @@ and iec.erp_subsidiary = otc.erp_subsidiary
 and iec.origin_system = otc.origin_system
 and iec.operation = otc.operation
 
-where order_to_cash.country = 'Brazil' -- Integração em paralelo por operação do país
-and order_to_cash.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
-and order_to_cash.origin_system = 'corporatepass' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
-and order_to_cash.operation = 'revenue' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
-and order_to_cash.to_generate_invoice = 'yes'
-and order_to_cash.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
--- and invoice.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
-and invoice.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
+where otc.country = 'Brazil' -- Integração em paralelo por operação do país
+and otc.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
+and otc.origin_system = 'corporatepass' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
+and otc.operation = 'revenue' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
+and otc.to_generate_invoice = 'yes'
+and otc.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
+-- and inv.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
+and inv.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
