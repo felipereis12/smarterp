@@ -40,7 +40,7 @@ insert into order_to_cash
 				null, -- erp_legal_entity
 				null, -- erp_subsidiary
 				null, -- acronym
-				'no', -- to_generate_customer
+				'yes', -- to_generate_customer
 				'no', -- to_generate_receivable
 				'yes', -- to_generate_invoice
 				'corporatepass', -- origin_system
@@ -51,7 +51,7 @@ insert into order_to_cash
 				4448815, -- front_id
 				null, -- erp_invoice_customer_send_to_erp_at
 				null, -- erp_invoice_customer_returned_from_erp_at
-				'doesnt_need_to_be_process', -- erp_invoice_customer_status_transaction
+				'waiting_to_be_process', -- erp_invoice_customer_status_transaction
 				null, -- erp_invoice_customer_log
 				null, -- erp_receivable_sent_to_erp_at
 				null, -- erp_receivable_returned_from_erp_at
