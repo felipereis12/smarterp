@@ -11,8 +11,8 @@ select
     ,iec.erp_product_category_fiscal
     ,iec.erp_attribute_category
     ,iec.warehouse_id
-    ,iec.erp_product_category_fiscal
-    ,rec.erp_clustered_receivable_id -- id do aglutinado
+    ,otc.id as id_otc-- id da order_to_cash
+    ,ifnull(rec.erp_clustered_receivable_id,rec_v2.erp_clustered_receivable_id) as erp_clustered_receivable_id -- id do aglutinado
     ,otc.front_id -- id do front
     ,otc.fin_id -- id do fin
     ,otc.conciliator_id -- id do conciliator_id
@@ -23,9 +23,8 @@ select
     ,rec.authorization_code -- código de autorização
     ,rec.credit_card_brand
 	,rec.contract_number
-	,rec.erp_clustered_receivable_id
 	,otc.erp_subsidiary
-    ,iit.id -- id do item da invoice
+    ,iit.id  as id_otc_item -- id do item da invoice
     ,iit.erp_item_ar_id -- código do item do ar no Oracle 
     ,iit.erp_gl_segment_product -- código do segmento contábil de produto
     ,iit.quantity -- Quantidade do item de venda
@@ -46,6 +45,21 @@ on rec.order_to_cash_id = otc.id
 
 inner join invoice_customer ivcr
 on ivcr.order_to_cash_id = otc.id
+
+left join order_to_cash otc_v2
+on otc_v2.minifactu_id = otc.minifactu_id
+and otc_v2.erp_receivable_status_transaction in ('created_at_erp')
+and otc_v2.id = ( 
+					select 
+						max(otc_v3.id) 
+					from order_to_cash otc_v3 
+                    where otc_v3.minifactu_id = otc_v2.minifactu_id
+                    and otc_v3.erp_receivable_status_transaction = otc_v2.erp_receivable_status_transaction
+				) 
+
+left join receivable rec_v2
+on rec_v2.order_to_cash_id = otc_v2.id
+and rec_v2.erp_receivable_id is not null
 
 inner join invoice_erp_configurations iec
 on iec.country = otc.country
@@ -74,8 +88,8 @@ and otc.origin_system = 'smartsystem' -- Integração em paralelo por origem (Sm
 and otc.operation = 'person_plan' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_invoice = 'yes'
 and otc.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar as transações cuja invoice ainda não foi integrada com o erp e está aguardando processamento;
-and otc.erp_receivable_status_transaction = 'created_at_erp' -- Filtrar as transações cujos receivables que já foram integrados no erp
-and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados
+and ( otc.erp_receivable_status_transaction = 'created_at_erp' or otc_v2.erp_receivable_status_transaction = 'created_at_erp' )-- Filtrar as transações cujos receivables que já foram integrados no erp
+and ( rec.erp_receivable_id is not null or rec_v2.erp_receivable_id is not null ) -- Filtrar somente os receivables que já foram integrados
 and ivc.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
 and ivc.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
 and day(current_date()) <= oftv.cutoff_limit_day -- Regra de cutoff
