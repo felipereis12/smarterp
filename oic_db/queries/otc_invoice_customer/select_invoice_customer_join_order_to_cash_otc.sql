@@ -19,6 +19,9 @@ from order_to_cash otc
 inner join invoice_customer ivc
 on otc.id = ivc.order_to_cash_id
 
+inner join receivable rec
+on otc.id = rec.order_to_cash_id
+
 inner join invoice_customer_comparation ivcc 
 on ivc.erp_customer_id = ivcc.erp_customer_id 
 and ivc.identification_financial_responsible = ivcc.identification_financial_responsible
@@ -29,6 +32,7 @@ and otc.origin_system = 'smartsystem' -- Integração em paralelo por origem (Sm
 and otc.operation = 'person_plan' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.erp_invoice_customer_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and otc.to_generate_customer = 'yes'
+and rec.transaction_type = 'credit_card_recurring' /*'credit_card_recurring', 'debit_card_recurring', 'debit_account_recurring', 'credit_card_tef', 'debit_card_tef', 'credit_card_pos', 'debit_card_pos', 'cash', 'boleto', 'bank_transfer', 'online_credit_card', 'online_debit_card'*/
 and (
 	   ivc.erp_customer_id <> ivcc.erp_customer_id
 	or ivc.full_name <> ivcc.full_name
@@ -73,10 +77,14 @@ from order_to_cash otc
 inner join invoice_customer ivc
 on otc.id = ivc.order_to_cash_id
 
+inner join receivable rec
+on otc.id = rec.order_to_cash_id
+
 where otc.country = 'Brazil' -- Integração em paralelo por operação do país
 and otc.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
 and otc.origin_system = 'smartsystem' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'person_plan' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.erp_invoice_customer_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and otc.to_generate_customer = 'yes'
+and rec.transaction_type = 'credit_card_recurring' /*'credit_card_recurring', 'debit_card_recurring', 'debit_account_recurring', 'credit_card_tef', 'debit_card_tef', 'credit_card_pos', 'debit_card_pos', 'cash', 'boleto', 'bank_transfer', 'online_credit_card', 'online_debit_card'*/
 and ivc.erp_customer_id is null;
