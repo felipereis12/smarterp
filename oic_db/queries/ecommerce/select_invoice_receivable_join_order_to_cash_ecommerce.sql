@@ -1,5 +1,7 @@
 select 
      otc.erp_business_unit
+	,otc.erp_legal_entity
+    ,oftv.fiscal_federal_identification
     ,iec.erp_source_name
     ,iec.erp_type_transaction
     ,iec.erp_payments_terms
@@ -29,7 +31,7 @@ select
     ,iit.id -- id do item da invoice
     ,iit.erp_item_ar_id -- código do item do ar no Oracle 
     ,iit.erp_gl_segment_product -- código do segmento contábil de produto
-    ,iit.quantity -- Quantidade do item de venda
+    ,iit.quantity -- Quantidade do item de venda 
     ,iit.sale_price -- Preço praticado
     ,iit.list_price -- Preço de lista
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_trx_date
@@ -55,6 +57,19 @@ and iec.erp_legal_entity = otc.erp_legal_entity
 and iec.erp_subsidiary = otc.erp_subsidiary
 and iec.origin_system = otc.origin_system
 and iec.operation = otc.operation
+
+inner join organization_from_to_version oftv
+on oftv.erp_business_unit = otc.erp_business_unit
+and oftv.erp_legal_entity = otc.erp_legal_entity
+and oftv.erp_subsidiary = otc.erp_subsidiary
+and oftv.created_at = 	(
+							select
+								max(oftv_v2.created_at) as created_at
+							from organization_from_to_version oftv_v2
+                            where oftv_v2.erp_business_unit = oftv.erp_business_unit
+                            and oftv_v2.erp_legal_entity = oftv.erp_legal_entity
+                            and oftv_v2.erp_subsidiary = oftv.erp_subsidiary
+						)
 
 where otc.country = 'Brazil' -- Integração em paralelo por operação do país
 and otc.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
