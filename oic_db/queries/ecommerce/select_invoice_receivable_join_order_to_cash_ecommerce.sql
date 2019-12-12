@@ -14,6 +14,7 @@ select
     ,iec.erp_product_category_fiscal
     ,rec.erp_clustered_receivable_id -- id do aglutinado
     ,otc.front_id -- id do front
+    ,otc.created_at -- data de criação do pedido no oic_db
     ,otc.fin_id -- id do fin
     ,otc.conciliator_id -- id do conciliator_id
     ,otc.minifactu_id -- id do minifactu
