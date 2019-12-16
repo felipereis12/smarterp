@@ -6,6 +6,7 @@ select
     ,ref.front_refund_id -- id unico
     ,ref.refund_value
     ,ref.origin_system
+    ,ref.front_refund_id
     ,recg.erp_type_transaction
     ,recg.erp_set_of_books_id
     ,recg.erp_currency_code
@@ -13,11 +14,14 @@ select
     ,recg.erp_memo_line
 	,recg.erp_payments_terms
 	,recg.erp_payment_code
+    ,recg.erp_attribute_category
     ,inc.identification_financial_responsible
     ,inc.full_name
     ,if(month(ref.issue_date)=month(current_date()),ref.issue_date,current_date()) as erp_trx_date
     ,if(month(ref.issue_date)=month(current_date()),ref.issue_date,current_date()) as erp_gl_date
 from refund ref
+
+
 
 inner join invoice_customer inc
 on inc.identification_financial_responsible = ref.refund_requester_identification
@@ -41,5 +45,4 @@ and ref.origin_system = 'smartsystem' -- Integração em paralalo por origem (Sm
 and ref.operation = 'person_plan' -- Neste caso filtrar somente person_plan, pois a operação de refund só ocorre para os planos de alunos
 and ref.erp_refund_status_transaction = 'waiting_to_be_process'
 -- and inc.erp_customer_id is not null -- Filtrar somente os refuns que tiverem relacionamento com a invoice_customer, as quais já tiverem sido integradas com o erp
-
 
