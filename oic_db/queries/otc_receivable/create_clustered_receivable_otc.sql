@@ -32,6 +32,10 @@ declare done int;
 declare v_message_text varchar(255);
 declare v_keycontrol varchar(150);
 declare v_created_at timestamp;
+declare param1 varchar(10);
+declare param2 varchar(10);
+declare param3 varchar(10);
+declare param4 varchar(10);
 declare cur1 cursor for select * from vw_clustered_receivable 
 						where country = p_country 
                         and origin_system = p_origin_system 
@@ -45,16 +49,17 @@ declare cur1 cursor for select * from vw_clustered_receivable
 declare continue handler for not found set done=1;
 declare exit handler for sqlexception 
 begin
-    rollback;
     get diagnostics condition 1  @v_message_text = message_text;
     select @v_message_text;
+    rollback; 
 end;
 
-set @v_keycontrol 	:= concat_ws('_','sp_create_clustered_receivable',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type));
+set @v_keycontrol 	:= concat_ws('_','clus_rec',left(rtrim(p_country),2),left(rtrim(p_origin_system),2),left(rtrim(p_operation),2),rtrim(p_transaction_type));
 set @v_created_at	:= current_timestamp;
 
 if get_lock(@v_keycontrol,1) = 1 then 
-		
+	
+
 	if ( select not exists(
 							select 
 								1 
@@ -94,7 +99,25 @@ if get_lock(@v_keycontrol,1) = 1 then
 		if done = 1 then leave ClusteredReceivableLoop; end if;
 	      
         start transaction;
-		
+		/*
+        select v_country
+						,v_origin_system
+						,v_unity_identification
+						,v_erp_business_unit
+                        ,v_erp_legal_entity
+                        ,v_erp_subsidiary
+                        ,v_operation
+                        ,v_erp_customer_id
+                        ,v_fullname
+                        ,v_transaction_type
+                        ,v_credit_card_brand
+                        ,v_contract_number
+                        ,v_administration_tax_percentage
+                        ,v_antecipation_tax_percentage
+                        ,v_billing_date
+                        ,v_credit_date
+                        ,v_is_smarftin;
+			*/
         insert into control_clustered_receivable
 								select 
 									 @v_keycontrol as keycontrol
@@ -109,8 +132,8 @@ if get_lock(@v_keycontrol,1) = 1 then
 								and receivable.transaction_type = v_transaction_type
 								and receivable.contract_number = v_contract_number
 								and ( ( receivable.credit_card_brand is not null and receivable.credit_card_brand = v_credit_card_brand) or (receivable.credit_card_brand is null) )
-								and round(receivable.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-								and round(receivable.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
+								and ( ( round(receivable.administration_tax_percentage,2) = round(v_administration_tax_percentage,2) ) or (receivable.administration_tax_percentage is null) )
+								and ( ( round(receivable.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)) or (receivable.antecipation_tax_percentage is null) )
 								and receivable.billing_date = v_billing_date
 								and receivable.credit_date = v_credit_date
 								and receivable.is_smartfin = v_is_smarftin        
@@ -123,6 +146,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 								and order_to_cash.country = v_country
 								and order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process'    
                                 and order_to_cash.to_generate_receivable = 'yes'
+                                /*
                                 and exists ( select 1 
 											from order_to_cash otc_v2  
                                             
@@ -134,6 +158,7 @@ if get_lock(@v_keycontrol,1) = 1 then
                                             and otc_v2.operation = order_to_cash.operation
                                             and otc_v2.minifactu_id = order_to_cash.minifactu_id
                                             and invc.erp_customer_id is not null )
+								*/
 								and not exists ( 
 													select 
 														1 
@@ -150,8 +175,8 @@ if get_lock(@v_keycontrol,1) = 1 then
 															or	( receivable_v2.erp_clustered_receivable_id is not null ) 
 															or	( receivable_v2.erp_receivable_id is not null ) 
 														)
-												)  limit 100 ;
-                                                
+												)  limit 300 ;
+                                               
 		if exists ( select id from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at)  then 
         
 			update order_to_cash 
