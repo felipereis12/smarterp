@@ -1,9 +1,3 @@
-/*
-gross_value => valor serviço/mercadororia + juros/mora
-net_value => valor serviço/mercadororia + juros/mora - taxa operadora
-interest_value => juros/mora
-*/
-
 select	
 	otc.id
 	,otc.erp_business_unit
@@ -12,26 +6,23 @@ select
     ,recg.erp_payments_terms
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
-    ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
+    ,rec.credit_date + quantity_of_days_to_due_date as credit_date
     ,rftv.bank_number
     ,rftv.bank_branch
     ,rftv.bank_account
     ,rftv.quantity_of_days_to_due_date
-    ,rec.net_value
+	,RTRIM (concat('RD_',rftv.bank_number,'_',rftv.bank_branch,'_',rftv.bank_account)) as Receipt_Method
+    ,RTRIM (concat('RD_',rftv.bank_number,'_',rftv.bank_branch,'_',rftv.bank_account,'_',rec.credit_date)) as Lote_Name
+    ,RTRIM (concat(crc.identification_financial_responsible,'Faturar')) as Customer_Site
+    ,rec.gross_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
     ,rec.transaction_type
-    ,rec.truncated_credit_card
-    ,rec.current_credit_card_installment
-    ,rec.total_credit_card_installment
-    ,rec.nsu
-    ,rec.authorization_code
-    ,rec.administration_tax_percentage
-    ,rec.administration_tax_value
     ,rec.billing_date
-    ,rec.credit_date
+    ,rec.erp_receivable_id
+    ,time (rec.credit_date) as credit_hour
 from receivable rec
 
 inner join order_to_cash otc
@@ -74,4 +65,4 @@ and rec.erp_clustered_receivable_id is not null -- Filtrar somente os receivable
 and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os receivables que possui relacionamento com a customer 
 and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados no erp e devem ser baixados
 and rec.net_value > 0
-and rec.transaction_type in ('debit_account_recurring','cash','boleto') -- Neste caso a integração deverá filtrar somente os receivables cujos métodos de recebimentos são débito em conta corrente, dinheiro ou boleto 
+and rec.transaction_type in ('debit_account_recurring','cash','boleto') -- Neste caso a integração deverá filtrar somente os receivables cujos métodos de recebimentos são débito em conta corrente, dinheiro ou boleto.
