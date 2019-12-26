@@ -6,14 +6,19 @@ select
     ,cpr.bank_number
     ,cpr.bank_branch
     ,cpr.bank_account
-	,cpr.created_at
+    ,cpr.gross_value
+	,date_format(cpr.created_at, '%y%m%d') as Deposit_Date
+    ,time (cpr.created_at) as credit_hour 
     ,concat ('RD_',cpr.bank_number,'_',cpr.bank_branch,'_',cpr.bank_account) as Receipt_Method
+    ,RTRIM (concat('RD_',cpr.bank_number,'_',cpr.bank_branch,'_',cpr.bank_account,'_',rec.credit_date)) as Lote_Name
+    ,RTRIM (concat(crc.identification_financial_responsible,'Faturar')) as Customer_Site
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
     ,rec.transaction_type
     ,rec.credit_date
     ,rec.credit_card_brand
+    ,rec.erp_receivable_id
     ,if (rec.transaction_type in ('credit_card_recurring','credit_card_tef','credit_card_pos','online_credit_card'), 'CARTOES DE CREDITO', 
           if (rec.transaction_type = 'debit_account_recurring', 'DEPOSITO EM CONTA CORRENTE', 
  		     if (rec.transaction_type in ('debit_card_tef','debit_card_pos','online_debit_card'), 'CARTOES DE DEBITO', 
@@ -55,3 +60,7 @@ and rec.erp_receivable_id is not null
 and cpr.erp_receipt_status_transaction = 'waiting_to_be_process'
 and cpr.erp_receipt_id is null
 and cpr.concitiation_type = 'PCV'; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora
+
+
+
+
