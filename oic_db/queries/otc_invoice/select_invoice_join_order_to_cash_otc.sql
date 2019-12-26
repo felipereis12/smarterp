@@ -61,7 +61,7 @@ left join receivable rec_v2
 on rec_v2.order_to_cash_id = otc_v2.id
 and rec_v2.erp_receivable_id is not null
 
-inner join invoice_erp_configurations iec
+left join invoice_erp_configurations iec
 on iec.country = otc.country
 and iec.erp_business_unit = otc.erp_business_unit
 and iec.erp_legal_entity = otc.erp_legal_entity
