@@ -1,6 +1,7 @@
 select	
 	otc.id
 	,otc.erp_business_unit
+    ,otc.erp_subsidiary
 	,recg.erp_source_name
 	,recg.erp_type_transaction
     ,recg.erp_payments_terms
