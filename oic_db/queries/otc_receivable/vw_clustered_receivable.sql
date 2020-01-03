@@ -13,14 +13,15 @@ create VIEW vw_clustered_receivable AS
         receivable.transaction_type AS transaction_type,
         receivable.credit_card_brand AS credit_card_brand,
         receivable.contract_number AS contract_number,
-        receivable.administration_tax_percentage AS administration_tax_percentage,
-        receivable.antecipation_tax_percentage AS antecipation_tax_percentage,
+        round(receivable.administration_tax_percentage,2) AS administration_tax_percentage,
+        round(receivable.antecipation_tax_percentage,2) AS antecipation_tax_percentage,
         receivable.billing_date AS billing_date,
         receivable.credit_date AS credit_date,
         receivable.is_smartfin AS is_smartfin
     FROM
         ((receivable
         JOIN order_to_cash ON (((order_to_cash.id = receivable.order_to_cash_id)
+				/*
 				and not exists ( 
 						select 
 							1 
@@ -37,10 +38,12 @@ create VIEW vw_clustered_receivable AS
 								or	( receivable_v2.erp_clustered_receivable_id is not null ) 
 								or	( receivable_v2.erp_receivable_id is not null ) 
 							)
-					))))
+					)*/)))
         JOIN customer ON ((customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification)))
     WHERE
         ((order_to_cash.erp_receivable_status_transaction = 'waiting_to_be_process' and order_to_cash.to_generate_receivable = 'yes')
             AND ISNULL(receivable.erp_clustered_receivable_id)
             AND ISNULL(receivable.erp_receivable_id)
-            AND (receivable.is_smartfin <> 'yes'))
+            AND (receivable.is_smartfin <> 'yes'))   ;
+
+    -- limit 50 ;
