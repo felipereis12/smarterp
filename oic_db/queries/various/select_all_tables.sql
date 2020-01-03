@@ -1,13 +1,13 @@
 select * from order_to_cash order by created_at desc ;
-select * from invoice_customer order by created_at desc;
-select * from receivable order by created_at desc;
+select * from invoice_customer order by created_at desc ;
+select * from receivable order by created_at desc ;
 -- select * from customer;
 -- select * from supplier;
 -- select * from payable;
-select * from clustered_receivable order by created_at desc;
+select * from clustered_receivable order by created_at desc ;
 -- select * from receivable_erp_configurations;
-select * from invoice order by created_at desc;
-select * from invoice_items order by created_at desc;
+select * from invoice order by created_at desc ;
+select * from invoice_items order by created_at desc ;
 -- select * from chargeback;
 -- select * from clustered_chargeback;
 -- select * from payable;
