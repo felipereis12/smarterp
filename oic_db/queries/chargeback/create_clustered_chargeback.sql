@@ -114,17 +114,17 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand) or (chargeback.credit_card_brand is null) )
-        and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
+        -- and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
+        -- and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
+        and order_to_cash.country = v_country        
         and order_to_cash.origin_system = v_origin_system
         and order_to_cash.operation = v_operation
         and order_to_cash.unity_identification = v_unity_identification
-        and order_to_cash.erp_business_unit = v_erp_business_unit
-        and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and order_to_cash.country = v_country        
+        -- and order_to_cash.erp_business_unit = v_erp_business_unit
+        -- and order_to_cash.erp_legal_entity = v_erp_legal_entity
+        -- and order_to_cash.erp_subsidiary = v_erp_subsidiary
         and receivable.converted_smartfin = v_converted_smartfin
         and receivable.is_smartfin = v_is_smarftin                
         and chargeback.erp_receipt_status_transaction = 'waiting_to_be_process';    
@@ -145,7 +145,6 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
 			,@v_administration_tax_value 
 			,@v_antecipation_tax_value
             ,@v_qtd_of_receivable
-            
             
 		from chargeback 
 
