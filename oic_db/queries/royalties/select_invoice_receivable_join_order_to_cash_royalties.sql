@@ -1,28 +1,53 @@
 select 
-     order_to_cash.erp_business_unit
-    ,order_to_cash.erp_legal_entity
-    ,order_to_cash.erp_subsidiary
-    ,order_to_cash.acronym
-    ,receivable.* -- Utilizar aqui somente os campos necessários para a integração
+     otc.erp_business_unit
+    ,otc.erp_legal_entity
+    ,otc.erp_subsidiary
+    ,otc.acronym
+	,otc.erp_receivable_customer_identification
+    ,otc.minifactu_id
+    ,rec.gross_value
+    ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_trx_date
+    ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date 
 	,invoice.* -- Utilizar aqui somente os campos necessários para a integração
-	,invoice_items.* -- Utilizar aqui somente os campos necessários para a integração    
-    ,order_to_cash.* -- Utilizar aqui somente os campos necessários para a integração
-from invoice 
+	,iec.warehouse_id
+    ,iec.erp_interface_line_context
+    ,iec.erp_source_name
+    ,iec.erp_set_of_books_id
+    ,iec.erp_type_transaction
+    ,iec.erp_payments_terms
+    ,iec.erp_receipt_method
+    ,iec.erp_source_name
+    ,ivcr.full_name
+    ,ivcr.identification_financial_responsible
+    ,iit.erp_gl_segment_product
+    ,iit.list_price
+from invoice
 
-inner join invoice_items
-on invoice_items.id_invoice = invoice.id
+inner join invoice_items iit
+on iit.id_invoice = invoice.id
 
-inner join order_to_cash
-on order_to_cash.id = invoice.order_to_cash_id
+inner join order_to_cash otc
+on otc.id = invoice.order_to_cash_id
 
-inner join receivable
-on order_to_cash.id = receivable.order_to_cash_id
+inner join invoice_customer ivcr
+on ivcr.order_to_cash_id = otc.id
 
-where order_to_cash.country = 'Brazil' -- Integração em paralelo por operação do país
-and order_to_cash.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
-and order_to_cash.origin_system = 'smartsystem' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
-and order_to_cash.operation = 'royalties' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
-and order_to_cash.to_generate_invoice = 'yes'
-and order_to_cash.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
+inner join receivable rec
+on otc.id = rec.order_to_cash_id
+
+left join invoice_erp_configurations iec -- Acrestei para incluir o .erp_interface_line_context na query conforme mapeamento
+on iec.country = otc.country
+and iec.erp_business_unit = otc.erp_business_unit
+and iec.erp_legal_entity = otc.erp_legal_entity
+and iec.erp_subsidiary = otc.erp_subsidiary
+and iec.origin_system = otc.origin_system
+and iec.operation = otc.operation
+
+where otc.country = 'Brazil' -- Integração em paralelo por operação do país
+and otc.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
+and otc.origin_system = 'smartsystem' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
+and otc.operation = 'royalties' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
+and otc.to_generate_invoice = 'yes'
+and otc.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and invoice.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
 and invoice.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
