@@ -3,11 +3,11 @@ set @json_request = cast( '  {
       "header": {
         "country": "Brazil",
         "unity_identification" : 1,
-        "origin_system" : "smartsystem",
+        "origin_system" : "biosystem",
         "operation": "person_plan",
         "minifactu_id": 1246845,
-        "conciliator_id": "string",
-        "fin_id": "string",
+        "fin_id" : 12345,
+        "erp_receivable_customer_identification" : "01425787000104",
         "front_id": 2131231
       },
       "invoice_customer": {
@@ -25,9 +25,7 @@ set @json_request = cast( '  {
         "area_code": 11,
         "cellphone": 912345678,
         "email": "felipe.nambara@bioritmo.com.br",
-        "state_registration": "string",
-        "municipal_registration": "string",
-        "final_consumer": "yes",
+                "final_consumer": "yes",
         "icms_contributor": "no"
       },
       "receivable": {
@@ -81,6 +79,8 @@ set @json_request = cast( '  {
     }
   }' as json );
 
-call sp_insert_order_to_cash_v2( @json_request ,	@p_return ,	@p_code ,	@p_message); 
+call sp_insert_order_to_cash_v2( @json_request ,@p_return ,	@p_code ,@p_message, @p_minifactu_id); 
                             
-select @p_return,@p_code,cast(@p_message as char);
+select @p_return,@p_code,cast(@p_message as char),@p_minifactu_id;
+
+-- Missing node otc.header.erp_receivable_customer_identification at Json request ! Check the documentation https://app.swaggerhub.com/apis-docs/Smartfit/OrderToCash/1.0.0
