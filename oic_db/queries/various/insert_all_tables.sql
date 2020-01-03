@@ -4665,3 +4665,5 @@ set invoice_items.erp_item_ar_id = product_from_to_version.erp_item_ar_id,
 invoice_items.erp_gl_segment_product = product_from_to_version.erp_gl_segment_id
 
 where invoice_items.id = @invoice_id_item ;
+
+commit;
