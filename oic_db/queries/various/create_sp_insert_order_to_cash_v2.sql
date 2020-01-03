@@ -46,7 +46,7 @@ begin
 	declare p_invoice_customer_cellphone varchar(45);
 	declare p_invoice_customer_email varchar(45);
 	declare p_invoice_customer_state_registration varchar(45);
-	declare p_invoice_customer_federal_registration varchar(45);
+	declare p_invoice_customer_municipal_registration varchar(45);
 	declare p_invoice_customer_final_consumer varchar(45);
 	declare p_invoice_customer_icms_contributor varchar(45);
 	declare p_receivable_is_smartfin varchar(45);
@@ -107,60 +107,60 @@ begin
     
 		start transaction;
 					
-		select replace(json_extract(p_otc,'$.otc.header.country'),'"',"") into @p_order_to_cash_country;
-		select cast(json_extract(p_otc,'$.otc.header.unity_identification') as unsigned) into @p_order_to_cash_unity_identification;
-		select replace(json_extract(p_otc,'$.otc.header.origin_system'),'"',"")  into @p_order_to_cash_origin_system;
-		select replace(json_extract(p_otc,'$.otc.header.operation'),'"',"")  into @p_order_to_cash_operation;
-		select cast(json_extract(p_otc,'$.otc.header.minifactu_id') as unsigned)  into @p_order_to_cash_minifactu_id;
-		select replace(json_extract(p_otc,'$.otc.header.conciliator_id'),'"',"")  into @p_order_to_cash_conciliator_id;
-		select cast(json_extract(p_otc,'$.otc.header.fin_id') as unsigned)  into @p_order_to_cash_fin_id;
-		select cast(json_extract(p_otc,'$.otc.header.front_id') as unsigned)  into @p_order_to_cash_front_id;
-		select replace(json_extract(p_otc,'$.otc.header.erp_receivable_customer_identification'),'"',"")  into @p_order_to_cash_erp_receivable_customer_identification;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.full_name'),'"',"")  into @p_invoice_customer_full_name;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.type_person'),'"',"")  into @p_invoice_customer_type_person;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.identification_financial_responsible'),'"',"")  into @p_invoice_customer_identification_financial_responsible; 
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.nationality_code'),'"',"")  into @p_invoice_customer_nationality_code;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.state'),'"',"") into @p_invoice_customer_state;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.city'),'"',"")  into @p_invoice_customer_city;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.adress'),'"',"")  into @p_invoice_customer_adress; 
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.adress_number'),'"',"")  into @p_invoice_customer_adress_number;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.adress_complement'),'"',"")  into @p_invoice_customer_adress_complement;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.district'),'"',"")  into @p_invoice_customer_district;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.postal_code'),'"',"")  into @p_invoice_customer_postal_code;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.area_code'),'"',"")  into @p_invoice_customer_area_code;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.cellphone'),'"',"")  into @p_invoice_customer_cellphone;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.email'),'"',"")  into @p_invoice_customer_email;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.state_registration'),'"',"")  into @p_invoice_customer_state_registration;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.federal_registration'),'"',"")  into @p_invoice_customer_federal_registration;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.final_consumer'),'"',"")  into @p_invoice_customer_final_consumer;
-		select replace(json_extract(p_otc,'$.otc.invoice_customer.icms_contributor'),'"',"")  into @p_invoice_customer_icms_contributor;
-		select replace(json_extract(p_otc,'$.otc.receivable.is_smartfin'),'"',"")  into @p_receivable_is_smartfin;
-		select replace(json_extract(p_otc,'$.otc.receivable.transaction_type'),'"',"") into @p_receivable_transaction_type;
-		select replace(json_extract(p_otc,'$.otc.receivable.contract_number'),'"',"")  into @p_receivable_contract_number;
-		select replace(json_extract(p_otc,'$.otc.receivable.credit_card_brand'),'"',"")  into @p_receivable_credit_card_brand;
-		select replace(json_extract(p_otc,'$.otc.receivable.truncated_credit_card'),'"',"")  into @p_receivable_truncated_credit_card;
-		select replace(json_extract(p_otc,'$.otc.receivable.current_credit_card_installment'),'"',"")  into @p_receivable_current_credit_card_installment;
-		select replace(json_extract(p_otc,'$.otc.receivable.total_credit_card_installment'),'"',"")  into @p_receivable_total_credit_card_installment;
-		select replace(json_extract(p_otc,'$.otc.receivable.nsu'),'"',"")  into @p_receivable_nsu;
-		select replace(json_extract(p_otc,'$.otc.receivable.conciliator_id'),'"',"")  into @p_receivable_conciliator_id;
-		select replace(json_extract(p_otc,'$.otc.receivable.authorization_code'),'"',"")  into @p_receivable_authorization_code;
-		select cast(json_extract(p_otc,'$.otc.receivable.price_list_value') as decimal(18,4))  into @p_receivable_price_list_value;
-		select cast(json_extract(p_otc,'$.otc.receivable.gross_value')  as decimal(18,4))  into @p_receivable_gross_value;
-		select cast(json_extract(p_otc,'$.otc.receivable.net_value')  as decimal(18,4))  into @p_receivable_net_value;
-		select cast(json_extract(p_otc,'$.otc.receivable.interest_value')  as decimal(18,4))  into @p_receivable_interest_value;
-		select cast(json_extract(p_otc,'$.otc.receivable.administration_tax_percentage')  as decimal(18,4))  into @p_receivable_administration_tax_percentage;
-		select cast(json_extract(p_otc,'$.otc.receivable.administration_tax_value') as decimal(18,4))  into @p_receivable_administration_tax_value;
-		select cast(json_extract(p_otc,'$.otc.receivable.antecipation_tax_percentage') as decimal(18,4))  into @p_receivable_antecipation_tax_percentage;
-		select cast(json_extract(p_otc,'$.otc.receivable.antecipation_tax_value') as decimal(18,4))  into @p_receivable_antecipation_tax_value;
-		select replace(json_extract(p_otc,'$.otc.receivable.billing_date'),'"',"")  into @p_receivable_billing_date;
-		select replace(json_extract(p_otc,'$.otc.receivable.credit_date'),'"',"")  into @p_receivable_credit_date;
-		select replace(json_extract(p_otc,'$.otc.receivable.conciliator_filename'),'"',"")  into @p_receivable_conciliator_filename;
-		select replace(json_extract(p_otc,'$.otc.receivable.acquirer_bank_filename'),'"',"")  into @p_receivable_acquirer_bank_filename;
-		select replace(json_extract(p_otc,'$.otc.receivable.registration_gym_student'),'"',"")  into @p_receivable_registration_gym_student;
-		select replace(json_extract(p_otc,'$.otc.receivable.fullname_gym_student'),'"',"")  into @p_receivable_fullname_gym_student;
-		select replace(json_extract(p_otc,'$.otc.receivable.identification_gym_student'),'"',"")  into @p_receivable_identification_gym_student;
-		select replace(json_extract(p_otc,'$.otc.invoice.transaction_type'),'"',"")  into @p_invoice_transaction_type;
-		select replace(json_extract(p_otc,'$.otc.invoice.is_overdue_recovery'),'"',"")  into @p_invoice_is_overdue_recovery;
+		select replace(replace(json_extract(p_otc,'$.otc.header.country'),'"',""),"null",null) into @p_order_to_cash_country;
+		select cast(replace(json_extract(p_otc,'$.otc.header.unity_identification'),"null",null) as unsigned) into @p_order_to_cash_unity_identification;
+		select replace(replace(json_extract(p_otc,'$.otc.header.origin_system'),'"',""),"null",null)  into @p_order_to_cash_origin_system;
+		select replace(replace(json_extract(p_otc,'$.otc.header.operation'),'"',""),"null",null)  into @p_order_to_cash_operation;
+		select cast(replace(json_extract(p_otc,'$.otc.header.minifactu_id'),"null",null) as unsigned)  into @p_order_to_cash_minifactu_id;
+		select replace(replace(json_extract(p_otc,'$.otc.header.conciliator_id'),'"',""),"null",null)  into @p_order_to_cash_conciliator_id;
+		select cast(replace(json_extract(p_otc,'$.otc.header.fin_id'),"null",null) as unsigned)  into @p_order_to_cash_fin_id;
+		select cast(replace(json_extract(p_otc,'$.otc.header.front_id'),"null",null) as unsigned)  into @p_order_to_cash_front_id;
+		select replace(replace(json_extract(p_otc,'$.otc.header.erp_receivable_customer_identification'),'"',""),"null",null)  into @p_order_to_cash_erp_receivable_customer_identification;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.full_name'),'"',""),"null",null)  into @p_invoice_customer_full_name;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.type_person'),'"',""),"null",null)  into @p_invoice_customer_type_person;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.identification_financial_responsible'),'"',""),"null",null)  into @p_invoice_customer_identification_financial_responsible; 
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.nationality_code'),'"',""),"null",null)  into @p_invoice_customer_nationality_code;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.state'),'"',""),"null",null) into @p_invoice_customer_state;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.city'),'"',""),"null",null)  into @p_invoice_customer_city;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.adress'),'"',""),"null",null)  into @p_invoice_customer_adress; 
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.adress_number'),'"',""),"null",null)  into @p_invoice_customer_adress_number;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.adress_complement'),'"',""),"null",null)  into @p_invoice_customer_adress_complement;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.district'),'"',""),"null",null)  into @p_invoice_customer_district;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.postal_code'),'"',""),"null",null)  into @p_invoice_customer_postal_code;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.area_code'),'"',""),"null",null)  into @p_invoice_customer_area_code;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.cellphone'),'"',""),"null",null)  into @p_invoice_customer_cellphone;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.email'),'"',""),"null",null)  into @p_invoice_customer_email;
+        select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.municipal_registration'),'"',""),"null",null)  into @p_invoice_customer_municipal_registration;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.state_registration'),'"',""),"null",null)  into @p_invoice_customer_state_registration;		
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.final_consumer'),'"',""),"null",null)  into @p_invoice_customer_final_consumer;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice_customer.icms_contributor'),'"',""),"null",null)  into @p_invoice_customer_icms_contributor;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.is_smartfin'),'"',""),"null",null)  into @p_receivable_is_smartfin;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.transaction_type'),'"',""),"null",null) into @p_receivable_transaction_type;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.contract_number'),'"',""),"null",null)  into @p_receivable_contract_number;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.credit_card_brand'),'"',""),"null",null)  into @p_receivable_credit_card_brand;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.truncated_credit_card'),'"',""),"null",null)  into @p_receivable_truncated_credit_card;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.current_credit_card_installment'),'"',""),"null",null)  into @p_receivable_current_credit_card_installment;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.total_credit_card_installment'),'"',""),"null",null)  into @p_receivable_total_credit_card_installment;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.nsu'),'"',""),"null",null)  into @p_receivable_nsu;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.conciliator_id'),'"',""),"null",null)  into @p_receivable_conciliator_id;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.authorization_code'),'"',""),"null",null)  into @p_receivable_authorization_code;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.price_list_value'),"null",null) as decimal(18,4))  into @p_receivable_price_list_value;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.gross_value'),"null",null)  as decimal(18,4))  into @p_receivable_gross_value;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.net_value'),"null",null)  as decimal(18,4))  into @p_receivable_net_value;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.interest_value'),"null",null)  as decimal(18,4))  into @p_receivable_interest_value;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.administration_tax_percentage'),"null",null)  as decimal(18,4))  into @p_receivable_administration_tax_percentage;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.administration_tax_value'),"null",null) as decimal(18,4))  into @p_receivable_administration_tax_value;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.antecipation_tax_percentage'),"null",null) as decimal(18,4))  into @p_receivable_antecipation_tax_percentage;
+		select cast(replace(json_extract(p_otc,'$.otc.receivable.antecipation_tax_value'),"null",null) as decimal(18,4))  into @p_receivable_antecipation_tax_value;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.billing_date'),'"',""),"null",null)  into @p_receivable_billing_date;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.credit_date'),'"',""),"null",null)  into @p_receivable_credit_date;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.conciliator_filename'),'"',""),"null",null)  into @p_receivable_conciliator_filename;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.acquirer_bank_filename'),'"',""),"null",null)  into @p_receivable_acquirer_bank_filename;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.registration_gym_student'),'"',""),"null",null)  into @p_receivable_registration_gym_student;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.fullname_gym_student'),'"',""),"null",null)  into @p_receivable_fullname_gym_student;
+		select replace(replace(json_extract(p_otc,'$.otc.receivable.identification_gym_student'),'"',""),"null",null)  into @p_receivable_identification_gym_student;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice.transaction_type'),'"',""),"null",null)  into @p_invoice_transaction_type;
+		select replace(replace(json_extract(p_otc,'$.otc.invoice.is_overdue_recovery'),'"',""),"null",null)  into @p_invoice_is_overdue_recovery;
 		select cast( json_extract(p_otc,'$.otc.invoice.invoice_items') as json ) into @p_invoice_items_json;    
         
 		call sp_check_if_exists_order_to_cash(p_otc, @p_return_v3 , @p_code_v3 , @p_message_v3, @p_minifactu_id_v3);
@@ -311,8 +311,8 @@ begin
 									area_code,
 									cellphone,
 									email,
+									municipal_registration,                                    
 									state_registration,
-									federal_registration,
 									final_consumer,
 									icms_contributor,
 									erp_filename,
@@ -335,8 +335,8 @@ begin
 									@p_invoice_customer_area_code, -- area_code
 									@p_invoice_customer_cellphone, -- cellphone
 									@p_invoice_customer_email, -- email
+									@p_invoice_customer_municipal_registration, -- municipal_registration                                    
 									@p_invoice_customer_state_registration, -- state_registration
-									@p_invoice_customer_federal_registration, -- federal_registration
 									@p_invoice_customer_final_consumer, -- final_consumer
 									@p_invoice_customer_icms_contributor, -- icms_contributor
 									null, -- erp_filename
@@ -437,7 +437,7 @@ begin
 					-- saves the auto increment id from order_to_cash table
 					set @v_invoice_id = last_insert_id(); 
 
-					if (@p_invoice_items_json <> '') then 
+					if (@p_invoice_items_json is not null) and  json_contains_path(@p_invoice_items_json,'one','$.invoice_items') = 1 then 
 					
 						invoice_items_lopp: while i <= json_length(json_extract(@p_invoice_items_json,'$.invoice_items')) - 1 do
 							
@@ -457,12 +457,12 @@ begin
 							and json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].sale_price')) = 1 
 							) then
 														
-								select cast(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].front_product_id')) as unsigned) into @v_front_product_id;
-								select cast(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].front_plan_id')) as unsigned) into @v_front_plan_id;
-								select cast(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].front_addon_id')) as unsigned) into @v_front_addon_id;
-								select cast(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].quantity')) as decimal(18,4)) into @v_quantity;
-								select cast(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].list_price')) as decimal(18,4)) into @v_list_price;
-								select cast(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].sale_price')) as decimal(18,4)) into @v_sale_price;
+								select cast(replace(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].front_product_id')),"null",null) as unsigned) into @v_front_product_id;
+								select cast(replace(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].front_plan_id')),"null",null) as unsigned) into @v_front_plan_id;
+								select cast(replace(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].front_addon_id')),"null",null) as unsigned) into @v_front_addon_id;
+								select cast(replace(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].quantity')),"null",null) as decimal(18,4)) into @v_quantity;
+								select cast(replace(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].list_price')),"null",null) as decimal(18,4)) into @v_list_price;
+								select cast(replace(json_extract(@p_invoice_items_json,concat('$.invoice_items[',i,'].sale_price')),"null",null) as decimal(18,4)) into @v_sale_price;
 
 								if(@v_front_product_id = 0)then
 									set @v_front_product_id = null;
@@ -471,12 +471,18 @@ begin
 								if(@v_front_plan_id = 0)then
 									set @v_front_plan_id = null;
 								end if;
-
+								
+                                -- select @v_front_addon_id;
+                                
 								if(@v_front_addon_id = 0)then
 									set @v_front_addon_id = null;
 								end if;
-											
-								if (@p_order_to_cash_origin_system = 'smartsystem' or @p_order_to_cash_origin_system = 'racesystem' or @p_order_to_cash_origin_system = 'nossystem') then
+                                
+                                -- select @v_front_addon_id;
+								
+                                -- select @p_order_to_cash_origin_system;
+                                
+								if (@p_order_to_cash_origin_system in ('smartsystem','racesystem','nossystem')) then
 
 									if ( @v_front_product_id is not null and @v_front_plan_id is not null  ) then
 																		
@@ -534,62 +540,148 @@ begin
 										rollback;
 										set p_return = false;
 										set p_code = 7;
-										set p_message = "Order to cash transactions from smartsystem must have front_product_id and front_plan_id simultaneously or only front_addon_id filled at invoice_items";
+										set p_message = concat("Order to cash transactions from ",@p_order_to_cash_origin_system," must have front_product_id and front_plan_id simultaneously or only front_addon_id filled at invoice_items");
                                         set p_minifactu_id = @p_order_to_cash_minifactu_id;
 										leave invoice_items_lopp;
 										
-									end if;
-																
-									if  ( ( @v_erp_item_ar_id is not null ) and ( @v_erp_gl_segment_id is not null) ) then
-
-											insert into invoice_items
-											(id_invoice,
-											front_product_id,
-											front_plan_id,
-											front_addon_id,
-											erp_item_ar_id,
-											erp_gl_segment_product,
-											quantity,
-											sale_price,
-											list_price,
-											erp_filename,
-											erp_line_in_file)
-											values
-											(@v_invoice_id, -- id_invoice
-											@v_front_product_id, -- front_product_id
-											@v_front_plan_id, -- front_plan_id
-											@v_front_addon_id, -- front_addon_id
-											@v_erp_item_ar_id, -- erp_item_ar_id
-											@v_erp_gl_segment_id, -- erp_gl_segment_product
-											@v_quantity, -- quantity
-											@v_list_price, -- sale_price
-											@v_sale_price, -- list_price
-											null, -- erp_filename
-											null); -- erp_line_in_file                                            
-														
-											commit;
-									else
+									end if;															
+                                
+                                elseif (@p_order_to_cash_origin_system in ('biosystem')) then
 									
+                                    -- select 1;
+                                    
+                                    if ( @v_front_product_id is not null  ) then
+										
+										select 
+											 erp_item_ar_id
+                                            ,erp_gl_segment_id
+											into @v_erp_item_ar_id
+												,@v_erp_gl_segment_id
+										from product_from_to_version prodftv
+										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
+										and prodftv.product_from_to_operation = @p_order_to_cash_operation
+										and prodftv.product_from_to_front_product_id = @v_front_product_id
+										and prodftv.created_at = (
+																		select 
+																			max(prodftv_v2.created_at) as created_at
+																		from product_from_to_version prodftv_v2
+																		where prodftv_v2.product_from_to_origin_system = prodftv.product_from_to_origin_system
+																		and prodftv_v2.product_from_to_operation = prodftv.product_from_to_operation
+																		and prodftv_v2.product_from_to_front_product_id = prodftv.product_from_to_front_product_id);
+                                        
+									elseif ( @v_front_plan_id is not null  ) then
+										
+										select 
+											 erp_item_ar_id
+                                            ,erp_gl_segment_id
+											into @v_erp_item_ar_id
+												,@v_erp_gl_segment_id
+										from plan_from_to_version planftv
+										where planftv.plan_from_to_origin_system = @p_order_to_cash_origin_system
+										and planftv.plan_from_to_operation = @p_order_to_cash_operation
+										and planftv.plan_from_to_front_plan_id = @v_front_plan_id
+										and planftv.created_at = (	select 
+																			max(planftv_v2.created_at) as created_at
+																	from plan_from_to_version planftv_v2
+																	where planftv_v2.plan_from_to_origin_system = planftv.plan_from_to_origin_system
+																	and planftv_v2.plan_from_to_operation = planftv.plan_from_to_operation
+																	and planftv_v2.plan_from_to_front_plan_id = planftv.plan_from_to_front_plan_id );
+                                        
+									else
+                                    
 										rollback;
 										set p_return = false;
-										set p_code = 6;
-										set p_message = concat("The Oracle Erp Item Ar or Erp GL Product Segment was not found at the from/to tables with these values origin_system: "
-																,ifnull(@p_order_to_cash_origin_system,"null")
-                                                                ,", operation: "
-                                                                ,ifnull(@p_order_to_cash_operation,"null")
-                                                                ,", front_product_id: "
-                                                                ,ifnull(@v_front_product_id,"null")
-                                                                ,", front_plan_id: "
-                                                                ,ifnull(@v_front_plan_id,"null")
-                                                                ," and front_addon_id: "
-                                                                ,ifnull(@v_front_addon_id,"null") +"");
-										set p_minifactu_id = @p_order_to_cash_minifactu_id;
-										
+										set p_code = 8;
+										set p_message = concat("Order to cash transactions from ",@p_order_to_cash_origin_system," must have front_product_id or front_plan_id filled at invoice_items");
+                                        set p_minifactu_id = @p_order_to_cash_minifactu_id;
 										leave invoice_items_lopp;
-																	
-									end if;
+                                    
+                                    end if;
 								
-								end if;				
+                                else
+
+                                    if ( @v_front_product_id is not null  ) then
+										
+										select 
+											 erp_item_ar_id
+                                            ,erp_gl_segment_id
+											into @v_erp_item_ar_id
+												,@v_erp_gl_segment_id
+										from product_from_to_version prodftv
+										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
+										and prodftv.product_from_to_operation = @p_order_to_cash_operation
+										and prodftv.product_from_to_front_product_id = @v_front_product_id
+										and prodftv.created_at = (
+																		select 
+																			max(prodftv_v2.created_at) as created_at
+																		from product_from_to_version prodftv_v2
+																		where prodftv_v2.product_from_to_origin_system = prodftv.product_from_to_origin_system
+																		and prodftv_v2.product_from_to_operation = prodftv.product_from_to_operation
+																		and prodftv_v2.product_from_to_front_product_id = prodftv.product_from_to_front_product_id);
+
+									else
+                                    
+										rollback;
+										set p_return = false;
+										set p_code = 9;
+										set p_message = concat("Order to cash transactions from ",@p_order_to_cash_origin_system," must have at least front_product_id filled at invoice_items");
+                                        set p_minifactu_id = @p_order_to_cash_minifactu_id;
+										leave invoice_items_lopp;
+                                    
+                                    end if;
+                                
+								end if;		
+                                
+								if  p_return and ( ( @v_erp_item_ar_id is not null ) and ( @v_erp_gl_segment_id is not null) ) then
+
+										insert into invoice_items
+										(id_invoice,
+										front_product_id,
+										front_plan_id,
+										front_addon_id,
+										erp_item_ar_id,
+										erp_gl_segment_product,
+										quantity,
+										sale_price,
+										list_price,
+										erp_filename,
+										erp_line_in_file)
+										values
+										(@v_invoice_id, -- id_invoice
+										@v_front_product_id, -- front_product_id
+										@v_front_plan_id, -- front_plan_id
+										@v_front_addon_id, -- front_addon_id
+										@v_erp_item_ar_id, -- erp_item_ar_id
+										@v_erp_gl_segment_id, -- erp_gl_segment_product
+										@v_quantity, -- quantity
+										@v_list_price, -- sale_price
+										@v_sale_price, -- list_price
+										null, -- erp_filename
+										null); -- erp_line_in_file                                            
+													
+										commit;
+								else
+									
+                                    -- select ifnull(@v_front_addon_id,"null");
+                                    
+									rollback;
+									set p_return = false;
+									set p_code = 6;
+									set p_message = concat("The Oracle Erp Item Ar or Erp GL Product Segment was not found at the from/to tables with these values origin_system or are empty: "
+															,ifnull(@p_order_to_cash_origin_system,"null")
+															,", operation: "
+															,ifnull(@p_order_to_cash_operation,"null")
+															,", front_product_id: "
+															,ifnull(@v_front_product_id,"null")
+															,", front_plan_id: "
+															,ifnull(@v_front_plan_id,"null")
+															," and front_addon_id: "
+															,ifnull(@v_front_addon_id,"null") +"");
+									set p_minifactu_id = @p_order_to_cash_minifactu_id;									
+                                    
+									leave invoice_items_lopp;
+																
+								end if;                                
 							
 							else
 								
@@ -615,6 +707,14 @@ begin
 						
 						end if;
 					
+					else
+							
+						rollback;
+						set p_return = false;
+						set p_code = 9;
+						set p_message = "The Otc object doesn't have the correct items structure ! Check the documentation https://app.swaggerhub.com/apis-docs/Smartfit/OrderToCash/1.0.0";
+						set p_minifactu_id = @p_order_to_cash_minifactu_id;                    
+                    
 					end if;
 
 				else
