@@ -29,7 +29,7 @@ declare cur1 cursor for select receivable.id from receivable
                         and order_to_cash.operation = p_operation
                         and receivable.transaction_type = p_transaction_type 
                         and receivable.is_smartfin = 'yes'
-                        
+                        /*
                         and not exists ( 
 										select 
 											1 
@@ -47,7 +47,7 @@ declare cur1 cursor for select receivable.id from receivable
 												or	( receivable_v2.erp_receivable_id is not null ) 
 											)
 										) 
-                        
+                        */
                         order by order_to_cash.country
 								,order_to_cash.origin_system
                                 ,order_to_cash.operation
@@ -57,13 +57,13 @@ declare cur1 cursor for select receivable.id from receivable
 declare continue handler for not found set done=1;
 
 declare exit handler for sqlexception 
-begin
-    rollback;
+begin    
+	rollback;    
     get diagnostics condition 1  @v_message_text = message_text;
     select @v_message_text;
 end;
 
-set @v_keycontrol 	:= concat_ws('_','sp_create_smartfin_receivables',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type));
+set @v_keycontrol 	:= concat_ws('_','smf_rec',left(rtrim(p_country),2),left(rtrim(p_origin_system),2),left(rtrim(p_operation),2),left(rtrim(p_transaction_type),2));
 
 if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									  inner join organization_from_to_version oftv
@@ -114,9 +114,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		start transaction;
 
 		insert into order_to_cash
-			(id,
-			created_at,
-			order_to_cash_id_smartfin,        
+			(order_to_cash_id_smartfin,        
 			country,
 			unity_identification,
 			erp_business_unit,
@@ -151,8 +149,6 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 			erp_receipt_log)
 		
 			select 
-				null,
-				null,
 				order_to_cash.id,            
 				order_to_cash.country,
 				@v_unity_identification,
