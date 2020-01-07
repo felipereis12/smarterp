@@ -321,6 +321,7 @@ if get_lock(@v_keycontrol,1) = 1 then
         
         delete from control_clustered_receivable where keycontrol = @v_keycontrol and created_at = @v_created_at;
         
+        commit;
         -- select "teste12";
         
     end loop ClusteredReceivableLoop;
