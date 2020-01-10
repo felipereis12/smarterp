@@ -10,6 +10,10 @@ select
     ,iec.erp_set_of_books_id    
     ,iec.erp_product_category_fiscal
     ,iec.erp_attribute_category
+    ,iec.erp_fiscal_serie
+    ,iec.erp_fiscal_service_situation
+    ,oftv.fiscal_municipal_identification
+    ,oftv.erp_legal_report_unit
     ,iec.warehouse_id
     ,otc.id as id_otc-- id da order_to_cash
     ,ifnull(rec.erp_clustered_receivable_id,rec_v2.erp_clustered_receivable_id) as erp_clustered_receivable_id -- id do aglutinado
@@ -30,6 +34,7 @@ select
     ,iit.quantity -- Quantidade do item de venda
     ,iit.sale_price -- Preço praticado
     ,iit.list_price -- Preço de lista
+    ,iit.erp_ncm_code -- Código NCM do produto
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_trx_date
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date       
 from invoice ivc
@@ -59,7 +64,7 @@ and otc_v2.id = (
 
 left join receivable rec_v2
 on rec_v2.order_to_cash_id = otc_v2.id
-and rec_v2.erp_receivable_id is not null
+ and rec_v2.erp_receivable_id is not null
 
 left join invoice_erp_configurations iec
 on iec.country = otc.country
