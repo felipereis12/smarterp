@@ -22,6 +22,7 @@ begin
     declare v_invoice_id integer;    
     declare v_erp_item_ar_id varchar(45); 
     declare v_erp_gl_segment_id varchar(45);
+    declare v_erp_ncm_code varchar(45);
     declare p_order_to_cash_country varchar(45);
 	declare p_order_to_cash_unity_identification varchar(45);
 	declare p_order_to_cash_origin_system varchar(45);
@@ -448,7 +449,8 @@ begin
                             set @v_sale_price = null;
 							set @v_erp_item_ar_id = null;
 							set @v_erp_gl_segment_id = null;
-							
+                            set @v_erp_ncm_code = null;
+                            
 							if ( ( (json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_product_id')) = 1 and json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_plan_id')) = 1 )
 									or json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_addon_id')) = 1 
                                     or json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_product_id')) = 1 )
@@ -477,18 +479,16 @@ begin
 								if(@v_front_addon_id = 0)then
 									set @v_front_addon_id = null;
 								end if;
-                                
-                                -- select @v_front_addon_id;
-								
-                                -- select @p_order_to_cash_origin_system;
-                                
+
 								if (@p_order_to_cash_origin_system in ('smartsystem','racesystem','nossystem')) then
 
 									if ( @v_front_product_id is not null and @v_front_plan_id is not null  ) then
 																		
 										select 
-											erp_item_ar_id
+											 erp_item_ar_id
+                                            ,erp_ncm_code
 											into @v_erp_item_ar_id
+												,@v_erp_ncm_code
 										from product_from_to_version prodftv
 										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
 										and prodftv.product_from_to_operation = @p_order_to_cash_operation
@@ -502,8 +502,10 @@ begin
 																		and prodftv_v2.product_from_to_front_product_id = prodftv.product_from_to_front_product_id);
 
 										select 
-											 erp_gl_segment_id
+											  erp_gl_segment_id
+                                             ,erp_ncm_code
 											into @v_erp_gl_segment_id
+												,@v_erp_ncm_code
 										from plan_from_to_version planftv
 										where planftv.plan_from_to_origin_system = @p_order_to_cash_origin_system
 										and planftv.plan_from_to_operation = @p_order_to_cash_operation
@@ -520,8 +522,10 @@ begin
 										select 
 											 erp_item_ar_id        
 											,erp_gl_segment_id
+                                            ,erp_ncm_code
                                             into @v_erp_item_ar_id,
-												@v_erp_gl_segment_id
+												 @v_erp_gl_segment_id,
+                                                 @v_erp_ncm_code
 										from addon_from_to_version addoftv
 										where addoftv.addon_from_to_origin_system = @p_order_to_cash_origin_system
 										and addoftv.addon_from_to_operation = @p_order_to_cash_operation
@@ -555,8 +559,10 @@ begin
 										select 
 											 erp_item_ar_id
                                             ,erp_gl_segment_id
+                                            ,erp_ncm_code
 											into @v_erp_item_ar_id
 												,@v_erp_gl_segment_id
+                                                ,@v_erp_ncm_code
 										from product_from_to_version prodftv
 										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
 										and prodftv.product_from_to_operation = @p_order_to_cash_operation
@@ -574,8 +580,10 @@ begin
 										select 
 											 erp_item_ar_id
                                             ,erp_gl_segment_id
+                                            ,erp_ncm_code
 											into @v_erp_item_ar_id
 												,@v_erp_gl_segment_id
+                                                ,@v_erp_ncm_code
 										from plan_from_to_version planftv
 										where planftv.plan_from_to_origin_system = @p_order_to_cash_origin_system
 										and planftv.plan_from_to_operation = @p_order_to_cash_operation
@@ -605,8 +613,10 @@ begin
 										select 
 											 erp_item_ar_id
                                             ,erp_gl_segment_id
+                                            ,erp_ncm_code
 											into @v_erp_item_ar_id
 												,@v_erp_gl_segment_id
+                                                ,@v_erp_ncm_code
 										from product_from_to_version prodftv
 										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
 										and prodftv.product_from_to_operation = @p_order_to_cash_operation
@@ -632,7 +642,7 @@ begin
                                 
 								end if;		
                                 
-								if  p_return and ( ( @v_erp_item_ar_id is not null ) and ( @v_erp_gl_segment_id is not null) ) then
+								if  p_return and ( ( @v_erp_item_ar_id is not null ) and ( @v_erp_gl_segment_id is not null) and ( @v_erp_ncm_code is not null) ) then
 
 										insert into invoice_items
 										(id_invoice,
@@ -641,6 +651,7 @@ begin
 										front_addon_id,
 										erp_item_ar_id,
 										erp_gl_segment_product,
+                                        erp_ncm_code,
 										quantity,
 										sale_price,
 										list_price,
@@ -653,6 +664,7 @@ begin
 										@v_front_addon_id, -- front_addon_id
 										@v_erp_item_ar_id, -- erp_item_ar_id
 										@v_erp_gl_segment_id, -- erp_gl_segment_product
+                                        @v_erp_ncm_code, -- erp_ncm_code
 										@v_quantity, -- quantity
 										@v_list_price, -- sale_price
 										@v_sale_price, -- list_price
@@ -667,7 +679,7 @@ begin
 									rollback;
 									set p_return = false;
 									set p_code = 6;
-									set p_message = concat("The Oracle Erp Item Ar or Erp GL Product Segment was not found at the from/to tables with these values origin_system or are empty: "
+									set p_message = concat("The Oracle Erp Item Ar, Erp GL Product Segment or product Ncm Code were not found at the from/to tables with these values origin_system or are empty: "
 															,ifnull(@p_order_to_cash_origin_system,"null")
 															,", operation: "
 															,ifnull(@p_order_to_cash_operation,"null")
