@@ -24,7 +24,7 @@ on ivc.erp_customer_id = invoice_customer_comparation.erp_customer_id
 and ivc.identification_financial_responsible = invoice_customer_comparation.identification_financial_responsible
 
 where order_to_cash.country = 'Brazil' -- Integração em paralelo por operação do país
-and order_to_cash.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
+and order_to_cash.erp_subsidiary = 'BR030001' -- No caso de Roaylties sempre será essa filial (Franqueadora)
 and order_to_cash.origin_system = 'smartsystem' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and order_to_cash.operation = 'royalties' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and order_to_cash.erp_invoice_customer_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
@@ -74,7 +74,7 @@ inner join invoice_customer ivc
 on order_to_cash.id = ivc.order_to_cash_id
 
 where order_to_cash.country = 'Brazil' -- Integração em paralelo por operação do país
-and order_to_cash.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
+and order_to_cash.erp_subsidiary = 'BR030001' -- No caso de Roaylties sempre será essa filial (Franqueadora)
 and order_to_cash.origin_system = 'smartsystem' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and order_to_cash.operation = 'royalties' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and order_to_cash.erp_invoice_customer_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
