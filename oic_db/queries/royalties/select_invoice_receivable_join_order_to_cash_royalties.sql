@@ -19,6 +19,7 @@ select
     ,ivcr.full_name
     ,ivcr.identification_financial_responsible
     ,iit.erp_gl_segment_product
+    ,iit.erp_item_ar_id
     ,iit.list_price
 from invoice
 
@@ -43,7 +44,7 @@ and iec.origin_system = otc.origin_system
 and iec.operation = otc.operation
 
 where otc.country = 'Brazil' -- Integração em paralelo por operação do país
-and otc.erp_subsidiary = 'BR030001' -- Filtro de subsidiaria que faz o recebimento de royalties 
+and otc.erp_subsidiary = 'BR030001' -- No caso de Roaylties sempre será essa filial (Franqueadora)
 and otc.origin_system = 'smartsystem' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'royalties' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_invoice = 'yes'
