@@ -544,7 +544,7 @@ begin
 										rollback;
 										set p_return = false;
 										set p_code = 7;
-										set p_message = concat("Order to cash transactions from ",@p_order_to_cash_origin_system," must have front_product_id and front_plan_id simultaneously or only front_addon_id filled at invoice_items");
+										set p_message = concat("Order to cash transactions from ",ifnull(@p_order_to_cash_origin_system,"null")," must have front_product_id and front_plan_id simultaneously or only front_addon_id filled at invoice_items");
                                         set p_minifactu_id = @p_order_to_cash_minifactu_id;
 										leave invoice_items_lopp;
 										
@@ -600,7 +600,7 @@ begin
 										rollback;
 										set p_return = false;
 										set p_code = 8;
-										set p_message = concat("Order to cash transactions from ",@p_order_to_cash_origin_system," must have front_product_id or front_plan_id filled at invoice_items");
+										set p_message = concat("Order to cash transactions from ",ifnull(@p_order_to_cash_origin_system,"null")," must have front_product_id or front_plan_id filled at invoice_items");
                                         set p_minifactu_id = @p_order_to_cash_minifactu_id;
 										leave invoice_items_lopp;
                                     
@@ -634,7 +634,7 @@ begin
 										rollback;
 										set p_return = false;
 										set p_code = 9;
-										set p_message = concat("Order to cash transactions from ",@p_order_to_cash_origin_system," must have at least front_product_id filled at invoice_items");
+										set p_message = concat("Order to cash transactions from ",ifnull(@p_order_to_cash_origin_system,"null")," must have at least front_product_id filled at invoice_items");
                                         set p_minifactu_id = @p_order_to_cash_minifactu_id;
 										leave invoice_items_lopp;
                                     
@@ -714,7 +714,7 @@ begin
 						
 							set p_return = true;
 							set p_code = 0;
-							set p_message = concat("The order to cash transaction was added to oic_db successfully. Id: ",@v_order_to_cash_id);
+							set p_message = concat("The order to cash transaction was added to oic_db successfully. Id: ",ifnull(@v_order_to_cash_id,"null"));
                             set p_minifactu_id = @p_order_to_cash_minifactu_id;
 						
 						end if;
@@ -734,7 +734,7 @@ begin
 					rollback;
 					set p_return = false;
 					set p_code = 4;
-					set p_message = concat("The Receivable Customer Identification sent ", @p_order_to_cash_erp_receivable_customer_identification ," doesn't exist at oic_db. Please talk to ERP Team !");
+					set p_message = concat("The Receivable Customer Identification sent ", ifnull(@p_order_to_cash_erp_receivable_customer_identification,"null") ," doesn't exist at oic_db. Please talk to ERP Team !");
                     set p_minifactu_id = @p_order_to_cash_minifactu_id;
 					
 				end if;
@@ -744,7 +744,7 @@ begin
 				rollback;
 				set p_return = false;
 				set p_code = 3;
-				set p_message = concat("The unity identification sent ", @p_order_to_cash_unity_identification ," doesn't  exist at oic_db. Please talk to ERP Team !");
+				set p_message = concat("The unity identification sent ", ifnull(@p_order_to_cash_unity_identification,"null") ," doesn't  exist at oic_db. Please talk to ERP Team !");
                 set p_minifactu_id = @p_order_to_cash_minifactu_id;
 			
 			end if;
