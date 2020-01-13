@@ -266,7 +266,7 @@ insert into invoice_items
 				erp_line_in_file)
 				values
 				(@invoice_id, -- id_invoice
-				4588715, -- front_product_id
+				1, -- front_product_id
 				null, -- front_plan_id
 				null, -- front_addon_id
 				null, -- erp_item_ar_id
