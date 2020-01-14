@@ -12,7 +12,7 @@ erp_refund_sent_to_erp_at,
 erp_refund_returned_from_erp_at,
 erp_refund_log,
 refund_requester_name,
-refund_requester_identification,
+refund_requester_identification,refund
 issue_date,
 due_date,
 erp_refund_id,
@@ -38,8 +38,8 @@ VALUES
 null, -- erp_refund_sent_to_erp_at
 null, -- erp_refund_returned_from_erp_at
 null, -- erp_refund_log
-'Felipe Volcov Nambara', -- refund_requester_name
-'39367233892', -- refund_requester_identification
+'João da Silva', -- refund_requester_name
+'98730168058', -- refund_requester_identification
 '2019-11-19', -- issue_date
 '2019-11-20', -- due_date
 null, -- erp_refund_id
@@ -50,8 +50,8 @@ null, -- erp_refund_id
 '1', -- bank_branch_digit
 '11542', -- bank_account_number
 '0', -- bank_account_number_digit
-'Felipe Volcov Nambara', -- bank_account_owner_name
-'39367233892'); -- bank_account_owner_identification
+'João da Silva', -- bank_account_owner_name
+'98730168058'); -- bank_account_owner_identification
 
 INSERT INTO refund_items
 (refund_id,
