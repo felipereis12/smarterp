@@ -61,5 +61,5 @@ and otc.origin_system = 'corporatepass' -- Integração em paralelo por origem (
 and otc.operation = 'revenue' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_invoice = 'yes'
 and otc.erp_invoice_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
--- and inv.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
+and inv.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
 and inv.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
