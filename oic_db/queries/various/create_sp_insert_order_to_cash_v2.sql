@@ -220,7 +220,7 @@ begin
 				where cus.identification_financial_responsible = @p_order_to_cash_erp_receivable_customer_identification
 				and cus.identification_financial_responsible is not null;
 									
-				if 	( 	( @p_order_to_cash_origin_system not in ('smartsystem','biosystem','racesystem','nossystem') and @p_order_to_cash_erp_receivable_customer_identification is null ) /*só é permitido enviar esse atributo nulo quando a operação não for smartfit, bioritmo, racebootcamp e nós*/
+				if 	( 	( @p_order_to_cash_operation not in ('person_plan') and @p_order_to_cash_erp_receivable_customer_identification is null ) /*só é permitido enviar esse atributo nulo quando a operação não for person_plan (plano de aluno b2c)*/
 				or 		( @v_erp_receivable_customer_id is not null )	) then /*caso contrário é obrigatório*/ 	 	
 					
 					insert into order_to_cash
@@ -480,7 +480,7 @@ begin
 									set @v_front_addon_id = null;
 								end if;
 
-								if (@p_order_to_cash_origin_system in ('smartsystem','racesystem','nossystem')) then
+								if (@p_order_to_cash_origin_system in ('smartsystem','racesystem','nossystem') and @p_order_to_cash_operation in ('person_plan') ) then
 
 									if ( @v_front_product_id is not null and @v_front_plan_id is not null  ) then
 																		
@@ -550,7 +550,7 @@ begin
 										
 									end if;															
                                 
-                                elseif (@p_order_to_cash_origin_system in ('biosystem')) then
+                                elseif (@p_order_to_cash_origin_system in ('biosystem') and @p_order_to_cash_operation in ('person_plan') ) then
 									
                                     -- select 1;
                                     
