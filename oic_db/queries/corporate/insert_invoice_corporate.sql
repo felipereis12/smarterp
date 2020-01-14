@@ -45,7 +45,7 @@ insert into order_to_cash
 				'yes', -- to_generate_invoice
 				'biosystem', -- origin_system
 				'corporate_plan', -- operation
-				null, -- minifactu_id
+				98795, -- minifactu_id
 				null, -- conciliator_id
 				null, -- fin_id
 				884548, -- front_id
