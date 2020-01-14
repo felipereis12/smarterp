@@ -39,7 +39,7 @@ on pec.country = otc.country
 and pec.origin_system = otc.origin_system
 and pec.operation = otc.operation
 and pec.transaction_type = rec.transaction_type
-and pec.converted_smartfin = rec.converted_smartfin;
+and pec.converted_smartfin = rec.converted_smartfin
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
 and otc.erp_subsidiary = 'BR020001' -- Neste caso como haverá uma integração separada para os movimentos Smartfin esse filtro deverá ser fixo para tais movimentos
