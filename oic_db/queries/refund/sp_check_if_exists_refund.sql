@@ -1,5 +1,7 @@
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `sp_check_if_exists_refund`( p_refund JSON ,out p_return boolean  ,out p_code integer ,out p_message varbinary(5000), out p_front_refund_id integer)
+drop procedure if exists sp_check_if_exists_refund; 
+delimiter //
+
+CREATE PROCEDURE sp_check_if_exists_refund( p_refund JSON ,out p_return boolean ,out p_code integer ,out p_message varbinary(5000), out p_front_refund_id integer)
 begin	
 	declare v_id integer;
     declare v_country varchar(45);
@@ -30,28 +32,24 @@ begin
     where refund.front_refund_id = v_front_refund_id
     and refund.id = (  select max(ref2.id) from refund ref2 where ref2.front_refund_id = refund.front_refund_id);
     
-    if (v_id is null
-		or v_erp_refund_status_transaction = 'error_at_trying_to_process' 
-        ) then
+    if (v_id is null or v_erp_refund_status_transaction = 'error_at_trying_to_process' ) then
 
 		set p_return = true;
 		set p_code = 0;
 		set p_message = "";
 		set p_front_refund_id = v_front_refund_id;
-        
-
-			
+	
     else
         
 		set p_return = false;
 		set p_code = 2;
-		set p_message = concat('The order to cash transaction was already added to oic_db and is waiting to be process ! => { "id" : ',v_id 
-								,', "created_at:" ',v_created_at
-								,', "erp_refund_status_transaction: " ',v_erp_refund_status_transaction
+		set p_message = concat('The refund transaction was already added to oic_db and is waiting to be process ! => { "id" : ',v_id 
+								,', "created_at:" ',ifnull(v_created_at,"null")
+								,', "erp_refund_status_transaction: " ',ifnull(v_erp_refund_status_transaction,"null")
 								,'} ');		
 		set p_front_refund_id = v_front_refund_id;    	
                 
     end if;
     
-end$$
-DELIMITER ;
+end;
+//
