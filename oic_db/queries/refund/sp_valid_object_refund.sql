@@ -1,5 +1,8 @@
-DELIMITER $$
-CREATE DEFINER=`admin`@`%` PROCEDURE `sp_valid_object_refund`( p_refund JSON ,out p_return boolean  ,out p_code integer ,out p_message varbinary(5000), out p_front_refund_id integer)
+drop procedure if exists sp_valid_object_refund; 
+delimiter //
+
+create procedure sp_valid_object_refund( p_refund JSON ,out p_return boolean ,out p_code integer ,out p_message varbinary(5000), out p_front_refund_id integer)
+
 begin   
 
     set p_return = true;
@@ -104,5 +107,5 @@ begin
         set p_message = concat(p_message,"Missing node refund.header.bank_account_owner_identification at Json request ! ");
     end if;
     
-end$$
-DELIMITER ;
+end;
+//
