@@ -670,8 +670,7 @@ begin
 										@v_sale_price, -- list_price
 										null, -- erp_filename
 										null); -- erp_line_in_file                                            
-													
-										commit;
+																							
 								else
 									
                                     -- select ifnull(@v_front_addon_id,"null");
@@ -711,7 +710,8 @@ begin
 						end while invoice_items_lopp;
 					
 						if ( p_return ) then
-						
+							
+                            commit;
 							set p_return = true;
 							set p_code = 0;
 							set p_message = concat("The order to cash transaction was added to oic_db successfully. Id: ",ifnull(@v_order_to_cash_id,"null"));
