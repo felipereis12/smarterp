@@ -44,3 +44,4 @@ and ref.origin_system = 'smartsystem' -- Integração em paralalo por origem (Sm
 and ref.operation = 'person_plan' -- Neste caso filtrar somente person_plan, pois a operação de refund só ocorre para os planos de alunos
 and ref.erp_refund_status_transaction = 'waiting_to_be_process'
 
+-- Felipe Test
