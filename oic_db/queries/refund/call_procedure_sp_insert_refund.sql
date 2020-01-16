@@ -2,9 +2,9 @@ set @json_request = cast(  '{
    "refund":{
       "header":{
          "country":"Brazil",
-         "unity_identification":1,
+         "unity_identification": 999999,
          "origin_system":"smartsystem",
-         "front_refund_id":123545,
+         "front_refund_id":1235459,
          "refund_requester_name":"João da Silva",
          "refund_requester_identification":12365478984,
          "issue_date":"2019-12-26",
