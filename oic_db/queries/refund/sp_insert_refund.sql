@@ -62,7 +62,43 @@ begin
         select replace(replace(json_extract(p_refund,'$.refund.header.bank_account_owner_identification'),'"',""),"null",null)  into @refund_bank_account_owner_identification;
         select cast( json_extract(p_refund,'$.refund.refund_items') as json ) into @p_refund_items_json;   
 		
-					
+        if ( @p_return_v3 ) then 
+			
+            set @v_erp_business_unit = null;
+            set @v_erp_legal_entity = null;
+            set @v_erp_subsidiary = null;
+            set @v_acronym = null;
+            set @v_to_generate_customer = null;
+            set @v_to_generate_receivable = null;
+            set @v_to_generate_invoice = null;
+            
+			select
+				 oftv.erp_business_unit
+				,oftv.erp_legal_entity
+				,oftv.erp_subsidiary
+				,oftv.acronym
+				,oftv.to_generate_customer
+				,oftv.to_generate_receivable
+				,oftv.to_generate_invoice                                        
+				
+				into 		 
+				 @v_erp_business_unit 
+				,@v_erp_legal_entity 
+				,@v_erp_subsidiary 
+				,@v_acronym 
+				,@v_to_generate_customer 
+				,@v_to_generate_receivable 
+				,@v_to_generate_invoice 
+				
+			from organization_from_to_version oftv
+			where oftv.organization_from_to_unity_identification = @p_order_to_cash_unity_identification
+			and oftv.created_at = (
+									select 
+										max(oftv_v2.created_at) as created_at
+									from organization_from_to_version oftv_v2
+									where oftv_v2.organization_from_to_unity_identification = oftv.organization_from_to_unity_identification
+									);
+                    
 		INSERT INTO refund
 		(
 			country,
@@ -145,6 +181,6 @@ begin
 		end if;
 				         
       end if;             
-       
+	end if; -- first if, of insert in the organization_from_to_version (oftv)
 	end;
 //
