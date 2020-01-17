@@ -1,28 +1,19 @@
 select 
-	 pay.unity_identification
-	,pay.erp_business_unit
+	 pay.erp_business_unit
     ,pay.erp_legal_entity
     ,pay.erp_subsidiary
-    ,pay.acronym
-    ,pay.gross_value
-    ,pay.net_value
-    ,pay.issue_date
-    ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_trx_date
-    ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_gl_date  
     ,pec.erp_source_name
-    ,pec.erp_type_transaction
-    ,pec.erp_payments_terms
     ,pec.erp_currency_code
-    ,pec.erp_currency_conversion_type
-    ,pec.erp_interface_line_context
     ,pec.erp_payment_code
-    ,pec.erp_set_of_books_id
-    ,pec.erp_memo_line
-    ,pec.erp_attribute_category
-    ,sup.erp_filename
-    ,sup.cellphone
-    ,rec.erp_payment_terms
-    ,rec.transaction_type
+    ,pec.erp_invoice_type
+    ,pec.erp_payments_terms
+    ,sup.identification_financial_responsible    
+    ,sup.full_name
+    ,sup.erp_supplier_id
+    ,rec.erp_receivable_id
+    ,pay.gross_value
+    ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_trx_date
+    ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_gl_date     
 from payable pay
 
 inner join receivable rec
