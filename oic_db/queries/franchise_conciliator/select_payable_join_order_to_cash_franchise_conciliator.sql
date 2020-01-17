@@ -14,7 +14,6 @@ select
     ,pay.gross_value
     ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_trx_date
     ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_gl_date     
-    
 from payable pay
 
 inner join supplier sup
@@ -38,8 +37,8 @@ and otc.erp_subsidiary = 'BR020001' -- Neste caso fixar esse valor para a integr
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Neste caso fixar esse valor para a integração de conciliador de franquias
 and rec.transaction_type = 'credit_card_recurring' -- Integração em paralalo por tipo de transação (Cartão de crédito recorrente, cartão de débito recorrente, débito em conta, boleto etc...)
--- and rec.erp_receivable_id is not null
--- and rec.erp_receipt_id is not null
--- and pay.erp_supplier_id is not null
+and rec.erp_receivable_id is not null
+and rec.erp_receipt_id is not null
+and pay.erp_supplier_id is not null
 and pay.erp_payable_status_transaction = 'waiting_to_be_process' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
 and pay.erp_payable_id is null; -- Filtrar somente os receivables que ainda não foram integrados com o erp
