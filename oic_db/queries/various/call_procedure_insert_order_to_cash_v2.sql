@@ -3,9 +3,10 @@ set @json_request = cast( '  {
       "header": {
         "country": "Brazil",
         "unity_identification" : 1,
-        "origin_system" : "biosystem",
+        "origin_system" : "smartsystem",
         "operation": "person_plan",
         "minifactu_id": 1246845,
+        "conciliator_id": 1246845,
         "fin_id" : 12345,
         "erp_receivable_customer_identification" : "01425787000104",
         "front_id": 2131231
