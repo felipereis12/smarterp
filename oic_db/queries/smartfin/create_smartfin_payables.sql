@@ -51,20 +51,19 @@ declare cur1 cursor for
 declare continue handler for not found set done=1;
 
 declare exit handler for sqlexception 
-begin
-    rollback;
+begin    
     get diagnostics condition 1  @v_message_text = message_text;
     select @v_message_text;
+    rollback;
 end;
 
-set @v_keycontrol 	:= concat_ws('_','sp_create_smartfin_payables',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type));
+set @v_keycontrol 	:= concat_ws('_','sp_sm_pay',left(p_country,2),left(p_origin_system,2),left(p_operation,2),left(p_transaction_type,2));
 
 if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 									  inner join organization_from_to_version oftv
 									  on oftv.erp_legal_entity = crc.identification_financial_responsible 
 									  where is_smartfin = 'yes')  then 
-	    
-    
+			
     set done = 0;	
     open cur1;
     
@@ -74,51 +73,48 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		
         if done = 1 then leave SmartfinPayablesLoop; end if;			
 	
-		start transaction;
-		
-        if exists (
-					select 
-						 @v_erp_supplier_id := sup.erp_supplier_id
-						,@v_erp_payable_supplier_identification  := sup.identification_financial_responsible
-                        
-                        /*
-                        into @v_erp_supplier_id
-							,@v_erp_payable_supplier_identification 
-						*/
-                        
-					from receivable rec
-					
-					inner join order_to_cash otc
-					on otc.id = rec.order_to_cash_id
-									
-					inner join organization_from_to_version oftv
-					on oftv.erp_business_unit = otc.erp_business_unit
-                    and oftv.erp_legal_entity = otc.erp_legal_entity
-                    and oftv.erp_subsidiary = otc.erp_subsidiary
-					and oftv.created_at = ( select 
-												max(oftv2.created_at) 
-											from organization_from_to_version oftv2 
-											where oftv2.erp_business_unit = oftv.erp_business_unit 
-                                            and oftv2.erp_legal_entity = oftv.erp_legal_entity 
-                                            and oftv2.erp_subsidiary = oftv.erp_subsidiary
-											)
+		start transaction;		
 
-					inner join supplier sup
-                    on sup.identification_financial_responsible = oftv.fiscal_federal_identification
-                    and sup.erp_supplier_id is not null
-                    
-					where rec.id = v_id_receivable_smartfin ) and
-                    
-                    not exists 
-                    (
-						select
-							1
-						from payable pay
-                        where pay.erp_business_unit = @v_erp_business_unit
-                        and pay.erp_legal_entity = @v_erp_legal_entity
-                        and pay.erp_subsidiary = @v_erp_subsidiary
-                        and pay.receivable_id = v_id_receivable
-                    )
+		select 
+			sup.erp_supplier_id
+			,sup.identification_financial_responsible			
+			into @v_erp_supplier_id
+				,@v_erp_payable_supplier_identification 
+			
+		from receivable rec
+		
+		inner join order_to_cash otc
+		on otc.id = rec.order_to_cash_id
+						
+		inner join organization_from_to_version oftv
+		on oftv.erp_business_unit = otc.erp_business_unit
+		and oftv.erp_legal_entity = otc.erp_legal_entity
+		and oftv.erp_subsidiary = otc.erp_subsidiary
+		and oftv.created_at = ( select 
+									max(oftv2.created_at) 
+								from organization_from_to_version oftv2 
+								where oftv2.erp_business_unit = oftv.erp_business_unit 
+								and oftv2.erp_legal_entity = oftv.erp_legal_entity 
+								and oftv2.erp_subsidiary = oftv.erp_subsidiary
+								)
+
+		inner join supplier sup
+		on sup.identification_financial_responsible = oftv.fiscal_federal_identification
+		and sup.erp_supplier_id is not null
+		
+		where rec.id = v_id_receivable_smartfin;
+        
+        -- select @v_erp_supplier_id;
+        
+        if  ( @v_erp_supplier_id is not null ) and not exists 
+														(	select
+																1
+															from payable pay
+															where pay.erp_business_unit = @v_erp_business_unit
+															and pay.erp_legal_entity = @v_erp_legal_entity
+															and pay.erp_subsidiary = @v_erp_subsidiary
+															and pay.receivable_id = v_id_receivable
+														)
                     
                     then 
              
