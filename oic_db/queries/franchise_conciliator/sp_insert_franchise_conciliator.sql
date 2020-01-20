@@ -1,3 +1,5 @@
+drop procedure if exists sp_insert_franchise_conciliator; 
+
 DELIMITER $$
 CREATE DEFINER=`admin`@`%` PROCEDURE `sp_insert_franchise_conciliator`( p_franchine_conciliator JSON ,out p_return boolean, out p_code integer ,out p_message varbinary(1000), out p_front_franchise_conciliator_id integer )
 begin
@@ -33,6 +35,14 @@ begin
     -- bank_branch_digit fixo 
     -- bank_account_owner_name fixo
     -- bank_account_owner_identification fixo
+    declare p_return_v2 boolean;
+    declare p_code_v2 boolean;
+    declare p_message_v2 varbinary(10000);
+    declare p_front_franchise_conciliator_id_v2 integer;
+	declare p_return_v3 boolean;
+    declare p_code_v3 boolean;
+    declare p_message_v3 varbinary(10000);
+    declare p_front_franchise_conciliator_id_v3 integer;
     begin
 		get diagnostics condition 1  @v_message_text = message_text;
 		set p_return = false;
@@ -47,40 +57,152 @@ begin
 	set p_message = "";
 	set p_front_franchise_conciliator_id = 0;
     
-    call sp_valid_object_refund(p_refund, @p_return_v2 , @p_code_v2 , @p_message_v2, @p_front_refund_id_v2);
+    call sp_valid_object_franchise_conciliator_id(p_franchine_conciliator, @p_return_v2 , @p_code_v2 , @p_message_v2, @p_front_franchise_conciliator_id_v2);
     
     if ( @p_return_v2 ) then -- if 1
     
 		start transaction;
 
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.header.country'),'"',""),"null",null) into @v_otc_country;
-		select cast(replace(json_extract(p_refund,'$.franchise_conciliator.header.unity_identification'),"null",null) as unsigned) into @v_otc_unity_identification;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.header.origin_system'),'"',""),"null",null) into @v_otc_origin_system;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.header.front_franchise_conciliator_id'),'"',""),"null",null) into @v_otc_front_franchise_conciliator_id;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.header.origin_system'),'"',""),"null",null) into @v_otc_origin_system;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.header.issue_date'),'"',""),"null",null) into @v_otc_issue_date;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.header.due_date'),'"',""),"null",null) into @v_otc_due_date;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.receivable.erp_receivable_customer_identification'),'"',""),"null",null) into @v_receivable_erp_receivable_customer_id;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.receivable.contract_number'),'"',""),"null",null) into @v_receivable_contract_number;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.receivable.credit_card_brand'),'"',""),"null",null) into @v_receivable_credit_card_brand;
-        select cast(replace(json_extract(p_refund,'$.franchise_conciliator.receivable.gross_value'),"null",null) as unsigned) into @v_receivable_gross_value;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.full_name'),'"',""),"null",null) into @v_supplier_full_name;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.type_person'),'"',""),"null",null) into @v_supplier_type_person;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.identification_financial_responsible'),'"',""),"null",null) into @v_suplier_identification_financial_responsible;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.nationality_code'),'"',""),"null",null) into @v_suplier_nationality_code;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.state'),'"',""),"null",null) into @v_supplier_state;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.city'),'"',""),"null",null) into @v_supplier_city;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.adress'),'"',""),"null",null) into @v_supplier_adress;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.adress_complement'),'"',""),"null",null) into @v_supplier_adress_complement;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.postal_code'),'"',""),"null",null) into @v_supplier_postal_code;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.area_code'),'"',""),"null",null) into @v_supplier_area_code;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.district'),'"',""),"null",null) into @v_supplier_district;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.cellphone'),'"',""),"null",null) into @v_supplier_cellphone;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.email'),'"',""),"null",null) into @v_supplier_email;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.state_registration'),'"',""),"null",null) into @v_supplier_state_registration;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.municipal_registration'),'"',""),"null",null) into @v_supplier_municipal_registration;
-		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.final_consumer'),'"',""),"null",null) into @v_supplier_final_consumer;
-        select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.icms_contributor'),'"',""),"null",null) into @v_supplier_icms_contributor;    
-	end if; -- If 1
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.country'),'"',""),"null",null) into @v_otc_country;
+		select cast(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.unity_identification'),"null",null) as unsigned) into @v_otc_unity_identification;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.origin_system'),'"',""),"null",null) into @v_otc_origin_system;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.front_franchise_conciliator_id'),'"',""),"null",null) into @v_otc_front_franchise_conciliator_id;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.origin_system'),'"',""),"null",null) into @v_otc_origin_system;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.issue_date'),'"',""),"null",null) into @v_otc_issue_date;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.due_date'),'"',""),"null",null) into @v_otc_due_date;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.receivable.erp_receivable_customer_identification'),'"',""),"null",null) into @v_receivable_erp_receivable_customer_id;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.receivable.contract_number'),'"',""),"null",null) into @v_receivable_contract_number;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.receivable.credit_card_brand'),'"',""),"null",null) into @v_receivable_credit_card_brand;
+        select cast(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.receivable.gross_value'),"null",null) as unsigned) into @v_receivable_gross_value;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.full_name'),'"',""),"null",null) into @v_supplier_full_name;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.type_person'),'"',""),"null",null) into @v_supplier_type_person;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.identification_financial_responsible'),'"',""),"null",null) into @v_suplier_identification_financial_responsible;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.nationality_code'),'"',""),"null",null) into @v_suplier_nationality_code;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.state'),'"',""),"null",null) into @v_supplier_state;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.city'),'"',""),"null",null) into @v_supplier_city;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.adress'),'"',""),"null",null) into @v_supplier_adress;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.adress_complement'),'"',""),"null",null) into @v_supplier_adress_complement;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.postal_code'),'"',""),"null",null) into @v_supplier_postal_code;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.area_code'),'"',""),"null",null) into @v_supplier_area_code;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.district'),'"',""),"null",null) into @v_supplier_district;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.cellphone'),'"',""),"null",null) into @v_supplier_cellphone;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.email'),'"',""),"null",null) into @v_supplier_email;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.state_registration'),'"',""),"null",null) into @v_supplier_state_registration;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.municipal_registration'),'"',""),"null",null) into @v_supplier_municipal_registration;
+		select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.final_consumer'),'"',""),"null",null) into @v_supplier_final_consumer;
+        select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.icms_contributor'),'"',""),"null",null) into @v_supplier_icms_contributor;
+        
+		call sp_check_if_exists_franchise_conciliator(p_franchine_conciliator, @p_return_v3 , @p_code_v3 , @p_message_v3, @p_front_franchise_conciliator_id_v3);
+        
+        if ( @p_return_v3 ) then -- if 2
+         
+			set @v_oftv_erp_business_unit = null;
+			set @v_oftv_erp_legal_entity = null;
+			set @v_oftv_erp_subsidiary = null;
+			set @v_oftv_acronym = null;
+			set @v_oftv_to_generate_customer = null;
+            set @v_oftv_to_generate_receivable = null;
+            set @v_oftv_to_generate_invoice = null;
+			select
+				oftv.erp_business_unit
+				,oftv.erp_legal_entity
+				,oftv.erp_subsidiary
+				,oftv.acronym
+				,oftv.to_generate_customer
+				,oftv.to_generate_receivable
+				,oftv.to_generate_invoice
+			into      
+				 @v_oftv_erp_business_unit
+				,@v_oftv_erp_legal_entity 
+				,@v_oftv_erp_subsidiary 
+				,@v_oftv_acronym 
+				,@v_oftv_to_generate_customer
+				,@v_oftv_to_generate_receivable 
+				,@v_oftv_to_generate_invoice
+				
+			from organization_from_to_version oftv
+			where oftv.organization_from_to_unity_identification = @v_otc_unity_identification
+			and oftv.created_at = (
+									select 
+										max(oftv_v2.created_at) as created_at
+									from organization_from_to_version oftv_v2
+									where oftv_v2.organization_from_to_unity_identification = oftv.organization_from_to_unity_identification
+									);
+                                    
+        if ( @v_erp_business_unit is not null and @v_otc_origin_system = 'smartsystem' ) then -- If 3
+
+					insert into order_to_cash
+									(country,
+									unity_identification,
+									erp_business_unit,
+									erp_legal_entity,
+									erp_subsidiary,
+									acronym,
+									to_generate_customer,
+									to_generate_receivable,
+									to_generate_invoice,
+									origin_system,
+									operation,
+									minifactu_id,
+									conciliator_id,
+									fin_id,
+									front_id,
+									erp_invoice_customer_send_to_erp_at,
+									erp_invoice_customer_returned_from_erp_at,
+									erp_invoice_customer_status_transaction,
+									erp_invoice_customer_log,
+									erp_receivable_sent_to_erp_at,
+									erp_receivable_returned_from_erp_at,
+									erp_receivable_customer_identification,
+									erp_receivable_status_transaction,
+									erp_receivable_log,
+									erp_invoice_send_to_erp_at,
+									erp_invoice_returned_from_erp_at,
+									erp_invoice_status_transaction,
+									erp_invoice_log,
+									erp_receipt_send_to_erp_at,
+									erp_receipt_returned_from_erp_at,
+									erp_receipt_status_transaction,
+									erp_receipt_log)
+									values
+									(@v_otc_country, -- country
+									@v_otc_unity_identification, -- unity_identification
+									@v_oftv_erp_business_unit, -- erp_business_unit
+									@v_oftv_erp_legal_entity, -- erp_legal_entity
+									@v_oftv_erp_subsidiary, -- erp_subsidiary
+									@v_oftv_acronym, -- acronym
+									@v_oftv_to_generate_customer, -- to_generate_customer
+									@v_oftv_to_generate_receivable, -- to_generate_receivable
+									@v_oftv_to_generate_invoice, -- to_generate_invoice
+									@v_otc_origin_system, -- origin_system
+									'smartsystem', -- operation
+									null, -- minifactu_id
+									null, -- conciliator_id
+									null, -- fin_id
+									@v_otc_front_franchise_conciliator_id, -- front_id
+									null, -- erp_invoice_customer_send_to_erp_at
+									null, -- erp_invoice_customer_returned_from_erp_at
+									'waiting_to_be_process', -- erp_invoice_customer_status_transaction
+									null, -- erp_invoice_customer_log
+									null, -- erp_receivable_sent_to_erp_at
+									null, -- erp_receivable_returned_from_erp_at
+									@p_order_to_cash_erp_receivable_customer_identification, -- erp_receivable_customer_identification
+									'waiting_to_be_process', -- erp_receivable_status_transaction
+									null, -- erp_receivable_log
+									null, -- erp_invoice_send_to_erp_at
+									null, -- erp_invoice_returned_from_erp_at
+									'doesnt_need_to_be_process', -- erp_invoice_status_transaction
+									null, -- erp_invoice_log
+									null, -- erp_receipt_send_to_erp_at
+									null, -- erp_receipt_returned_from_erp_at
+									'waiting_to_be_process', -- erp_receipt_status_transaction
+									null); -- erp_receipt_log
+                                    
+								-- saves the auto increment id from order_to_cash table
+								set @v_order_to_cash_id = last_insert_id();     
+					-- amanha inserir receivable com base a query de insert	
+		end if; -- If 3
+		end if; -- If 2				
+	end if; -- If 1 
 end$$
 DELIMITER ;
