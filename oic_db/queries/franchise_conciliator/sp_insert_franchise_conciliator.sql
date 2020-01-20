@@ -81,6 +81,6 @@ begin
 		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.municipal_registration'),'"',""),"null",null) into @v_supplier_municipal_registration;
 		select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.final_consumer'),'"',""),"null",null) into @v_supplier_final_consumer;
         select replace(replace(json_extract(p_refund,'$.franchise_conciliator.supplier.icms_contributor'),'"',""),"null",null) into @v_supplier_icms_contributor;        
-	end if; -- If 1
+	end if; -- If 1 teste
 end$$
 DELIMITER ;
