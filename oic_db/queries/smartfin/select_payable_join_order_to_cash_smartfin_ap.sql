@@ -11,6 +11,7 @@ select
     ,sup.full_name
     ,sup.erp_supplier_id
     ,rec.erp_receivable_id
+    ,rec.erp_clustered_receivable_id
     ,pay.gross_value
     ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_trx_date
     ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_gl_date     
