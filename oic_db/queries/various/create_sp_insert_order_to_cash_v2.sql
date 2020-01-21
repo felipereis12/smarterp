@@ -506,10 +506,8 @@ begin
 										select 
 											  erp_gl_segment_id
                                              ,erp_ncm_code
-                                             ,erp_item_ar_overdue_recovery_id
 											into @v_erp_gl_segment_id
 												,@v_erp_ncm_code
-                                                ,@v_erp_item_ar_overdue_recovery_id
 										from plan_from_to_version planftv
 										where planftv.plan_from_to_origin_system = @p_order_to_cash_origin_system
 										and planftv.plan_from_to_operation = @p_order_to_cash_operation
