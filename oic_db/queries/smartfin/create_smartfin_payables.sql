@@ -19,6 +19,8 @@ declare v_id_receivable int;
 declare v_erp_receivable_id int;
 declare v_erp_clustered_receivable_id int;
 declare v_id_receivable_smartfin int;
+declare v_gross_value float;
+declare v_net_value float;
 declare done int;
 declare cur1 cursor for 
 					select
@@ -76,10 +78,14 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		start transaction;		
 
 		select 
-			sup.erp_supplier_id
-			,sup.identification_financial_responsible			
+			 sup.erp_supplier_id
+			,sup.identification_financial_responsible	
+            ,rec.gross_value
+            ,rec.net_value
 			into @v_erp_supplier_id
 				,@v_erp_payable_supplier_identification 
+                ,@v_gross_value
+                ,@v_net_value
 			
 		from receivable rec
 		
@@ -103,9 +109,7 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
 		and sup.erp_supplier_id is not null
 		
 		where rec.id = v_id_receivable_smartfin;
-        
-        -- select @v_erp_supplier_id;
-        
+   
         if  ( @v_erp_supplier_id is not null ) and not exists 
 														(	select
 																1
@@ -132,6 +136,8 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
                 supplier_identification,
 				issue_date,
 				due_date,
+                gross_value,
+                net_value,
 				erp_payable_send_to_erp_at,
 				erp_payable_returned_from_erp_at,
 				erp_payable_status_transaction,
@@ -156,6 +162,8 @@ if get_lock(@v_keycontrol,1) = 1 and  exists ( select 1 from customer crc
                 @v_erp_payable_supplier_identification, -- supplier_identification
 				current_date(), -- issue_date
 				current_date(), -- due_date
+                @v_gross_value, -- gross_value
+                @v_net_value, -- net_value
 				null, -- erp_payable_send_to_erp_at
 				null, -- erp_payable_returned_from_erp_at
 				'waiting_to_be_process', -- erp_payable_status_transaction
