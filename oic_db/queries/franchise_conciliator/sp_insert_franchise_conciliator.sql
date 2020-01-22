@@ -58,7 +58,7 @@ begin
 	set p_message = "";
 	set p_front_franchise_conciliator_id = 0;
     
-    call sp_valid_object_franchise_conciliator_id(p_franchine_conciliator, @p_return_v2 , @p_code_v2 , @p_message_v2, @p_front_franchise_conciliator_id_v2);
+    call sp_valid_franchise_conciliator(p_franchine_conciliator, @p_return_v2 , @p_code_v2 , @p_message_v2, @p_front_franchise_conciliator_id_v2);
     
     if ( @p_return_v2 ) then -- if 1
     
