@@ -400,7 +400,7 @@ begin
 					commit;
 					set p_return = true;
 					set p_code = 0;
-					set p_message = concat("The franchise Conciliator transaction was added to oic_db successfully. Id: ",ifnull(@p_front_franchise_conciliator_id,"null", "at Json request !"));
+					set p_message = concat("The franchise Conciliator transaction was added to oic_db successfully. Id: ",ifnull(@p_front_franchise_conciliator_id,"null"), "at Json request !");
 					set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
                     end if;
                     
@@ -411,7 +411,7 @@ begin
 				rollback;
 				set p_return = false;
 				set p_code = 1;
-				set p_message = concat("The node", ifnull(@v_otc_unity_identification,"null") ," doesn't exist at oic_db. Please talk to ERP Team !");
+				set p_message = concat("The node ", ifnull(@v_otc_unity_identification, "null") ," doesn't exist at oic_db. Please talk to ERP Team !");
 				set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
                 
 			end if; -- If 3
