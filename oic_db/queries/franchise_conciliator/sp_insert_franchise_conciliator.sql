@@ -131,7 +131,7 @@ begin
 									where oftv_v2.organization_from_to_unity_identification = oftv.organization_from_to_unity_identification
 									);
                                     
-			if ( @v_erp_business_unit is not null and @v_otc_origin_system = 'smartsystem' ) then -- If 3
+			if ( @v_oftv_erp_business_unit is not null and @v_otc_origin_system = 'smartsystem' ) then -- If 3
 
 						insert into order_to_cash
 										(country,
@@ -177,7 +177,7 @@ begin
 										@v_oftv_to_generate_receivable, -- to_generate_receivable
 										@v_oftv_to_generate_invoice, -- to_generate_invoice
 										@v_otc_origin_system, -- origin_system
-										'smartsystem', -- operation
+										'franchise_conciliator', -- operation
 										null, -- minifactu_id
 										null, -- conciliator_id
 										null, -- fin_id
@@ -210,7 +210,7 @@ begin
 										erp_receipt_id,
 										erp_receivable_customer_id,
 										erp_clustered_receivable_id,
-										erp_customer_id,
+										erp_clustered_receivable_customer_id,
 										is_smartfin,
 										converted_smartfin,
 										type_smartfin,
@@ -249,7 +249,7 @@ begin
 										null, -- erp_receipt_id
 										@v_receivable_erp_receivable_customer_id, -- erp_receivable_customer_id
 										null, -- erp_clustered_receivable_id
-										null, -- erp_customer_id
+                                        null, -- erp_clustered_receivable_customer_id
 										'yes', -- is_smartfin
 										'no', -- converted_smartfin
 										'franchise', -- type_smartfin
@@ -306,7 +306,7 @@ begin
 										cellphone,
 										email,
 										state_registration,
-										federal_registration,
+										municipal_registration,
 										final_consumer,
 										icms_contributor,
 										erp_supplier_send_to_erp_at,
@@ -341,6 +341,7 @@ begin
 										null, -- erp_supplier_log
 										null, -- erp_filename
 										null) ; -- erp_line_in_file
+							
                                         
                     insert into payable
 										(unity_identification,
@@ -403,7 +404,7 @@ begin
 					set p_message = concat("The franchise Conciliator transaction was added to oic_db successfully. Id: ",ifnull(@p_front_franchise_conciliator_id,"null"), "at Json request !");
 					set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
                     end if;
-                    
+                
                 end if; -- If 4
 				-- colocar else com erro de "Fornecedor não encontrado"
                 else
