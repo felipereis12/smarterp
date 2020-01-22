@@ -6,7 +6,9 @@ begin
     declare v_country varchar(45);
     declare v_unity_identification integer;
     declare v_origin_system varchar(45);
-    declare v_erp_refund_status_transaction varchar(45);
+    declare v_erp_receivable_status_transaction varchar(45);
+    declare v_erp_supplier_status_transaction varchar(45);
+    declare v_erp_payable_status_transaction varchar(45);
     declare v_created_at timestamp;
     declare v_front_franchise_conciliator_id integer;
     
@@ -17,19 +19,26 @@ begin
         ,otc.country
         ,otc.unity_identification
         ,otc.origin_system
-        ,otc.created_at as created_at
+        ,otc.erp_receivable_status_transaction 
+        ,otc.erp_supplier_status_transaction 
+        ,otc.erp_payable_status_transaction 
+        ,otc.created_at as created_at 
         into
-		 v_id -- front_id
+		 v_id -- front_refund_id
         ,v_country -- country
         ,v_unity_identification -- unity_identification
         ,v_origin_system -- origin_system
+        ,v_erp_receivable_status_transaction -- erp_invoice_status_transaction
+        ,v_erp_supplier_status_transaction -- erp_supplier_status_transaction
+        ,v_erp_payable_status_transaction -- erp_payable_status_transaction
         ,v_created_at -- created_at
     from order_to_cash otc
 	
     where otc.front_id = v_front_franchise_conciliator_id -- recebe a função
     and otc.id = (  select max(otc2.id) from order_to_cash otc2 where otc2.front_id = otc.front_id);
     
-    if (v_id is null) then
+    if (v_id is null or erp_receivable_status_transaction = 'error_at_trying_to_process' or erp_supplier_status_transaction = 'error_at_trying_to_process'
+    or otc.erp_payable_status_transaction = 'error_at_trying_to_process' ) then
 
 		set p_return = true;
 		set p_code = 0;
@@ -40,8 +49,11 @@ begin
         
 		set p_return = false;
 		set p_code = 2;
-		set p_message = concat('The refund transaction was already added to oic_db and is waiting to be process ! => { "id" : ',v_id 
+		set p_message = concat('The franchise conciliator transaction was already added to oic_db and is waiting to be process ! => { "id" : ',v_id 
 								,', "created_at:" ',ifnull(v_created_at,"null")
+								,', "erp_refund_status_transaction: " ',ifnull(erp_receivable_status_transaction,"null")
+                                ,', "erp_supplier_status_transaction: " ',ifnull(v_erp_supplier_status_transaction,"null")
+								,', "erp_payable_status_transaction: " ',ifnull(v_erp_payable_status_transaction,"null")
 								,'} ');
 		set p_franchine_conciliator = v_front_franchise_conciliator_id;  	
                 
