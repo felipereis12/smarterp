@@ -60,7 +60,6 @@ and rec.erp_receivable_id is not null
 and cpr.erp_receipt_status_transaction = 'waiting_to_be_process'
 and cpr.erp_receipt_id is null
 and cpr.conciliation_type = 'PCV'
-and erp_receivable_id = 146020
 
 group by rec.erp_receivable_id; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora
 
