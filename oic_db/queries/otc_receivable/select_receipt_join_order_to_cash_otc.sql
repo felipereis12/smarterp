@@ -16,7 +16,7 @@ select
 	,RTRIM (concat('RD_',rftv.bank_number,'_',rftv.bank_branch,'_',rftv.bank_account)) as Receipt_Method
     ,RTRIM (concat('RD_',rftv.bank_number,'_',rftv.bank_branch,'_',rftv.bank_account,'_',rec.credit_date)) as Lote_Name
     ,RTRIM (concat(crc.identification_financial_responsible,'Faturar')) as Customer_Site
-    ,rec.gross_value
+    ,round(sum(rec.gross_value),2) as gross_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -67,3 +67,4 @@ and rec.erp_clustered_receivable_customer_id is not null -- Filtrar somente os r
 and rec.erp_receivable_id is not null -- Filtrar somente os receivables que já foram integrados no erp e devem ser baixados
 and rec.net_value > 0
 and rec.transaction_type in ('debit_account_recurring','cash','boleto') -- Neste caso a integração deverá filtrar somente os receivables cujos métodos de recebimentos são débito em conta corrente, dinheiro ou boleto.
+group by rec.erp_receivable_id;
