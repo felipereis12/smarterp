@@ -25,7 +25,7 @@ on rec.id = pay.receivable_id
 inner join order_to_cash otc
 on otc.id = rec.order_to_cash_id
 
-left join payable_erp_configurations pecg
+inner join payable_erp_configurations pecg
 on pecg.country = otc.country
 and pecg.origin_system = otc.origin_system
 and pecg.operation = otc.operation
