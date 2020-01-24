@@ -145,7 +145,7 @@ insert into receivable
 				null, -- ecommerce_payment_terms
 				null, -- erp_payment_terms
 				null, -- conciliator_id
-				'boleto', -- transaction_type
+				'bank_transfer', -- transaction_type
 				null, -- contract_number
 				null, -- credit_card_brand
 				null, -- truncated_credit_card
@@ -218,7 +218,7 @@ insert into invoice_items
 				erp_line_in_file)
 				values
 				(@invoice_id, -- id_invoice
-				5554845, -- front_product_id
+				1, -- front_product_id
 				null, -- front_plan_id
 				null, -- front_addon_id
 				null, -- erp_item_ar_id
