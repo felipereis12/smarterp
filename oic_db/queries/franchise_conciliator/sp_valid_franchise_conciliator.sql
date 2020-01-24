@@ -133,13 +133,14 @@ begin
         set p_return = false;
         set p_code = 1;
         set p_message = concat(p_message,"Missing node franchise_conciliator.supplier.district at Json request ! ");
-    end if;
+    end if; 
     
 	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.supplier.postal_code') = 0 then
         set p_return = false;
         set p_code = 1;
         set p_message = concat(p_message,"Missing node franchise_conciliator.supplier.postal_code at Json request ! ");
     end if;
+    
     
 	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.supplier.area_code') = 0 then
         set p_return = false;

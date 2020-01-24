@@ -2,14 +2,14 @@ set @json_request = cast(  '{
     "franchise_conciliator": {
       "header": {
         "country": "Brazil",
-        "unity_identification": 66,
+        "unity_identification": 543,
         "origin_system": "smartsystem",
-        "front_franchise_conciliator_id": 12345,
+        "front_franchise_conciliator_id": 4121,
         "issue_date": "2020-01-15",
         "due_date": "2020-01-20"
       },
       "receivable": {
-        "erp_receivable_customer_identification": "01425787000104",
+        "erp_receivable_customer_identification": "300000009178998",
         "contract_number": "1040380465",
         "credit_card_brand": "MASTER",
         "gross_value": 191.58
@@ -17,7 +17,7 @@ set @json_request = cast(  '{
       "supplier": {
         "full_name": "M14 ACADEMIA DE GINASTICA LTDA",
         "type_person": "legal_person",
-        "identification_financial_responsible": "32139383000170",
+        "identification_financial_responsible": "912343519870",
         "nationality_code": "BR",
         "state": "SP",
         "city": "SAO JOSE DO RIO PRETO",
@@ -25,7 +25,7 @@ set @json_request = cast(  '{
         "adress_number": 2077,
         "adress_complement": null,
         "district": "JARDIM MARAJO",
-        "postal_code": "15046355",
+        "postal_code": "231231",
         "area_code": "11",
         "cellphone": "912345678",
         "email": "felipe.nambara@bioritmo.com.br",
