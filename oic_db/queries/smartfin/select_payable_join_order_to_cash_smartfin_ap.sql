@@ -1,6 +1,7 @@
 select 
 	 pay.erp_business_unit
     ,pay.erp_legal_entity
+    ,oftv.erp_legal_entity_name
     ,pay.erp_subsidiary
     ,pec.erp_source_name
     ,pec.erp_currency_code
@@ -32,6 +33,19 @@ and pec.origin_system = otc.origin_system
 and pec.operation = otc.operation
 and pec.transaction_type = rec.transaction_type
 and pec.converted_smartfin = rec.converted_smartfin
+
+inner join organization_from_to_version oftv
+on oftv.erp_business_unit = otc.erp_business_unit
+and oftv.erp_legal_entity = otc.erp_legal_entity
+and oftv.erp_subsidiary = otc.erp_subsidiary
+and oftv.created_at = 	(
+							select
+								max(oftv_v2.created_at) as created_at
+							from organization_from_to_version oftv_v2
+                            where oftv_v2.erp_business_unit = oftv.erp_business_unit
+                            and oftv_v2.erp_legal_entity = oftv.erp_legal_entity
+                            and oftv_v2.erp_subsidiary = oftv.erp_subsidiary
+						)
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
 and otc.erp_subsidiary = 'BR020001' -- Neste caso como haverá uma integração separada para os movimentos Smartfin esse filtro deverá ser fixo para tais movimentos
