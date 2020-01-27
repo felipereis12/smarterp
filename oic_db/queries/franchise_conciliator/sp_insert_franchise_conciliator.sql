@@ -1,4 +1,5 @@
-drop procedure if exists sp_insert_franchise_conciliator; 
+DROP PROCEDURE IF EXISTS sp_insert_franchise_conciliator;
+
 
 DELIMITER $$
 CREATE DEFINER=`admin`@`%` PROCEDURE `sp_insert_franchise_conciliator`( p_franchine_conciliator JSON ,out p_return boolean, out p_code integer ,out p_message varbinary(1000), out p_front_franchise_conciliator_id integer )
@@ -40,27 +41,24 @@ begin
     declare p_message_v3 varbinary(10000);
     declare p_front_franchise_conciliator_id_v3 integer;
     begin
-    
+
 		get diagnostics condition 1  @v_message_text = message_text;
 		set p_return = false;
 		set p_code = -1;
 		set p_message = @v_message_text;
 		rollback;
 	end;
-    
+
     set sql_mode = traditional;
 	set p_return = true;
 	set p_code = 0;
 	set p_message = "";
 	set p_front_franchise_conciliator_id = 0;
-    
-    call sp_valid_franchise_conciliator(p_franchine_conciliator, @p_return_v2 , @p_code_v2 , @p_message_v2, @p_front_franchise_conciliator_id_v2);
-    
-    
 
-    
+    call sp_valid_franchise_conciliator(p_franchine_conciliator, @p_return_v2 , @p_code_v2 , @p_message_v2, @p_front_franchise_conciliator_id_v2);
+
 		if ( @p_return_v2 ) then -- if 1
-			
+
 			start transaction;
 
 			select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.country'),'"',""),"null",null) into @v_otc_country;
@@ -92,13 +90,13 @@ begin
 			select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.municipal_registration'),'"',""),"null",null) into @v_supplier_municipal_registration;
 			select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.final_consumer'),'"',""),"null",null) into @v_supplier_final_consumer;
 			select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.icms_contributor'),'"',""),"null",null) into @v_supplier_icms_contributor;
-			
+
 			call sp_check_if_exists_franchise_conciliator(p_franchine_conciliator, @p_return_v3 , @p_code_v3 , @p_message_v3, @p_front_franchise_conciliator_id_v3);
-			
-            
-            
+
+
+
 			if ( @p_return_v3 ) then -- if 2
-			 
+
 				set @v_oftv_erp_business_unit = null;
 				set @v_oftv_erp_legal_entity = null;
 				set @v_oftv_erp_subsidiary = null;
@@ -114,28 +112,28 @@ begin
 					,oftv.to_generate_customer
 					,oftv.to_generate_receivable
 					,oftv.to_generate_invoice
-				into      
+				into
 					 @v_oftv_erp_business_unit
-					,@v_oftv_erp_legal_entity 
-					,@v_oftv_erp_subsidiary 
-					,@v_oftv_acronym 
+					,@v_oftv_erp_legal_entity
+					,@v_oftv_erp_subsidiary
+					,@v_oftv_acronym
 					,@v_oftv_to_generate_customer
-					,@v_oftv_to_generate_receivable 
+					,@v_oftv_to_generate_receivable
 					,@v_oftv_to_generate_invoice
-					
+
 				from organization_from_to_version oftv
 				where oftv.organization_from_to_unity_identification = @v_otc_unity_identification
 				and oftv.created_at = (
-										select 
+										select
 											max(oftv_v2.created_at) as created_at
 										from organization_from_to_version oftv_v2
 										where oftv_v2.organization_from_to_unity_identification = oftv.organization_from_to_unity_identification
 										);
-				
-			if (  select exists ( select erp_customer_id from customer where erp_customer_id = @v_receivable_erp_receivable_customer_id) ) then -- if 3
-            
+
+			 if (  select exists ( select erp_customer_id from customer where erp_customer_id = @v_receivable_erp_receivable_customer_id) ) then -- if 3
+
 				if ( @v_oftv_erp_business_unit is not null ) then -- If 4
-					
+
 								insert into order_to_cash
 												(country,
 												unity_identification,
@@ -202,11 +200,11 @@ begin
 												null, -- erp_receipt_returned_from_erp_at
 												'waiting_to_be_process', -- erp_receipt_status_transaction
 												null); -- erp_receipt_log
-												
+
 											-- saves the auto increment id from order_to_cash table
 											set @v_otc_id = last_insert_id();
-											
-							
+
+
 								insert into receivable
 												(order_to_cash_id,
 												erp_receivable_id,
@@ -288,10 +286,9 @@ begin
 
 						-- saves the auto increment id from receivable table
 						set @v_receivable_id = last_insert_id();
-						
-							
-						 if (  select not exists ( select identification_financial_responsible from supplier where identification_financial_responsible = @v_suplier_identification_financial_responsible) ) then
-							
+
+
+						 if ( select not exists ( select identification_financial_responsible from supplier where identification_financial_responsible = @v_suplier_identification_financial_responsible) ) then
 							insert into supplier
 												(erp_supplier_id,
 												full_name,
@@ -343,19 +340,11 @@ begin
 												'waiting_to_be_process', -- erp_supplier_status_transaction
 												null, -- erp_supplier_log
 												null, -- erp_filename
-												null) ; -- erp_line_in_file
-						
-										else
-					
-						rollback; 
-						set p_return = false;
-						set p_code = 4;
-						set p_message = concat("The receivable  Customer Identification sent ", ifnull(@v_receivable_erp_receivable_customer_id, "null") ," doesn't exist at oic_db. Please talk to ERP Team !");
-						set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
-									
-								end if; -- If 4
-						
-												
+											    null) ; -- erp_line_in_file
+
+								end if; -- verificação de fornecedor
+
+
 							insert into payable
 												(unity_identification,
 												erp_business_unit,
@@ -406,18 +395,18 @@ begin
 												null, -- erp_receipt_log
 												null, -- erp_filename
 												null); -- erp_line_in_file
-												
+
 								set @v_payable_id = last_insert_id();
-								
+
 								if ( p_return ) then
-							
+
 							commit;
 							set p_return = true;
 							set p_code = 0;
 							set p_message = concat("The franchise Conciliator transaction was added to oic_db successfully. Id: ",ifnull(@p_front_franchise_conciliator_id,"null"), "at Json request !");
 							set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
 							end if;
-						
+
 						else
 						rollback;
 						set p_return = false;
@@ -425,8 +414,8 @@ begin
 						set p_message = concat("The unity identification sent  ", ifnull(@v_otc_unity_identification, "null") ," doesn't exist at oic_db. Please talk to ERP Team !");
 						set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
 					end if; -- If 4
-                    
-                    
+
+
                     else
                     rollback;
 						set p_return = false;
@@ -434,23 +423,24 @@ begin
 						set p_message = concat("The Receivable Customer Identification sent  ", ifnull(@v_receivable_erp_receivable_customer_id, "null") ," doesn't exist at oic_db. Please talk to ERP Team !");
 						set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
                     end if; -- If 3
-                    
+
 					else -- 2º else
 					rollback;
 					set p_return = @p_return_v3;
 					set p_code = @p_code_v3;
 					set p_message = @p_message_v3;
 					set p_front_franchise_conciliator_id = @p_front_franchise_conciliator_id_v3;
-					
+
 			end if; -- If 2
-            
+
 			else -- 1º else
-			rollback;    
+			rollback;
 			set p_return = @p_return_v2;
 			set p_code = @p_code_v2;
 			set p_message = @p_message_v2;
-			set p_front_franchise_conciliator_id = @p_front_franchise_conciliator_id_v2;	
-			
+			set p_front_franchise_conciliator_id = @p_front_franchise_conciliator_id_v2;
+
 		end if; -- If 1
 end$$
 DELIMITER ;
+
