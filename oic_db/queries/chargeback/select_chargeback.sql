@@ -53,17 +53,17 @@ inner join order_to_cash otc
 on otc.country = chbk.country
 and otc.id = rec.order_to_cash_id
 
-left join chargeback_erp_configurations cecg
-on cecg.country = otc.country
+inner join chargeback_erp_configurations cecg
+on cecg.country = chbk.country
 and cecg.origin_system = otc.origin_system
 and cecg.operation = otc.operation
-and cecg.transaction_type = rec.transaction_type
+and cecg.transaction_type = chbk.transaction_type
 
 where chbk.country = 'Brazil' -- Cada país deverá ter um processamento separado
 and otc.origin_system = 'smartsystem' -- Cada origem deverá ter um processamento separado
 and otc.operation = 'person_plan' -- Cada operação deverá ter um processamento separado
 and rec.transaction_type = 'credit_card_recurring' -- Cada tipo de transação deverá ter um processamento separado
 and chbk.erp_receipt_status_transaction = 'clustered_chargeback_created'
--- and chbk.erp_clustered_chargeback_id is not null
+and chbk.erp_clustered_chargeback_id is not null
 and chbk.erp_receipt_id is null
-and chbk.concitiation_type = 'CHBK'; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora 
+and chbk.conciliation_type = 'CHBK'; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora 
