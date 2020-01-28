@@ -5,17 +5,12 @@ select
 	,otc.fin_id
     ,otc.minifactu_id
     ,otc.id
-	,cecg.erp_source_name
-	,cecg.erp_type_transaction
-    ,cecg.erp_payments_terms    
+    ,cecg.erp_receivable_activity_name
     ,cecg.erp_currency_code
     ,cecg.erp_currency_conversion_type
-    ,cecg.erp_interface_line_context
     ,cecg.erp_payment_code
     ,cecg.erp_set_of_books_id
-    ,cecg.erp_memo_line
     ,cecg.erp_attribute_category     
-    ,cecg.warehouse_id
     ,crc.identification_financial_responsible
     ,crc.full_name
     ,chbk.erp_clustered_chargeback_id
@@ -32,6 +27,7 @@ select
     ,chbk.administration_tax_percentage
     ,chbk.billing_date
     ,chbk.credit_date
+    ,chbk.bank_account
     ,concat('RD_',rtrim(chbk.bank_number),'_',rtrim(chbk.bank_branch),'_',rtrim(chbk.bank_account)) as receipt_method
     ,if(month(chbk.credit_date)=month(current_date()),chbk.credit_date,current_date()) as erp_trx_date
     ,if(month(chbk.credit_date)=month(current_date()),chbk.credit_date,current_date()) as erp_gl_date    
@@ -55,6 +51,7 @@ and otc.id = rec.order_to_cash_id
 
 inner join chargeback_erp_configurations cecg
 on cecg.country = chbk.country
+and cecg.erp_business_unit = otc.erp_business_unit
 and cecg.origin_system = otc.origin_system
 and cecg.operation = otc.operation
 and cecg.transaction_type = chbk.transaction_type
