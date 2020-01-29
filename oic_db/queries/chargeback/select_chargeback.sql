@@ -16,7 +16,7 @@ select
     ,crc.full_name
     ,rec.identification_gym_student -- na api front customer_identification
     ,chbk.erp_clustered_chargeback_id
-    ,chbk.gross_value  -- na api front amount
+    ,sum(chbk.gross_value) as gross_value  -- na api front amount
     ,chbk.conciliator_id
     ,chbk.credit_card_brand -- na api front credit_card_brand
     ,chbk.contract_number
@@ -65,4 +65,6 @@ and rec.transaction_type = 'credit_card_recurring' -- Cada tipo de transação d
 and chbk.erp_receipt_status_transaction = 'clustered_chargeback_created'
 and chbk.erp_clustered_chargeback_id is not null
 and chbk.erp_receipt_id is null
-and chbk.conciliation_type = 'CHBK'; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora 
+and chbk.conciliation_type = 'CHBK'
+
+group by chbk.erp_clustered_chargeback_id ;
