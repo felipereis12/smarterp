@@ -32,7 +32,8 @@ select
     ,iit.sale_price -- Preço praticado
     ,iit.list_price -- Preço de lista
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_trx_date
-    ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date    from invoice inv
+    ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date    
+from invoice inv
 
 inner join invoice_items iit
 on iit.id_invoice = inv.id
@@ -46,7 +47,7 @@ on rec.order_to_cash_id = otc.id
 inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
-left join invoice_erp_configurations iec
+inner join invoice_erp_configurations iec
 on iec.country = otc.country
 and iec.erp_business_unit = otc.erp_business_unit
 and iec.erp_legal_entity = otc.erp_legal_entity
@@ -68,7 +69,7 @@ and oftv.created_at = 	(
 						)
 
 where otc.country = 'Brazil' -- Integração em paralelo por operação do país
-and otc.erp_subsidiary = 'BR010015' -- Filtro por filial (loop automático)
+and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
 and otc.origin_system = 'corporatepass' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'distribution' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and otc.to_generate_invoice = 'yes'
