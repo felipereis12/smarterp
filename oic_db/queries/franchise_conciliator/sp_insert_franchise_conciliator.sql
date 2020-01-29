@@ -6,6 +6,7 @@ begin
 	declare v_otc_country varchar(45);
     declare v_otc_unity_identification integer default 0;
     declare v_otc_origin_system varchar(45);
+    declare v_otc_operation varchar(45);
     declare v_otc_front_franchise_conciliator_id integer; -- Neste campo será gravado o front id vindo do JSON
     declare v_otc_issue_date integer default null;
     declare v_otc_due_date integer default null;
@@ -67,7 +68,8 @@ if ( @p_return_v2 ) then -- if 1
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.origin_system'),'"',""),"null",null) into @v_otc_origin_system;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.front_franchise_conciliator_id'),'"',""),"null",null) into @v_otc_front_franchise_conciliator_id;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.origin_system'),'"',""),"null",null) into @v_otc_origin_system;
-	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.issue_date'),'"',""),"null",null) into @v_otc_issue_date;
+	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.operation'),'"',""),"null",null) into @v_otc_operation;
+    select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.issue_date'),'"',""),"null",null) into @v_otc_issue_date;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.header.due_date'),'"',""),"null",null) into @v_otc_due_date;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.receivable.erp_receivable_customer_identification'),'"',""),"null",null) into @v_receivable_erp_receivable_customer_id;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.receivable.contract_number'),'"',""),"null",null) into @v_receivable_contract_number;
@@ -91,6 +93,7 @@ if ( @p_return_v2 ) then -- if 1
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.municipal_registration'),'"',""),"null",null) into @v_supplier_municipal_registration;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.final_consumer'),'"',""),"null",null) into @v_supplier_final_consumer;
 	select replace(replace(json_extract(p_franchine_conciliator,'$.franchise_conciliator.supplier.icms_contributor'),'"',""),"null",null) into @v_supplier_icms_contributor;
+    
 	
 	call sp_check_if_exists_franchise_conciliator(p_franchine_conciliator, @p_return_v3 , @p_code_v3 , @p_message_v3, @p_front_franchise_conciliator_id_v3); -- precisei alterar o local da função por conta do campo operation que se estive no lugar anterior, não teria sido preenchido ainda, resultando em um erro.
 	
@@ -178,7 +181,7 @@ if ( @p_return_v2 ) then -- if 1
 							@v_oftv_to_generate_receivable, -- to_generate_receivable
 							@v_oftv_to_generate_invoice, -- to_generate_invoice
 							@v_otc_origin_system, -- origin_system
-							'franchise_conciliator', -- operation
+							@v_otc_operation, -- operation
 							null, -- minifactu_id
 							null, -- conciliator_id
 							null, -- fin_id
@@ -412,7 +415,7 @@ if ( @p_return_v2 ) then -- if 1
 					commit;
 					set p_return = true;
 					set p_code = 0;
-					set p_message = concat("The franchise Conciliator transaction was added to oic_db successfully. Id: ", ifnull(@p_front_franchise_conciliator_id,"null"), " at Json request !");
+					set p_message = concat("The franchise Conciliator transaction was added to oic_db successfully. Id: ", ifnull(@v_otc_id,"null"), " at Json request !");
 					set p_front_franchise_conciliator_id = @v_otc_front_franchise_conciliator_id;
 					end if;
 
