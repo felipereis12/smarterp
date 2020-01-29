@@ -1,15 +1,16 @@
 set @json_request = cast(  '{
     "franchise_conciliator": {
       "header": {
-        "country": "Brazil",
-        "unity_identification": 543,
+        "country": "Mexico",
+        "unity_identification": 123,
         "origin_system": "smartsystem",
-        "front_franchise_conciliator_id": 4121,
+        "operation": "franchise_conciliator",
+        "front_franchise_conciliator_id": 15677134,
         "issue_date": "2020-01-15",
-        "due_date": "2020-01-20"
+        "due_date": "2020-01-20"  
       },
       "receivable": {
-        "erp_receivable_customer_identification": "300000009178998",
+        "erp_receivable_customer_identification": "00360305000104",
         "contract_number": "1040380465",
         "credit_card_brand": "MASTER",
         "gross_value": 191.58
