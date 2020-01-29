@@ -27,8 +27,8 @@ select
     ,chbk.administration_tax_percentage
     ,chbk.billing_date
     ,chbk.credit_date
-    ,chbk.bank_account
-    ,concat('RD_',rtrim(chbk.bank_number),'_',rtrim(chbk.bank_branch),'_',rtrim(chbk.bank_account)) as receipt_method
+    ,convert(chbk.bank_account,unsigned) as bank_account
+    ,concat('RD_',rtrim(chbk.bank_number),'_',rtrim(chbk.bank_branch),'_',rtrim(convert(chbk.bank_account,unsigned))) as receipt_method
     ,if(month(chbk.credit_date)=month(current_date()),chbk.credit_date,current_date()) as erp_trx_date
     ,if(month(chbk.credit_date)=month(current_date()),chbk.credit_date,current_date()) as erp_gl_date    
 from chargeback chbk
