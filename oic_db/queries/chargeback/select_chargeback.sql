@@ -1,7 +1,8 @@
 select 
-	 otc.erp_business_unit
+	 otc.unity_identification -- na api front unity_identification
+	,otc.erp_business_unit
 	,otc.erp_subsidiary
-	,otc.front_id
+	,otc.front_id -- na api front front_id
 	,otc.fin_id
     ,otc.minifactu_id
     ,otc.id
@@ -11,12 +12,13 @@ select
     ,cecg.erp_payment_code
     ,cecg.erp_set_of_books_id
     ,cecg.erp_attribute_category     
-    ,crc.identification_financial_responsible
+    ,crc.identification_financial_responsible -- na api front identification_financial_responsible
     ,crc.full_name
+    ,rec.identification_gym_student -- na api front customer_identification
     ,chbk.erp_clustered_chargeback_id
-    ,chbk.gross_value 
+    ,chbk.gross_value  -- na api front amount
     ,chbk.conciliator_id
-    ,chbk.credit_card_brand
+    ,chbk.credit_card_brand -- na api front credit_card_brand
     ,chbk.contract_number
     ,chbk.transaction_type as chbk_transaction_type
     ,chbk.truncated_credit_card
