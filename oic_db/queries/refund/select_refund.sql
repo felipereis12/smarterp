@@ -31,9 +31,8 @@ and inc.created_at =
 						from invoice_customer inc_v2
 						where inc_v2.identification_financial_responsible = inc.identification_financial_responsible
 					)
--- and inc.erp_customer_id is not null
 
-inner join refund_erp_configurations recg
+left join refund_erp_configurations recg
 on  recg.country = ref.country
 and recg.origin_system = ref.origin_system
 and recg.operation = ref.operation
@@ -43,5 +42,3 @@ and ref.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
 and ref.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and ref.operation = 'person_plan' -- Neste caso filtrar somente person_plan, pois a operação de refund só ocorre para os planos de alunos
 and ref.erp_refund_status_transaction = 'waiting_to_be_process'
-
--- Felipe Test

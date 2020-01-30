@@ -47,7 +47,7 @@ on rec.order_to_cash_id = otc.id
 inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
-inner join invoice_erp_configurations iec
+left join invoice_erp_configurations iec
 on iec.country = otc.country
 and iec.erp_business_unit = otc.erp_business_unit
 and iec.erp_legal_entity = otc.erp_legal_entity

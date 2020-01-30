@@ -51,7 +51,7 @@ inner join order_to_cash otc
 on otc.country = chbk.country
 and otc.id = rec.order_to_cash_id
 
-inner join chargeback_erp_configurations cecg
+left join chargeback_erp_configurations cecg
 on cecg.country = chbk.country
 and cecg.erp_business_unit = otc.erp_business_unit
 and cecg.origin_system = otc.origin_system

@@ -26,7 +26,7 @@ on otc.id = rec.order_to_cash_id
 inner join supplier sup
 on sup.erp_supplier_id = pay.erp_supplier_id
 
-inner join payable_erp_configurations pec
+left join payable_erp_configurations pec
 on pec.country = otc.country
 and pec.origin_system = otc.origin_system
 and pec.operation = otc.operation
