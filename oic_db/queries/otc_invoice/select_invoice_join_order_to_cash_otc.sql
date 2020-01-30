@@ -98,4 +98,5 @@ and ( otc.erp_receivable_status_transaction = 'created_at_erp' or otc_v2.erp_rec
 and ( rec.erp_receivable_id is not null or rec_v2.erp_receivable_id is not null ) -- Filtrar somente os receivables que já foram integrados
 and ivc.erp_invoice_customer_id is not null -- Filtrar somente as invoices cujos os clientes já foram integrados anteriormente
 and ivc.erp_invoice_id is null -- Filtrar somente as invoices que ainda não foram integrados com o erp
+and iit.to_generate_fiscal_document = 'yes' -- Tratamento para exclusão de itens de multa contratual, pois haverá uma integração separada para tal
 and day(current_date()) <= oftv.cutoff_limit_day -- Regra de cutoff
