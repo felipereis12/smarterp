@@ -1,4 +1,5 @@
-drop procedure if exists sp_valid_franchise_conciliator; 
+drop procedure if exists sp_valid_franchise_conciliator;
+
 DELIMITER $$
 CREATE DEFINER=`admin`@`%` PROCEDURE `sp_valid_franchise_conciliator`( p_franchine_conciliator JSON ,out p_return boolean ,out p_code integer ,out p_message varbinary(5000), out p_front_franchise_conciliator_id integer)
 begin   
@@ -31,6 +32,13 @@ begin
         set p_message = concat(p_message,"Missing node franchise_conciliator.header.origin_system at Json request ! ");
     end if;
     
+	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.header.operation') = 0 then
+        set p_return = false;
+        set p_code = 1;
+        set p_message = concat(p_message,"Missing node franchise_conciliator.header.operation at Json request ! ");
+    end if;
+    
+    
 	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.header.front_franchise_conciliator_id') = 0 then
         set p_return = false;
         set p_code = 1;
@@ -55,19 +63,8 @@ begin
         set p_return = false;
         set p_code = 1;
         set p_message = concat(p_message,"Missing node franchise_conciliator.receivable.erp_receivable_customer_identification at Json request ! ");
-    end if;
-
-	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.receivable.contract_number') = 0 then
-        set p_return = false;
-        set p_code = 1;
-        set p_message = concat(p_message,"Missing node franchise_conciliator.receivable.contract_number at Json request ! ");
-    end if;       
-       
-	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.receivable.credit_card_brand') = 0 then
-        set p_return = false;
-        set p_code = 1;
-        set p_message = concat(p_message,"Missing node franchise_conciliator.receivable.credit_card_brand at Json request ! ");
-    end if;       
+    end if;  
+        
        
 	if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.receivable.gross_value') = 0 then
         set p_return = false;
@@ -196,23 +193,12 @@ begin
         set p_message = concat(p_message,"Missing node franchise_conciliator.supplier.bank_branch at Json request ! ");
     end if;
     
-    if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.supplier.bank_branch_digit') = 0 then
-        set p_return = false;
-        set p_code = 1;
-        set p_message = concat(p_message,"Missing node franchise_conciliator.supplier.bank_branch_digit at Json request ! ");
-    end if;
-    
     if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.supplier.bank_account_number') = 0 then
         set p_return = false;
         set p_code = 1;
         set p_message = concat(p_message,"Missing node franchise_conciliator.supplier.bank_account_number at Json request ! ");
     end if;    
 
-    if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.supplier.bank_account_number_digit') = 0 then
-        set p_return = false;
-        set p_code = 1;
-        set p_message = concat(p_message,"Missing node franchise_conciliator.supplier.bank_account_number_digit at Json request ! ");
-    end if;
 
     if json_contains_path(p_franchine_conciliator,'one','$.franchise_conciliator.supplier.bank_account_owner_name') = 0 then
         set p_return = false;

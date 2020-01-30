@@ -2,9 +2,9 @@ set @json_request = cast(  '{
    "refund":{
       "header":{
          "country":"Brazil",
-         "unity_identification": 999999,
+         "unity_identification":1,
          "origin_system":"smartsystem",
-         "front_refund_id":1235459,
+         "front_refund_id":123545,
          "refund_requester_name":"João da Silva",
          "refund_requester_identification":12365478984,
          "issue_date":"2019-12-26",
@@ -41,5 +41,3 @@ set @json_request = cast(  '{
 call sp_insert_refund( @json_request ,@p_return ,   @p_code ,@p_message, @p_front_refund_id); 
                             
 select @p_return as retorno ,@p_code,cast(@p_message as char),@p_front_refund_id;
-
--- Missing node otc.header.erp_receivable_customer_identification at Json request ! Check the documentation https://app.swaggerhub.com/apis-docs/Smartfit/OrderToCash/1.0.0

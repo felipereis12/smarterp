@@ -70,7 +70,7 @@ begin
 		set p_message = concat('The franchise conciliator transaction was already added to oic_db and is waiting to be process ! => { "id" : ',v_id 
 							    ,', "created_at:" ',ifnull(v_created_at,"null")
 								,', "erp_receivable_status_transaction: " ',ifnull(v_erp_receivable_status_transaction,"null")
-                                				,', "erp_supplier_status_transaction: " ',ifnull(v_erp_supplier_status_transaction,"null")
+                                ,', "erp_supplier_status_transaction: " ',ifnull(v_erp_supplier_status_transaction,"null")
 								,', "erp_payable_status_transaction: " ',ifnull(v_erp_payable_status_transaction,"null")
 								,'} ');
 		set p_franchine_conciliator = v_front_franchise_conciliator_id;  	
