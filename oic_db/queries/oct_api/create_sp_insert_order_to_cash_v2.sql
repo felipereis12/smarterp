@@ -24,6 +24,7 @@ begin
     declare v_erp_gl_segment_id varchar(45);
     declare v_erp_ncm_code varchar(45);
     declare v_erp_item_ar_overdue_recovery_id varchar(45);
+    declare v_to_generate_fiscal_document varchar(45);
     declare p_order_to_cash_country varchar(45);
 	declare p_order_to_cash_unity_identification varchar(45);
 	declare p_order_to_cash_origin_system varchar(45);
@@ -452,6 +453,7 @@ begin
 							set @v_erp_gl_segment_id = null;
                             set @v_erp_ncm_code = null;
                             set @v_erp_item_ar_overdue_recovery_id = null;
+                            set @v_to_generate_fiscal_document = null;
                             
 							if ( ( (json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_product_id')) = 1 and json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_plan_id')) = 1 )
 									or json_contains_path(@p_invoice_items_json,'one',concat('$.invoice_items[',i,'].front_addon_id')) = 1 
@@ -488,9 +490,11 @@ begin
 											 erp_item_ar_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
+                                            ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
 												,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
+                                                ,@v_to_generate_fiscal_document
 										from product_from_to_version prodftv
 										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
 										and prodftv.product_from_to_operation = @p_order_to_cash_operation
@@ -526,10 +530,12 @@ begin
 											,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
+                                            ,to_generate_fiscal_document
                                             into @v_erp_item_ar_id,
 												 @v_erp_gl_segment_id,
                                                  @v_erp_ncm_code,
-                                                 @v_erp_item_ar_overdue_recovery_id
+                                                 @v_erp_item_ar_overdue_recovery_id,
+                                                 @v_to_generate_fiscal_document
 										from addon_from_to_version addoftv
 										where addoftv.addon_from_to_origin_system = @p_order_to_cash_origin_system
 										and addoftv.addon_from_to_operation = @p_order_to_cash_operation
@@ -563,10 +569,12 @@ begin
                                             ,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
+                                            ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
 												,@v_erp_gl_segment_id
                                                 ,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
+                                                ,@v_to_generate_fiscal_document
 										from product_from_to_version prodftv
 										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
 										and prodftv.product_from_to_operation = @p_order_to_cash_operation
@@ -586,10 +594,12 @@ begin
                                             ,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
+                                            ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
 												,@v_erp_gl_segment_id
                                                 ,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
+                                                ,@v_to_generate_fiscal_document
 										from plan_from_to_version planftv
 										where planftv.plan_from_to_origin_system = @p_order_to_cash_origin_system
 										and planftv.plan_from_to_operation = @p_order_to_cash_operation
@@ -621,10 +631,12 @@ begin
                                             ,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
+                                            ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
 												,@v_erp_gl_segment_id
                                                 ,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
+                                                ,@v_to_generate_fiscal_document
 										from product_from_to_version prodftv
 										where prodftv.product_from_to_origin_system = @p_order_to_cash_origin_system
 										and prodftv.product_from_to_operation = @p_order_to_cash_operation
@@ -665,6 +677,7 @@ begin
 										erp_item_ar_id,
 										erp_gl_segment_product,
                                         erp_ncm_code,
+                                        to_generate_fiscal_document,
 										quantity,
 										sale_price,
 										list_price,
@@ -678,6 +691,7 @@ begin
 										@v_erp_item_ar_id, -- erp_item_ar_id
 										@v_erp_gl_segment_id, -- erp_gl_segment_product
                                         @v_erp_ncm_code, -- erp_ncm_code
+                                        @v_to_generate_fiscal_document, -- to_generate_fiscal_document
 										@v_quantity, -- quantity
 										@v_list_price, -- sale_price
 										@v_sale_price, -- list_price
