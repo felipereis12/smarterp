@@ -10,7 +10,6 @@ select
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date 
 	,iec.warehouse_id
     ,iec.erp_interface_line_context
-    ,iec.erp_source_name
     ,iec.erp_set_of_books_id
     ,iec.erp_type_transaction
     ,iec.erp_payments_terms
