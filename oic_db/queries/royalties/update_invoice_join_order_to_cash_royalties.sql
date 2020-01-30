@@ -10,3 +10,5 @@ set order_to_cash.erp_invoice_returned_from_erp_at = current_timestamp -- coloca
 
 where order_to_cash.id = '<Colocar aqui o Id order_to_cash do registro que foi enviado para o Oracle>'
 and invoice.id = '<Colocar aqui o Id invoice_customer do registro que foi enviado para o Oracle>';
+
+-- teste
