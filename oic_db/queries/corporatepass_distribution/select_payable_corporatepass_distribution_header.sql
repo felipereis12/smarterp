@@ -12,7 +12,7 @@ select
     ,sup.full_name
     ,sup.erp_supplier_id
     ,rec.erp_receivable_id
-    ,pay.gross_value
+    ,sum(pay.gross_value) as gross_value
     ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_trx_date
     ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_gl_date   
 from payable pay
@@ -41,4 +41,19 @@ and pay.erp_payable_status_transaction = 'waiting_to_be_process' -- Filtrar some
 and pay.erp_payable_id is null -- Filtrar somente os receivables que ainda não foram integrados com o erp
 and rec.transaction_type = 'bank_transfer' -- Neste caso a integração de corporatepass repasse deve considerar somente boleto
 and rec.erp_receivable_id is not null
-and pay.erp_supplier_id is not null;
+and pay.erp_supplier_id is not null
+
+group by pay.erp_business_unit
+    ,pay.erp_legal_entity
+    ,pay.erp_subsidiary
+    ,otc.front_id
+    ,pecg.erp_source_name
+    ,pecg.erp_currency_code
+    ,pecg.erp_payment_code
+    ,pecg.erp_invoice_type
+    ,pecg.erp_payments_terms
+    ,sup.identification_financial_responsible    
+    ,sup.full_name
+    ,sup.erp_supplier_id
+    ,rec.erp_receivable_id
+	,pay.issue_date ;

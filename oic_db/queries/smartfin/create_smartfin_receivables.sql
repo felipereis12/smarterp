@@ -58,9 +58,9 @@ declare continue handler for not found set done=1;
 
 declare exit handler for sqlexception 
 begin    
-	rollback;    
     get diagnostics condition 1  @v_message_text = message_text;
     select @v_message_text;
+	rollback;        
 end;
 
 set @v_keycontrol 	:= concat_ws('_','smf_rec',left(rtrim(p_country),2),left(rtrim(p_origin_system),2),left(rtrim(p_operation),2),left(rtrim(p_transaction_type),2));

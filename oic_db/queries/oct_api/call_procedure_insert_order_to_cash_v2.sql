@@ -5,7 +5,7 @@ set @json_request = cast( '  {
         "unity_identification" : 1,
         "origin_system" : "smartsystem",
         "operation": "person_plan",
-        "minifactu_id": 1246845,
+        "minifactu_id": 3999846,
         "conciliator_id": 1246845,
         "fin_id" : 12345,
         "erp_receivable_customer_identification" : "01425787000104",
@@ -65,15 +65,7 @@ set @json_request = cast( '  {
               "quantity": 1,
               "list_price": 145.25,
               "sale_price": 95
-            },
-            {
-              "front_product_id": null,
-              "front_plan_id": null,
-              "front_addon_id": 1,
-              "quantity": 1,
-              "list_price": 145.25,
-              "sale_price": 95
-            }            
+            }           
           ]
         }
       }

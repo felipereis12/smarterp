@@ -6,7 +6,7 @@ select
     ,cpr.bank_number
     ,cpr.bank_branch
     ,cpr.bank_account
-    ,cpr.gross_value
+    ,round(sum(cpr.gross_value),2) as gross_value
 	,date_format(cpr.created_at, '%y%m%d') as Deposit_Date
     ,time (cpr.created_at) as credit_hour 
     ,concat ('RD_',cpr.bank_number,'_',cpr.bank_branch,'_',cpr.bank_account) as Receipt_Method
@@ -59,7 +59,9 @@ and rec.transaction_type = 'credit_card_recurring' -- Cada tipo de transação d
 and rec.erp_receivable_id is not null
 and cpr.erp_receipt_status_transaction = 'waiting_to_be_process'
 and cpr.erp_receipt_id is null
-and cpr.concitiation_type = 'PCV'; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora
+and cpr.conciliation_type = 'PCV'
+
+group by rec.erp_receivable_id; -- Considerar somente os retornos de comprovante de recebimento enviado pela conciliadora
 
 
 

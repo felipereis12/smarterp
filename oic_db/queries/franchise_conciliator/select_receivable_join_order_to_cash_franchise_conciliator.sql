@@ -11,15 +11,15 @@ select
     ,t1.erp_memo_line
     ,t1.identification_financial_responsible
     ,t1.full_name
-    ,t1.net_value
+    ,t1.receivable_item_value
     ,t1.front_id
     ,t1.credit_card_brand
     ,t1.transaction_type
     ,t1.current_credit_card_installment
     ,t1.total_credit_card_installment
     ,t1.administration_tax_percentage
-    ,t1.billing_date
-    ,t1.credit_date
+    ,if(month(t1.billing_date)=month(current_date()),t1.billing_date,current_date()) as erp_trx_date
+    ,if(month(t1.billing_date)=month(current_date()),t1.billing_date,current_date()) as erp_gl_date        
 from (
 
 /*Valores bruto da venda*/
@@ -35,10 +35,10 @@ select
     ,recg.erp_interface_line_context
     ,recg.erp_memo_line
     ,rec.erp_clustered_receivable_id
-    ,crc.identification_financial_responsible
+    ,crc.identification_financial_responsible    
     ,crc.full_name
     ,otc.front_id
-	,rec.net_value    
+    ,rec.gross_value as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -69,7 +69,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'gross_value'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa
+and otc.erp_subsidiary = 'BR020001' -- Neste caso a filial deve ser fixa - Smartfin
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'franchise_conciliator' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_receivable = 'yes'
@@ -95,7 +95,7 @@ select
     ,crc.identification_financial_responsible
     ,crc.full_name
     ,otc.front_id
-    ,rec.administration_tax_value*-1
+    ,rec.administration_tax_value*-1 as receivable_item_value    
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -153,7 +153,7 @@ select
     ,crc.identification_financial_responsible
     ,crc.full_name
     ,otc.front_id
-    ,rec.interest_value
+    ,rec.interest_value as receivable_item_value        
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number

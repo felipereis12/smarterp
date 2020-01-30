@@ -1,17 +1,36 @@
 select 
-	 pay.unity_identification
-	,pay.erp_business_unit
+	 pay.erp_business_unit
     ,pay.erp_legal_entity
     ,pay.erp_subsidiary
-    ,pay.acronym
-    ,pay.*
+    ,pecg.erp_source_name
+    ,pecg.erp_currency_code
+    ,pecg.erp_payment_code
+    ,pecg.erp_invoice_type
+    ,pecg.erp_payments_terms
+    ,sup.identification_financial_responsible    
+    ,sup.full_name
+    ,sup.erp_supplier_id
+    ,rec.erp_receivable_id
+    ,pay.gross_value
+    ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_trx_date
+    ,if(month(pay.issue_date)=month(current_date()),pay.issue_date,current_date()) as erp_gl_date     
 from payable pay
+
+inner join supplier sup
+on sup.identification_financial_responsible = pay.supplier_identification
 
 inner join receivable rec
 on rec.id = pay.receivable_id
 
 inner join order_to_cash otc
 on otc.id = rec.order_to_cash_id
+
+inner join payable_erp_configurations pecg
+on pecg.country = otc.country
+and pecg.origin_system = otc.origin_system
+and pecg.operation = otc.operation
+and pecg.transaction_type = rec.transaction_type
+and pecg.converted_smartfin = rec.converted_smartfin
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
 and otc.erp_subsidiary = 'BR020001' -- Neste caso fixar esse valor para a integração de conciliador de franquias

@@ -1,5 +1,9 @@
 select 
 	 t1.erp_business_unit
+	,t1.front_id
+	,t1.fin_id
+    ,t1.conciliator_id
+    ,t1.minifactu_id
 	,t1.id
     ,t1.idx_qry
 	,t1.erp_source_name
@@ -8,15 +12,20 @@ select
     ,t1.erp_currency_code
     ,t1.erp_currency_conversion_type
     ,t1.erp_interface_line_context
+    ,t1.erp_payment_code
+    ,t1.erp_set_of_books_id
     ,t1.erp_memo_line
+    ,t1.erp_attribute_category
+    ,t1.warehouse_id
     ,t1.erp_clustered_receivable_id
     ,t1.identification_financial_responsible
     ,t1.full_name
-    ,t1.net_value
+    ,t1.receivable_item_value
     ,t1.conciliator_id
     ,t1.credit_card_brand
     ,t1.contract_number
     ,t1.transaction_type
+    ,t1.warehouse_id
     ,t1.truncated_credit_card
     ,t1.current_credit_card_installment
     ,t1.total_credit_card_installment
@@ -26,24 +35,37 @@ select
     ,t1.billing_date
     ,t1.credit_date
     ,t1.converted_smartfin
+    ,if(month(t1.billing_date)=month(current_date()),t1.billing_date,current_date()) as erp_trx_date
+    ,if(month(t1.billing_date)=month(current_date()),t1.billing_date,current_date()) as erp_gl_date    
 from (
-
+/*
+gross_value => valor serviço/mercadororia + juros/mora
+net_value => valor serviço/mercadororia + juros/mora - taxa operadora
+interest_value => juros/mora
+*/
 /*Valores bruto da venda*/
 select
 	 otc.erp_business_unit
-	,otc.id
+	,otc.front_id
+	,otc.fin_id
+    ,otc.minifactu_id
+    ,otc.id
     ,1 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
-    ,recg.erp_payments_terms
+    ,recg.erp_payments_terms    
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
     ,recg.erp_interface_line_context
+    ,recg.erp_payment_code
+    ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
+    ,recg.erp_attribute_category
+    ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.net_value
+    ,rec.gross_value as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -74,7 +96,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'gross_value'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Neste caso como haverá uma integração separada para os movimentos Smartfin esse filtro deverá ser fixo para tais movimentos
+and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'person_plan' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.erp_receivable_status_transaction = 'clustered_receivable_created' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
@@ -89,7 +111,10 @@ union
 /*Valores da taxa de administração da operadora*/
 select 
 	 otc.erp_business_unit
-	,otc.id
+	,otc.front_id
+	,otc.fin_id
+    ,otc.minifactu_id
+    ,otc.id
     ,2 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
@@ -97,11 +122,15 @@ select
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
     ,recg.erp_interface_line_context
+    ,recg.erp_payment_code
+    ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
+    ,recg.erp_attribute_category
+	,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.administration_tax_value*-1
+    ,rec.administration_tax_value*-1 as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -132,7 +161,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'administration_tax'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Neste caso como haverá uma integração separada para os movimentos Smartfin esse filtro deverá ser fixo para tais movimentos
+and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'person_plan' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.erp_receivable_status_transaction = 'clustered_receivable_created' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento
@@ -148,7 +177,10 @@ union
 /*Valores de juros/mora*/
 select 
 	 otc.erp_business_unit
-	,otc.id
+	,otc.front_id
+	,otc.fin_id
+    ,otc.minifactu_id
+    ,otc.id
     ,3 as idx_qry
 	,recg.erp_source_name
 	,recg.erp_type_transaction
@@ -156,11 +188,15 @@ select
     ,recg.erp_currency_code
     ,recg.erp_currency_conversion_type
     ,recg.erp_interface_line_context
+    ,recg.erp_payment_code
+    ,recg.erp_set_of_books_id
     ,recg.erp_memo_line
+    ,recg.erp_attribute_category
+    ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
     ,crc.identification_financial_responsible
     ,crc.full_name
-    ,rec.interest_value
+    ,rec.interest_value as receivable_item_value
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -191,7 +227,7 @@ and recg.converted_smartfin = rec.converted_smartfin
 and recg.memoline_setting = 'interest'
 
 where otc.country = 'Brazil' -- Integração em paralalo por operação do país
-and otc.erp_subsidiary = 'BR020001' -- Neste caso como haverá uma integração separada para os movimentos Smartfin esse filtro deverá ser fixo para tais movimentos
+and otc.erp_subsidiary = 'BR020001' -- Filtro por filial (loop automático)
 and otc.origin_system = 'smartsystem' -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'person_plan' -- Integração em paralalo por operação (plano de alunos, plano corporativo, etc...)
 and otc.erp_receivable_status_transaction = 'clustered_receivable_created' -- Filtrar somente os registros que ainda não foram integrados com o erp e estão aguardando processamento

@@ -391,7 +391,7 @@ begin
 									@p_receivable_current_credit_card_installment, -- current_credit_card_installment
 									@p_receivable_total_credit_card_installment, -- total_credit_card_installment
 									@p_receivable_nsu, -- nsu
-									@p_receivable_conciliator_id, -- conciliator_id
+									@p_order_to_cash_conciliator_id, -- conciliator_id
 									@p_receivable_authorization_code, -- authorization_code
 									@p_receivable_price_list_value, -- price_list_value
 									@p_receivable_gross_value, -- gross_value

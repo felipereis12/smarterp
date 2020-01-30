@@ -98,7 +98,7 @@ insert into receivable
 			erp_receipt_id,
 			erp_receivable_customer_id,
 			erp_clustered_receivable_id,
-			erp_customer_id,
+			erp_clustered_receivable_customer_id,
 			is_smartfin,
 			converted_smartfin,
 			type_smartfin,
@@ -137,7 +137,7 @@ insert into receivable
 			null, -- erp_receipt_id
 			null, -- erp_receivable_customer_id
 			null, -- erp_clustered_receivable_id
-			null, -- erp_customer_id
+			null, -- erp_clustered_receivable_customer_id
 			'yes', -- is_smartfin
 			'no', -- converted_smartfin
 			'franchise', -- type_smartfin
@@ -157,8 +157,8 @@ insert into receivable
 			15545.55, -- gross_value
 			15545.55, -- net_value
 			0, -- interest_value
-			0, -- administration_tax_percentage
-			0, -- administration_tax_value
+			1.55, -- administration_tax_percentage
+			15545.55*0.0155, -- administration_tax_value
 			0, -- antecipation_tax_percentage
 			0, -- antecipation_tax_value
 			'2019-11-26', -- billing_date
@@ -183,11 +183,9 @@ inner join customer
 on customer.identification_financial_responsible = order_to_cash.erp_receivable_customer_identification
 
 set receivable.erp_receivable_customer_id = customer.erp_customer_id
-	,receivable.erp_customer_id = customer.erp_customer_id
+	,receivable.erp_clustered_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
-
--- if ( true /* select not exists ( select 1 from supplier where identification_financial_responsible = '23383105000172') */ ) then 
 
 insert into supplier
 			(erp_supplier_id,
@@ -240,8 +238,11 @@ insert into supplier
 			null, -- erp_supplier_status_transaction
 			null, -- erp_supplier_log
 			null, -- erp_filename
-			null) ; -- erp_line_in_file
--- end if;
+			null)  -- erp_line_in_file
+
+on duplicate key 
+
+update erp_supplier_id = null ;
 
 insert into payable
 			(unity_identification,

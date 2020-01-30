@@ -11,7 +11,7 @@ declare v_erp_business_unit varchar(45);
 declare v_erp_legal_entity varchar(45);
 declare v_erp_subsidiary varchar(45);
 declare v_operation varchar(45);
-declare v_erp_customer_id int;
+declare v_erp_clustered_receivable_customer_id varchar(45);
 declare v_fullname varchar(255);
 declare v_transaction_type varchar(45);
 declare v_credit_card_brand varchar(45);
@@ -44,13 +44,15 @@ declare cur1 cursor for select * from vw_clustered_chargeback
 declare continue handler for not found set done=1;
 
 declare exit handler for sqlexception 
-begin
-    rollback;
+begin    
     get diagnostics condition 1  @v_message_text = message_text;
     select @v_message_text;
+    rollback;
 end;
 
-if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type)),1) = 1 then 
+set @v_keycontrol 	:= concat_ws('_','sp_clus_chbk',left(rtrim(p_country),2),left(rtrim(p_origin_system),2),left(rtrim(p_operation),2),left(rtrim(p_transaction_type),2));
+
+if get_lock(@v_keycontrol,1) = 1 then 
 	
     set done = 0;
     open cur1;
@@ -63,7 +65,7 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
                         ,v_erp_legal_entity
                         ,v_erp_subsidiary
                         ,v_operation
-                        ,v_erp_customer_id
+                        ,v_erp_clustered_receivable_customer_id
                         ,v_fullname
                         ,v_transaction_type
                         ,v_credit_card_brand
@@ -85,7 +87,7 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
                         ,v_erp_legal_entity
                         ,v_erp_subsidiary
                         ,v_operation
-                        ,v_erp_customer_id
+                        ,v_erp_clustered_receivable_customer_id
                         ,v_fullname
                         ,v_transaction_type
                         ,v_credit_card_brand
@@ -110,21 +112,16 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         
         set chargeback.erp_receipt_status_transaction = 'clustered_chargeback_being_created'
         
-        where receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
+        where receivable.erp_clustered_receivable_customer_id = v_erp_clustered_receivable_customer_id
         and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand) or (chargeback.credit_card_brand is null) )
-        -- and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        -- and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
         and order_to_cash.country = v_country        
         and order_to_cash.origin_system = v_origin_system
         and order_to_cash.operation = v_operation
         and order_to_cash.unity_identification = v_unity_identification
-        -- and order_to_cash.erp_business_unit = v_erp_business_unit
-        -- and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        -- and order_to_cash.erp_subsidiary = v_erp_subsidiary
         and receivable.converted_smartfin = v_converted_smartfin
         and receivable.is_smartfin = v_is_smarftin                
         and chargeback.erp_receipt_status_transaction = 'waiting_to_be_process';    
@@ -158,15 +155,10 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and order_to_cash.origin_system = v_origin_system
         and order_to_cash.operation = v_operation
         and order_to_cash.unity_identification = v_unity_identification
-        and order_to_cash.erp_business_unit = v_erp_business_unit
-        and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
+        and receivable.erp_clustered_receivable_customer_id = v_erp_clustered_receivable_customer_id
         and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand ) or (chargeback.credit_card_brand is null)  )
-        and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
         and receivable.is_smartfin = v_is_smarftin 
@@ -199,7 +191,7 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
 							v_erp_business_unit,
 							v_erp_legal_entity,
 							v_erp_subsidiary,
-							v_erp_customer_id,
+							v_erp_clustered_receivable_customer_id,
 							v_contract_number,
 							v_credit_card_brand,
 							v_billing_date,
@@ -216,8 +208,6 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
 
         set @clustered_chargeback_id = last_insert_id();
 		
-        -- select @clustered_chargeback_id,@v_price_list_value;
-        
         update chargeback
 
         inner join receivable
@@ -233,15 +223,10 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
         and order_to_cash.origin_system = v_origin_system
         and order_to_cash.operation = v_operation
         and order_to_cash.unity_identification = v_unity_identification
-        and order_to_cash.erp_business_unit = v_erp_business_unit
-        and order_to_cash.erp_legal_entity = v_erp_legal_entity
-        and order_to_cash.erp_subsidiary = v_erp_subsidiary
-        and receivable.erp_clustered_receivable_customer_id = v_erp_customer_id
+        and receivable.erp_clustered_receivable_customer_id = v_erp_clustered_receivable_customer_id
         and chargeback.transaction_type = v_transaction_type
         and chargeback.contract_number = v_contract_number
         and ( ( chargeback.credit_card_brand is not null and chargeback.credit_card_brand = v_credit_card_brand) or (chargeback.credit_card_brand is null) )
-        and round(chargeback.administration_tax_percentage,2) = round(v_administration_tax_percentage,2)
-        and round(chargeback.antecipation_tax_percentage,2) = round(v_antecipation_tax_percentage,2)
         and chargeback.billing_date = v_billing_date
         and chargeback.credit_date = v_credit_date
         and receivable.is_smartfin = v_is_smarftin
@@ -252,10 +237,10 @@ if get_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtri
     
     close cur1;	
     
-    do release_lock(concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type)));
+    do release_lock(@v_keycontrol);
 
 else 
-	select concat('Procedure is already running in another thread: ',concat_ws('_','sp_create_clustered_chargeback',rtrim(p_country),rtrim(p_origin_system),rtrim(p_operation),rtrim(p_transaction_type)) ) as log;
+	select concat('Procedure is already running in another thread: ',@v_keycontrol ) as log;
 end if;
 
 END;
