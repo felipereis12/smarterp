@@ -3,24 +3,27 @@ select
     ,otc.erp_legal_entity
     ,otc.erp_subsidiary
     ,otc.acronym
-	,otc.erp_receivable_customer_identification
+    ,otc.erp_receivable_customer_identification
     ,otc.minifactu_id
     ,rec.gross_value
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_trx_date
     ,if(month(rec.billing_date)=month(current_date()),rec.billing_date,current_date()) as erp_gl_date 
-	,iec.warehouse_id
+    ,iec.warehouse_id
     ,iec.erp_interface_line_context
-    ,iec.erp_source_name
     ,iec.erp_set_of_books_id
     ,iec.erp_type_transaction
     ,iec.erp_payments_terms
     ,iec.erp_receipt_method
+    ,iec.erp_currency_code
     ,iec.erp_source_name
+    ,iec.erp_interface_line_context
     ,ivcr.full_name
     ,ivcr.identification_financial_responsible
     ,iit.erp_gl_segment_product
     ,iit.erp_item_ar_id
     ,iit.list_price
+    ,iit.quantity
+    ,iit.sale_price
 from invoice
 
 inner join invoice_items iit
