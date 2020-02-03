@@ -56,7 +56,7 @@ and iec.origin_system = otc.origin_system
 and iec.operation = otc.operation
 
 where otc.country = 'Brazil' -- Integração em paralelo por operação do país
-and otc.erp_subsidiary = 'BR010001' -- Filtro por filial (loop automático)
+and otc.erp_subsidiary = 'BR010001' -- Neste caso fixar sempre a subisdiary BR010001
 and otc.origin_system = 'corporatepass' -- Integração em paralelo por origem (SmartFit, BioRitmo, etc...)
 and otc.operation = 'revenue' -- Integração em paralelo por operação (plano de alunos, plano corporativo, etc...)
 and otc.to_generate_invoice = 'yes'
