@@ -92,6 +92,9 @@ order_to_cash.acronym = organization_from_to_version.acronym
 
 where order_to_cash.id = @order_to_cash_id;
 
+select concat(FLOOR( RAND() * (2222222-3333333) + 2222222),'0001')
+into @ramdomico;
+
 insert into receivable
 			(order_to_cash_id,
 			erp_receivable_id,
@@ -157,8 +160,8 @@ insert into receivable
 			15545.55, -- gross_value
 			15545.55, -- net_value
 			0, -- interest_value
-			1.55, -- administration_tax_percentage
-			15545.55*0.0155, -- administration_tax_value
+			0, -- administration_tax_percentage
+			0, -- administration_tax_value
 			0, -- antecipation_tax_percentage
 			0, -- antecipation_tax_value
 			'2019-11-26', -- billing_date
@@ -187,6 +190,8 @@ set receivable.erp_receivable_customer_id = customer.erp_customer_id
 
 where receivable.id = @receivable_id;
 
+-- if ( true /* select not exists ( select 1 from supplier where identification_financial_responsible = '23383105000172') */ ) then 
+
 insert into supplier
 			(erp_supplier_id,
 			full_name,
@@ -204,7 +209,7 @@ insert into supplier
 			cellphone,
 			email,
 			state_registration,
-			federal_registration,
+			municipal_registration,
 			final_consumer,
 			icms_contributor,
 			erp_supplier_send_to_erp_at,
@@ -217,7 +222,7 @@ insert into supplier
 			(null, -- erp_supplier_id
 			'SMART FIT SAO CARLOS', -- full_name
 			'legal_person', -- type_person
-			'23383105000172', -- identification_financial_responsible
+			@ramdomico, -- identification_financial_responsible
 			'BR', -- nationality_code
 			'SP', -- state
 			'São Paulo', -- city
@@ -230,7 +235,7 @@ insert into supplier
 			'', -- cellphone
 			'felilpe.nambara@bioritmo.com.br', -- email
 			null, -- state_registration
-			null, -- federal_registration
+			null, -- municipal_registration
 			'no', -- final_consumer
 			'no', -- icms_contributor
 			null, -- erp_supplier_send_to_erp_at
@@ -238,11 +243,8 @@ insert into supplier
 			null, -- erp_supplier_status_transaction
 			null, -- erp_supplier_log
 			null, -- erp_filename
-			null)  -- erp_line_in_file
-
-on duplicate key 
-
-update erp_supplier_id = null ;
+			null) ; -- erp_line_in_file
+-- end if;
 
 insert into payable
 			(unity_identification,
@@ -281,7 +283,7 @@ insert into payable
 			null, -- erp_clustered_receivable_id
 			null, -- erp_payable_receipt_id
 			null, -- erp_supplier_id
-            '23383105000172', -- supplier_identification
+            @ramdomico, -- supplier_identification
 			'2019-11-26', --  issue_date
 			'2019-11-28', -- due_date
 			null, -- erp_payable_send_to_erp_at
