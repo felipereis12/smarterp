@@ -1,3 +1,4 @@
+-- Esta query deverá ser utilizada para o monitoramento das integrçaões de BI - minifactu <-> oic_db
 select 
 	 	 t1.country
 		,t1.unity_identification
