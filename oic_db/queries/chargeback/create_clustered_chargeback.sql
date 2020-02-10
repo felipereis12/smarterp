@@ -10,6 +10,7 @@ declare v_unity_identification varchar(45) ;
 declare v_erp_business_unit varchar(45);
 declare v_erp_legal_entity varchar(45);
 declare v_erp_subsidiary varchar(45);
+declare v_acronym varchar(45);
 declare v_operation varchar(45);
 declare v_erp_clustered_receivable_customer_id varchar(45);
 declare v_fullname varchar(255);
@@ -64,6 +65,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 						,v_erp_business_unit
                         ,v_erp_legal_entity
                         ,v_erp_subsidiary
+                        ,v_acronym
                         ,v_operation
                         ,v_erp_clustered_receivable_customer_id
                         ,v_fullname
@@ -79,27 +81,6 @@ if get_lock(@v_keycontrol,1) = 1 then
                         
 		if done = 1 then leave ClusteredChargebackLoop; end if;
 		
-        /*
-        select v_country
-						,v_origin_system
-						,v_unity_identification
-						,v_erp_business_unit
-                        ,v_erp_legal_entity
-                        ,v_erp_subsidiary
-                        ,v_operation
-                        ,v_erp_clustered_receivable_customer_id
-                        ,v_fullname
-                        ,v_transaction_type
-                        ,v_credit_card_brand
-                        ,v_contract_number
-                        ,v_administration_tax_percentage
-                        ,v_antecipation_tax_percentage
-                        ,v_billing_date
-                        ,v_credit_date
-                        ,v_is_smarftin
-                        ,v_converted_smartfin;
-        */
-        
         start transaction;
 	
 		update chargeback
@@ -171,6 +152,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 							erp_business_unit,
 							erp_legal_entity,
 							erp_subsidiary,
+							acronym,
 							erp_clustered_receivable_customer_id,
 							contract_number,
 							credit_card_brand,
@@ -191,6 +173,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 							v_erp_business_unit,
 							v_erp_legal_entity,
 							v_erp_subsidiary,
+							v_acronym,
 							v_erp_clustered_receivable_customer_id,
 							v_contract_number,
 							v_credit_card_brand,
