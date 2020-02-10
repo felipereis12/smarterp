@@ -1,3 +1,4 @@
+-- Esta query deverá ser utilizada para o monitoramento das integrçaões de BI - oic_db <-> oracle erp receivable
 select 
 	 	 t1.country
 		,t1.unity_identification
