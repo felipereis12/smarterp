@@ -9,6 +9,7 @@ select
     ,order_to_cash.erp_business_unit
     ,order_to_cash.erp_legal_entity
     ,order_to_cash.erp_subsidiary
+    ,order_to_cash.acronym
     ,order_to_cash.operation
     ,customer.erp_customer_id
     ,customer.full_name
