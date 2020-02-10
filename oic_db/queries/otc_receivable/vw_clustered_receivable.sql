@@ -7,6 +7,7 @@ create VIEW vw_clustered_receivable AS
         order_to_cash.erp_business_unit AS erp_business_unit,
         order_to_cash.erp_legal_entity AS erp_legal_entity,
         order_to_cash.erp_subsidiary AS erp_subsidiary,
+        order_to_cash.acronym AS acronym,
         order_to_cash.operation AS operation,
         customer.erp_customer_id AS erp_customer_id,
         customer.full_name AS full_name,
