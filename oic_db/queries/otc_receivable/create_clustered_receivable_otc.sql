@@ -189,6 +189,7 @@ if get_lock(@v_keycontrol,1) = 1 then
 													and ( 
 																( order_to_cash_v3.erp_receivable_status_transaction = 'clustered_receivable_being_created' ) 
 															or	( order_to_cash_v3.erp_receivable_status_transaction = 'clustered_receivable_created' ) 															
+															or	( order_to_cash_v3.erp_receivable_status_transaction = 'created_at_erp' ) 															
 														)
 												)  
                                                 
