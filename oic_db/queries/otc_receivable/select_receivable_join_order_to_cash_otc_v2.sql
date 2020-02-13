@@ -129,8 +129,8 @@ select
     ,recg.erp_attribute_category
 	,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
-    ,'' as identification_financial_responsible
-    ,'' as full_name
+    ,crc.identification_financial_responsible
+    ,crc.full_name
     ,sum(rec.administration_tax_value*-1) as receivable_item_value
     ,'' as conciliator_id
     ,rec.credit_card_brand
@@ -217,8 +217,8 @@ select
     ,recg.erp_attribute_category
     ,recg.warehouse_id
     ,rec.erp_clustered_receivable_id
-    ,'' as identification_financial_responsible
-    ,'' as full_name
+    ,crc.identification_financial_responsible
+    ,crc.full_name
     ,sum(rec.interest_value) as receivable_item_value
     ,'' as conciliator_id
     ,rec.credit_card_brand
@@ -286,6 +286,8 @@ group by otc.erp_business_unit
     ,rec.converted_smartfin
 
 ) as t1
+
+where t1.erp_clustered_receivable_id in ( select erp_clustered_receivable_id from integration_clustered_receivable where keycontrol = 154 )
 
 order by t1.erp_business_unit
 		,t1.erp_clustered_receivable_id
