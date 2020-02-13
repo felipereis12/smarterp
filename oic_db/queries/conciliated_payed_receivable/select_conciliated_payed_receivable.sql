@@ -1,8 +1,9 @@
 select 
-	otc.id
+cpr.erp_receipt_status_transaction
+	,otc.id
 	,otc.erp_business_unit
     ,otc.erp_subsidiary
-    ,crc.identification_financial_responsible
+    ,cus.identification_financial_responsible
     ,cpr.bank_number
     ,cpr.bank_branch
     ,cpr.bank_account
@@ -11,7 +12,7 @@ select
     ,time (cpr.created_at) as credit_hour 
     ,concat ('RD_',cpr.bank_number,'_',right(cpr.bank_branch,4),'_',convert(cpr.bank_account,unsigned)) as Receipt_Method
     ,RTRIM (concat('RD_',cpr.bank_number,'_',right(cpr.bank_branch,4),'_',convert(cpr.bank_account,unsigned),'_',rec.credit_date)) as Lote_Name
-    ,RTRIM (concat(crc.identification_financial_responsible,'Faturar')) as Customer_Site
+    ,RTRIM (concat(cus.identification_financial_responsible,'Faturar')) as Customer_Site
     ,rec.conciliator_id
     ,rec.credit_card_brand
     ,rec.contract_number
@@ -44,9 +45,6 @@ and rec.converted_smartfin <> 'yes'
 
 inner join customer cus
 on cus.erp_customer_id = rec.erp_receivable_customer_id
-
-inner join customer crc
-on crc.erp_customer_id = rec.erp_clustered_receivable_customer_id
 
 inner join order_to_cash otc
 on otc.country = cpr.country
