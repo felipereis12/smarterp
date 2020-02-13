@@ -30,14 +30,6 @@ on otc.id = rec.order_to_cash_id
 inner join customer crc
 on crc.identification_financial_responsible = otc.erp_receivable_customer_identification
 
-left join receivable_erp_configurations recg
-on recg.country = otc.country
-and recg.origin_system = otc.origin_system
-and recg.operation = otc.operation
-and recg.transaction_type = rec.transaction_type
-and recg.converted_smartfin = rec.converted_smartfin
-and recg.memoline_setting = 'gross_value'
-
 where otc.country = p_country -- Integração em paralalo por operação do país
 	and otc.erp_subsidiary = p_subsidiary -- Filtro por filial (loop automático)
 	and otc.origin_system = p_origin_system -- Integração em paralalo por origem (SmartFit, BioRitmo, etc...)
