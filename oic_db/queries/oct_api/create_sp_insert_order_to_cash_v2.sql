@@ -21,6 +21,7 @@ begin
     declare v_sale_price float;
     declare v_invoice_id integer;    
     declare v_erp_item_ar_id varchar(45); 
+    declare v_erp_item_ar_name varchar(100); 
     declare v_erp_gl_segment_id varchar(45);
     declare v_erp_ncm_code varchar(45);
     declare v_erp_item_ar_overdue_recovery_id varchar(45);
@@ -450,6 +451,7 @@ begin
                             set @v_list_price = null;
                             set @v_sale_price = null;
 							set @v_erp_item_ar_id = null;
+							set @v_erp_item_ar_name = null;
 							set @v_erp_gl_segment_id = null;
                             set @v_erp_ncm_code = null;
                             set @v_erp_item_ar_overdue_recovery_id = null;
@@ -488,10 +490,12 @@ begin
 																		
 										select 
 											 erp_item_ar_id
+											,front_product_name
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
                                             ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
+												,@v_erp_item_ar_name
 												,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
                                                 ,@v_to_generate_fiscal_document
@@ -526,12 +530,14 @@ begin
 									elseif ( @v_front_addon_id is not null ) then
 										                                        
 										select 
-											 erp_item_ar_id        
+											 erp_item_ar_id   
+											,front_addon_name
 											,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
                                             ,to_generate_fiscal_document
                                             into @v_erp_item_ar_id,
+												 @v_erp_item_ar_name,
 												 @v_erp_gl_segment_id,
                                                  @v_erp_ncm_code,
                                                  @v_erp_item_ar_overdue_recovery_id,
@@ -567,10 +573,12 @@ begin
 										select 
 											 erp_item_ar_id
                                             ,erp_gl_segment_id
+                                            ,front_product_name
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
                                             ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
+												,@v_erp_item_ar_name
 												,@v_erp_gl_segment_id
                                                 ,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
@@ -591,11 +599,13 @@ begin
 										
 										select 
 											 erp_item_ar_id
+											,front_plan_name
                                             ,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
                                             ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
+												,@v_erp_item_ar_name
 												,@v_erp_gl_segment_id
                                                 ,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
@@ -628,11 +638,13 @@ begin
 										
 										select 
 											 erp_item_ar_id
+											,front_product_name
                                             ,erp_gl_segment_id
                                             ,erp_ncm_code
                                             ,erp_item_ar_overdue_recovery_id
                                             ,to_generate_fiscal_document
 											into @v_erp_item_ar_id
+												,@v_erp_item_ar_name
 												,@v_erp_gl_segment_id
                                                 ,@v_erp_ncm_code
                                                 ,@v_erp_item_ar_overdue_recovery_id
@@ -675,6 +687,7 @@ begin
 										front_plan_id,
 										front_addon_id,
 										erp_item_ar_id,
+										erp_item_ar_name,
 										erp_gl_segment_product,
                                         erp_ncm_code,
                                         to_generate_fiscal_document,
@@ -689,6 +702,7 @@ begin
 										@v_front_plan_id, -- front_plan_id
 										@v_front_addon_id, -- front_addon_id
 										@v_erp_item_ar_id, -- erp_item_ar_id
+										@v_erp_item_ar_name, -- erp_item_ar_name
 										@v_erp_gl_segment_id, -- erp_gl_segment_product
                                         @v_erp_ncm_code, -- erp_ncm_code
                                         @v_to_generate_fiscal_document, -- to_generate_fiscal_document
