@@ -24,6 +24,7 @@ select
     ,ivcr.identification_financial_responsible
     ,iit.erp_gl_segment_product
     ,iit.erp_item_ar_id
+    ,iit.erp_item_ar_name
     ,iit.list_price
     ,iit.quantity
     ,iit.sale_price

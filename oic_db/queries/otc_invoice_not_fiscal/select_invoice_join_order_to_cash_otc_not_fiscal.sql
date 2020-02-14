@@ -32,6 +32,7 @@ select
 	,otc.erp_subsidiary
     ,iit.id  as id_otc_item -- id do item da invoice
     ,iit.erp_item_ar_id -- código do item do ar no Oracle 
+    ,iit.erp_item_ar_name -- nome do item do ar no Oracle 
     ,iit.erp_gl_segment_product -- código do segmento contábil de produto
     ,iit.quantity -- Quantidade do item de venda
     ,iit.sale_price -- Preço praticado
