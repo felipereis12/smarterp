@@ -1,7 +1,5 @@
-drop procedure if exists sp_insert_refund; 
-delimiter //
-
-CREATE PROCEDURE sp_insert_refund( p_refund JSON ,out p_return boolean  ,out p_code integer ,out p_message varbinary(10000), out p_front_refund_id integer )
+DELIMITER $$
+CREATE DEFINER=`admin`@`%` PROCEDURE `sp_insert_refund`( p_refund JSON ,out p_return boolean  ,out p_code integer ,out p_message varbinary(10000), out p_front_refund_id integer )
 begin 
     declare p_refund_country varchar(45);
     declare p_refund_unity_identification integer default 0;
@@ -58,7 +56,7 @@ begin
 		select replace(replace(json_extract(p_refund,'$.refund.header.country'),'"',""),"null",null) into @p_refund_country;
 		select cast(replace(json_extract(p_refund,'$.refund.header.unity_identification'),"null",null) as unsigned) into @p_refund_unity_identification;
 		select replace(replace(json_extract(p_refund,'$.refund.header.origin_system'),'"',""),"null",null)  into @p_refund_origin_system;
-		select replace(replace(json_extract(p_refund,'$.refund.header.front_refund_id'),'"',""),"null",null)  into @p_refund_front_refund_id;
+        select cast(replace(json_extract(p_refund,'$.refund.header.front_refund_id'),"null",null) as unsigned) into @p_refund_front_refund_id;
 		select replace(replace(json_extract(p_refund,'$.refund.header.refund_requester_name'),'"',""),"null",null)  into @p_refund_requester_name;
 		select replace(replace(json_extract(p_refund,'$.refund.header.refund_requester_identification'),'"',""),"null",null)  into @p_refund_requester_identification;
 		select replace(replace(json_extract(p_refund,'$.refund.header.issue_date'),'"',""),"null",null)  into @p_refund_issue_date;
@@ -127,8 +125,9 @@ begin
 									bank_account_number_digit,
 									bank_account_owner_name,
 									bank_account_owner_identification)
-							values(@reund_cash_country, -- country
-									@refund_cash_unity_identification, -- unity_identification
+							values(@p_refund_country, -- country
+									-- @refund_cash_unity_identification, -- unity_identification
+                                    @p_refund_unity_identification,
 									@v_erp_business_unit, -- erp_business_unit
 									@v_erp_legal_entity, -- erp_legal_entity
 									@v_erp_subsidiary, -- erp_subsidiary
@@ -196,6 +195,8 @@ begin
 					set p_code = 0;
 					set p_message = concat("The refund transaction was added to oic_db successfully. Id: ",ifnull(@p_refund_id,"null"));
 					set p_front_refund_id = @p_refund_front_refund_id;
+                    
+                    
 				
 				end if;                
 			
@@ -229,5 +230,5 @@ begin
     
 	end if; 
     
-end;
-//
+end$$
+DELIMITER ;
